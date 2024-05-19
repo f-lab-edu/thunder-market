@@ -11,15 +11,15 @@
 </br>
 
 ## 기술 환경
-- Java, Spring Boot, Spring JPA, MySQL, Redis, Jenkins, Docker
+- Java
+- JDK 21
+- Gradle 8.5
+- Spring Boot, Spring JPA, MySQL, Redis, Jenkins, Docker
 </br>
 </br>
 
 ## 프로젝트 가설
-- 사람들은 물건을 중고로 거래하고 싶을 것이다.
-- 사람들은 중고 물품을 비대면으로 거래하고 싶을 것이다.
-- 사람들은 사기로부터 안전한 중고 거래를 하고 싶을 것이다.
-</br>
+- 아이폰 중고거래 판매자는 게시글을 더 쉽게 작성하고 싶을 것이다.
 </br>
 </br>
 
@@ -27,23 +27,24 @@
 ### 워킹 스켈레톤
 - 판매 상품 등록 (이름, 가격)
 - 판매 상품 목록 조회
-- 판매 완료 설정
+- 판매 상품 조회
+- 판매 상태 조회 및 변경
 ### MVP
-- 로그인 (소셜로그인)
-- 구매 요청(채팅)
+- **판매 상품 등록 (스마트 템플릿)**
+  - 사진, 상품 이름, 저장 용량, 색상, 상품 컨디션(외관, 기능), 배터리 성능, 카메라 상태, 구성품 여부, 구매 시기, 보증 여부, 직거래 장소, 택배비 여부
+  - 위 내용들을 체크하면 사람이 작성한 것처럼 게시글 내용을 작성해준다.
+- 로그인(소셜로그인)
 - 구매 이력 조회
-- 판매 이력 조회
-- 안전 거래
-- 찜
-- 상품 상세 정보 조회, 설정
-  - 상품 거래 상태, 사진, 카테고리, 상품 컨디션, 설명, 가격제안여부, 배송비여부, 거래지역, 안전결제여부
+- 판매 이력 조회
 
 ### 아이스박스
-- 신고
-- 바로 구매
-- 네고 요청
 - 판매자 칭찬
-- 안심번호
+- 구매 요청(채팅)
+- 바로 구매
+- 안전 거래
+- 네고 요청
+- 찜
+- 신고
 </br>
 </br>
 </br>
@@ -65,11 +66,11 @@
 
 ## 화면
 [https://ovenapp.io/](https://ovenapp.io/)
-![image](https://github.com/f-lab-edu/team-timing/assets/25719259/cb7900df-ce1c-4e8f-92ad-746805fa5892)
+![image](https://github.com/f-lab-edu/thunder-market/assets/25719259/4e159260-1dd3-40d8-a2d0-2d9077f6e4da)
 </br>
 </br>
 </br>
 
 ## ERD
 [https://dbdiagram.io/](https://dbdiagram.io/ "https://dbdiagram.io/")
-![image](https://github.com/f-lab-edu/team-timing/assets/25719259/41cb9a93-a674-4a1e-a3ff-73022111051a)
+![image](https://github.com/f-lab-edu/thunder-market/assets/25719259/b347a282-8b08-4903-a990-6a79d610cd37)
