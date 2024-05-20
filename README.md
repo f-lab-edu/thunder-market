@@ -1,5 +1,4 @@
 # thunder-market
-### 안전한 비대면 중고거래 서비스
 
 <p align="center" style="color:gray">
   <img style="margin:50px 0 10px 0" src="https://github.com/f-lab-edu/team-timing/assets/25719259/bf6659dd-6bb5-4a3c-aa3f-ec878906597e" alt="" width=300 />
@@ -10,11 +9,10 @@
 </br>
 </br>
 
-## 기술 환경
-- Java
-- JDK 21
-- Gradle 8.5
-- Spring Boot, Spring JPA, MySQL, Redis, Jenkins, Docker
+## 프로젝트 소개
+- 아이폰을 중고거래 할 때 게시글 작성에 막막했던 적이 있으신가요?
+- 제공된 몇 가지 항목을 선택하고 입력하면, 자동으로 자연스러운 게시글이 생성됩니다.
+- 이 기능을 통해 반복적인 작업을 줄여 중고거래의 접근성을 높이고, 판매자와 구매자 간의 소통 비용을 줄여 쉽고 편한 중고거래를 가능하게 합니다.
 </br>
 </br>
 
@@ -22,6 +20,14 @@
 - 아이폰 중고거래 판매자는 게시글을 더 쉽게 작성하고 싶을 것이다.
 </br>
 </br>
+
+## 기술 환경
+- Java
+- JDK 21
+- Gradle 8.5
+- Spring Boot, Spring JPA, MySQL, Redis, Jenkins, Docker
+  </br>
+  </br>
 
 ## 프로젝트 설명(워킹 스켈레톤 / MVP / 아이스박스)
 ### 워킹 스켈레톤
