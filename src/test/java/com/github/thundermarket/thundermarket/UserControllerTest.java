@@ -1,6 +1,5 @@
 package com.github.thundermarket.thundermarket;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.thundermarket.thundermarket.domain.User;
 import com.github.thundermarket.thundermarket.repository.UserRepository;
@@ -48,6 +47,20 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value(email))
                 .andExpect(jsonPath("$.password").value(password));
+    }
+
+    @Test
+    public void 회원가입_이메일형식_실패() throws Exception {
+        String email = "test01";
+        String password = "password";
+        User user = new User(email, password);
+
+        String userJson = objectMapper.writeValueAsString(user);
+
+        mockMvc.perform(post("/users")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
