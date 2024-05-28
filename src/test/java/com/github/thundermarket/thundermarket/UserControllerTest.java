@@ -1,5 +1,6 @@
 package com.github.thundermarket.thundermarket;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.thundermarket.thundermarket.domain.User;
 import com.github.thundermarket.thundermarket.repository.UserRepository;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -117,5 +119,64 @@ public class UserControllerTest {
                         .content(wrongUserJson))
                 .andExpect(status().isUnauthorized())
                 .andExpect(content().string("Invalid credentials"));
+    }
+
+    @Test
+    public void 마이페이지_조회_성공() throws Exception {
+        String email = "test01@email.com";
+        String password = "password";
+        User user = new User(email, password);
+
+        String userJson = objectMapper.writeValueAsString(user);
+
+        mockMvc.perform(post("/auth/join")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value(email))
+                .andExpect(jsonPath("$.password").value(password));
+
+        MockHttpSession session = new MockHttpSession();
+
+        mockMvc.perform(post("/auth/login")
+                        .contentType("application/json")
+                        .content(userJson)
+                        .session(session))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Login successful"));
+
+        mockMvc.perform(get("/auth/mypage")
+                        .contentType("application/json")
+                        .session(session))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Hello, " + email));
+    }
+
+    @Test
+    public void 마이페이지_조회_실패() throws Exception {
+        String email = "test01@email.com";
+        String password = "password";
+        User user = new User(email, password);
+
+        String userJson = objectMapper.writeValueAsString(user);
+
+        mockMvc.perform(post("/auth/join")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value(email))
+                .andExpect(jsonPath("$.password").value(password));
+
+
+        mockMvc.perform(post("/auth/login")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Login successful"));
+
+        mockMvc.perform(get("/auth/mypage")
+                        .contentType("application/json"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("Unauthorized"));
     }
 }
