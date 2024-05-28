@@ -1,20 +1,18 @@
 package com.github.thundermarket.thundermarket;
 
 import com.github.thundermarket.thundermarket.domain.User;
-import com.github.thundermarket.thundermarket.repository.InMemoryUserRepository;
+import com.github.thundermarket.thundermarket.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 public class UserRepositoryTest {
 
-    InMemoryUserRepository userRepository;
-
-    @BeforeEach
-    public void beforeEach() {
-        userRepository = new InMemoryUserRepository();
-    }
+    @Autowired
+    UserRepository userRepository;
 
     @AfterEach
     public void afterEach() {
