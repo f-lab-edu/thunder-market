@@ -1,5 +1,6 @@
 package com.github.thundermarket.thundermarket;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.thundermarket.thundermarket.domain.User;
 import com.github.thundermarket.thundermarket.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,11 +45,35 @@ public class UserControllerTest {
 
         String userJson = objectMapper.writeValueAsString(user);
 
-        mockMvc.perform(post("/join")
+        mockMvc.perform(post("/users")
                         .contentType("application/json")
                         .content(userJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value("test01"))
                 .andExpect(jsonPath("$.password").value("password"));
+    }
+
+    @Test
+    public void 전체_회원_조회() throws Exception {
+        String userId = "test01";
+        String password = "password";
+
+        User user = new User();
+        user.setUserId(userId);
+        user.setPassword(password);
+
+        String userJson = objectMapper.writeValueAsString(user);
+
+        mockMvc.perform(post("/users")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value("test01"))
+                .andExpect(jsonPath("$.password").value("password"));
+
+        mockMvc.perform(get("/users")
+                        .contentType("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].userId").value("test01"));
     }
 }
