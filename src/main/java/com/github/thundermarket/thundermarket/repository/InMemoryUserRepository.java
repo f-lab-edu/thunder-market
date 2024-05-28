@@ -2,7 +2,10 @@ package com.github.thundermarket.thundermarket.repository;
 
 import com.github.thundermarket.thundermarket.domain.User;
 import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -17,6 +20,11 @@ public class InMemoryUserRepository implements UserRepository {
 
         inMemoryUserStore.put(user.getId(), user);
         return user;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return new ArrayList<>(inMemoryUserStore.values());
     }
 
     @Override
