@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 public class UserController {
 
@@ -39,7 +37,16 @@ public class UserController {
         if(!userService.checkPassword(user)) {
             return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
         }
-        session.setAttribute("user", user.getEmail());
+        session.setAttribute("userEmail", user.getEmail());
         return new ResponseEntity<>("Login successful", HttpStatus.OK);
+    }
+
+    @GetMapping("/auth/mypage")
+    public ResponseEntity<?> mypage(HttpSession session) {
+        String userEmail = (String) session.getAttribute("userEmail");
+        if (userEmail == null) {
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>("Hello, " + userEmail, HttpStatus.OK);
     }
 }
