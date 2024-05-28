@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -21,16 +20,16 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @GetMapping("/users")
+    public ResponseEntity<?> findAllUsers() {
+        return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
+    }
+
+    @PostMapping("/auth/join")
     public ResponseEntity<?> join(@RequestBody User user) {
         if(!EmailValidator.isValid(user.getEmail())) {
             return new ResponseEntity<>(EmailValidator.NOT_VALID_EMAIL_MESSAGE, HttpStatus.BAD_REQUEST);
-        };
+        }
         return new ResponseEntity<>(userService.join(user), HttpStatus.OK);
-    }
-
-    @GetMapping
-    public ResponseEntity<?> findAllUsers() {
-        return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }
 }

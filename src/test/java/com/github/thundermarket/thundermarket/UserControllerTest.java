@@ -41,7 +41,7 @@ public class UserControllerTest {
 
         String userJson = objectMapper.writeValueAsString(user);
 
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/auth/join")
                         .contentType("application/json")
                         .content(userJson))
                 .andExpect(status().isOk())
@@ -57,7 +57,7 @@ public class UserControllerTest {
 
         String userJson = objectMapper.writeValueAsString(user);
 
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/auth/join")
                         .contentType("application/json")
                         .content(userJson))
                 .andExpect(status().isBadRequest());
@@ -71,7 +71,7 @@ public class UserControllerTest {
 
         String userJson = objectMapper.writeValueAsString(user);
 
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/auth/join")
                         .contentType("application/json")
                         .content(userJson))
                 .andExpect(status().isOk())
