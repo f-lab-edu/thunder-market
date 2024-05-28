@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 @SpringBootTest
 class UserServiceTest {
 
@@ -35,5 +37,20 @@ class UserServiceTest {
         User savedUser = userService.join(user);
 
         Assertions.assertThat(user).isEqualTo(savedUser);
+    }
+
+    @Test
+    public void 전체_회원_조회() {
+        String userId = "test01";
+        String password = "password";
+
+        User user = new User();
+        user.setUserId(userId);
+        user.setPassword(password);
+
+        userService.join(user);
+
+        List<User> allUsers = userService.findAllUsers();
+        Assertions.assertThat(allUsers.getFirst().getUserId()).isEqualTo(userId);
     }
 }
