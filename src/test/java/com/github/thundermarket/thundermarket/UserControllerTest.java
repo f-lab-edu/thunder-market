@@ -11,8 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -69,5 +68,54 @@ public class UserControllerTest {
         mockMvc.perform(get("/api/v1/users")
                         .contentType("application/json"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void 로그인_성공() throws Exception {
+        String email = "test01@email.com";
+        String password = "password";
+        User user = new User(email, password);
+
+        String userJson = objectMapper.writeValueAsString(user);
+
+        mockMvc.perform(post("/auth/join")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value(email))
+                .andExpect(jsonPath("$.password").value(password));
+
+        mockMvc.perform(post("/auth/login")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Login successful"));
+    }
+
+    @Test
+    public void 로그인_실패() throws Exception {
+        String email = "test01@email.com";
+        String password = "password";
+        String wrongPassword = "wrong";
+        User user = new User(email, password);
+
+        String userJson = objectMapper.writeValueAsString(user);
+
+        mockMvc.perform(post("/auth/join")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value(email))
+                .andExpect(jsonPath("$.password").value(password));
+
+
+        User wrongUser = new User(email, wrongPassword);
+        String wrongUserJson = objectMapper.writeValueAsString(wrongUser);
+
+        mockMvc.perform(post("/auth/login")
+                        .contentType("application/json")
+                        .content(wrongUserJson))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("Invalid credentials"));
     }
 }
