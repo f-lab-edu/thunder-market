@@ -29,6 +29,7 @@ public class InMemoryUserRepository implements UserRepository {
         return null;
     }
 
+    @Override
     public void deleteAll() {
         inMemoryUserStore.clear();
     }
