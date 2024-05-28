@@ -28,9 +28,9 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public User findByUserIdAndPassword(String userId, String password) {
+    public User findByEmailAndPassword(String email, String password) {
         for (User user : inMemoryUserStore.values()) {
-            if(user.getUserId().equals(userId) && user.getPassword().equals(password)) {
+            if(user.getEmail().equals(email) && user.getPassword().equals(password)) {
                 return user;
             }
         }

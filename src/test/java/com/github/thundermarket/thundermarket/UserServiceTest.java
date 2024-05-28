@@ -27,9 +27,9 @@ class UserServiceTest {
 
     @Test
     void 회원가입_성공() {
-        String userId = "test01";
+        String email = "test01@email.com";
         String password = "password";
-        User user = new User(userId, password);
+        User user = new User(email, password);
 
         User savedUser = userService.join(user);
 
@@ -38,13 +38,13 @@ class UserServiceTest {
 
     @Test
     public void 전체_회원_조회() {
-        String userId = "test01";
+        String email = "test01@email.com";
         String password = "password";
-        User user = new User(userId, password);
+        User user = new User(email, password);
 
         userService.join(user);
 
         List<User> allUsers = userService.findAllUsers();
-        Assertions.assertThat(allUsers.getFirst().getUserId()).isEqualTo(userId);
+        Assertions.assertThat(allUsers.getFirst().getEmail()).isEqualTo(email);
     }
 }

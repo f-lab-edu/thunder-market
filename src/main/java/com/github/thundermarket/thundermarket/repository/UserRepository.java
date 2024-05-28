@@ -7,6 +7,6 @@ import java.util.List;
 public interface UserRepository {
     public User save(User user);
     public List<User> findAll();
-    public User findByUserIdAndPassword(String userId, String password);
+    public User findByEmailAndPassword(String email, String password);
     public void deleteAll();
 }

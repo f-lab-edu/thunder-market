@@ -3,14 +3,14 @@ package com.github.thundermarket.thundermarket.domain;
 public class User {
 
     private Long id;
-    private String userId;
+    private String email;
     private String password;
 
     public User() {
     }
 
-    public User(String userId, String password) {
-        this.userId = userId;
+    public User(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
@@ -22,12 +22,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

@@ -36,9 +36,9 @@ public class UserControllerTest {
 
     @Test
     public void 회원가입_성공() throws Exception {
-        String userId = "test01";
+        String email = "test01@email.com";
         String password = "password";
-        User user = new User(userId, password);
+        User user = new User(email, password);
 
         String userJson = objectMapper.writeValueAsString(user);
 
@@ -46,15 +46,15 @@ public class UserControllerTest {
                         .contentType("application/json")
                         .content(userJson))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.userId").value(userId))
+                .andExpect(jsonPath("$.email").value(email))
                 .andExpect(jsonPath("$.password").value(password));
     }
 
     @Test
     public void 전체_회원_조회() throws Exception {
-        String userId = "test01";
+        String email = "test01@email.com";
         String password = "password";
-        User user = new User(userId, password);
+        User user = new User(email, password);
 
         String userJson = objectMapper.writeValueAsString(user);
 
@@ -62,12 +62,12 @@ public class UserControllerTest {
                         .contentType("application/json")
                         .content(userJson))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.userId").value(userId))
+                .andExpect(jsonPath("$.email").value(email))
                 .andExpect(jsonPath("$.password").value(password));
 
         mockMvc.perform(get("/users")
                         .contentType("application/json"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].userId").value(userId));
+                .andExpect(jsonPath("$[0].email").value(email));
     }
 }
