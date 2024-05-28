@@ -25,10 +25,7 @@ public class UserRepositoryTest {
     public void 회원가입_성공() {
         String userId = "test01";
         String password = "password";
-
-        User user = new User();
-        user.setUserId(userId);
-        user.setPassword(password);
+        User user = new User(userId, password);
 
         userRepository.save(user);
 
@@ -40,10 +37,7 @@ public class UserRepositoryTest {
     public void 전체_회원_조회() {
         String userId = "test01";
         String password = "password";
-
-        User user = new User();
-        user.setUserId(userId);
-        user.setPassword(password);
+        User user = new User(userId, password);
 
         userRepository.save(user);
 
