@@ -3,12 +3,12 @@ package com.github.thundermarket.thundermarket.controller;
 import com.github.thundermarket.thundermarket.domain.User;
 import com.github.thundermarket.thundermarket.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+
+@RestController
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -18,8 +18,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/join")
-    public @ResponseBody User join(@RequestBody User user) {
+    @PostMapping
+    public User join(@RequestBody User user) {
         return userService.join(user);
+    }
+
+    @GetMapping
+    public List<User> findAllUsers() {
+        return userService.findAllUsers();
     }
 }
