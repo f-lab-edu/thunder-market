@@ -20,12 +20,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/api/v1/users")
     public ResponseEntity<?> findAllUsers() {
         return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }
 
-    @PostMapping("/auth/join")
+    @PostMapping("/api/v1/auth/join")
     public ResponseEntity<?> join(@RequestBody User user) {
         if(!EmailValidator.isValid(user.getEmail())) {
             return new ResponseEntity<>(EmailValidator.NOT_VALID_EMAIL_MESSAGE, HttpStatus.BAD_REQUEST);
