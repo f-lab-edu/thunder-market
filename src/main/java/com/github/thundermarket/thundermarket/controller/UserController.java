@@ -32,7 +32,7 @@ public class UserController {
         return new ResponseEntity<>(userService.join(user), HttpStatus.OK);
     }
 
-    @PostMapping("/auth/login")
+    @PostMapping("/api/v1/auth/login")
     public ResponseEntity<?> login(@RequestBody User user, HttpSession session) {
         if(!userService.checkPassword(user)) {
             return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
@@ -41,7 +41,7 @@ public class UserController {
         return new ResponseEntity<>("Login successful", HttpStatus.OK);
     }
 
-    @GetMapping("/auth/mypage")
+    @GetMapping("/api/v1/auth/mypage")
     public ResponseEntity<?> mypage(HttpSession session) {
         String userEmail = (String) session.getAttribute("userEmail");
         if (userEmail == null) {
