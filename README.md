@@ -40,11 +40,11 @@
 
 ## 화면
 - [https://ovenapp.io/](https://ovenapp.io/)
-</br>
-![image](https://github.com/f-lab-edu/thunder-market/assets/25719259/4d02a0f2-d887-450f-9fe4-a92406fa3b1f)
-</br>
-</br>
-</br>
+  </br>
+  ![image](https://github.com/f-lab-edu/thunder-market/assets/25719259/4d02a0f2-d887-450f-9fe4-a92406fa3b1f)
+  </br>
+  </br>
+  </br>
 
 ## 프로젝트 아키텍처 (수정중)
 - [draw.io](https://draw.io "https://draw.io")
@@ -56,8 +56,8 @@
 
 ## ERD (수정중)
 - [https://dbdiagram.io/](https://dbdiagram.io/ "https://dbdiagram.io/")
-</br>
-![image](https://github.com/f-lab-edu/thunder-market/assets/25719259/b347a282-8b08-4903-a990-6a79d610cd37)
+  </br>
+  ![image](https://github.com/f-lab-edu/thunder-market/assets/25719259/b347a282-8b08-4903-a990-6a79d610cd37)
 
 ## 브랜치 전략 / 선택 이유
 - github flow
