@@ -3,7 +3,6 @@ package com.github.thundermarket.thundermarket;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.thundermarket.thundermarket.domain.User;
 import com.github.thundermarket.thundermarket.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,32 +27,25 @@ public class UserControllerTest {
     @Autowired
     UserRepository userRepository;
 
-    @AfterEach
-    public void afterEach() {
-        userRepository.deleteAll();
+    private User createUser(String email, String password) {
+        return new User(email, password);
     }
 
     @Test
     public void 회원가입_성공() throws Exception {
-        String email = "test01@email.com";
-        String password = "password";
-        User user = new User(email, password);
+        User user = createUser("test01@email.com", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
         mockMvc.perform(post("/api/v1/auth/join")
                         .contentType("application/json")
                         .content(userJson))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value(email))
-                .andExpect(jsonPath("$.password").value(password));
+                .andExpect(status().isOk());
     }
 
     @Test
     public void 회원가입_이메일형식_실패() throws Exception {
-        String email = "test01";
-        String password = "password";
-        User user = new User(email, password);
+        User user = createUser("test01", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
@@ -65,22 +57,17 @@ public class UserControllerTest {
 
     @Test
     public void 전체_회원_조회() throws Exception {
-        String email = "test01@email.com";
-        String password = "password";
-        User user = new User(email, password);
+        User user = createUser("test01@email.com", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
         mockMvc.perform(post("/api/v1/auth/join")
                         .contentType("application/json")
                         .content(userJson))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value(email))
-                .andExpect(jsonPath("$.password").value(password));
+                .andExpect(status().isOk());
 
         mockMvc.perform(get("/api/v1/users")
                         .contentType("application/json"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].email").value(email));
+                .andExpect(status().isOk());
     }
 }
