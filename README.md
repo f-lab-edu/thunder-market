@@ -41,7 +41,7 @@
 ## 화면
 - [https://ovenapp.io/](https://ovenapp.io/)
   </br>
-  ![image](https://github.com/f-lab-edu/thunder-market/assets/25719259/4d02a0f2-d887-450f-9fe4-a92406fa3b1f)
+  ![image](https://github.com/f-lab-edu/thunder-market/assets/25719259/4f86aafd-c1cc-400d-856f-9eae58f02d6b)
   </br>
   </br>
   </br>
