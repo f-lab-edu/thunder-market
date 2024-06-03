@@ -1,35 +1,31 @@
 package com.github.thundermarket.thundermarket;
 
 import com.github.thundermarket.thundermarket.domain.User;
-import com.github.thundermarket.thundermarket.repository.UserRepository;
+import com.github.thundermarket.thundermarket.repository.InMemoryUserRepository;
 import com.github.thundermarket.thundermarket.service.UserService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-@SpringBootTest
 class UserServiceTest {
 
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    UserRepository userRepository;
+    InMemoryUserRepository userRepository = new InMemoryUserRepository();
+    UserService userService = new UserService(userRepository);
 
     @AfterEach
-    public void afterEach() {
+    void tearDown() {
         userRepository.deleteAll();
+    }
+
+    private User createUser(String email, String password) {
+        return new User(email, password);
     }
 
     @Test
     void 회원가입_성공() {
-        String email = "test01@email.com";
-        String password = "password";
-        User user = new User(email, password);
+        User user = createUser("test01@email.com", "password");
 
         User savedUser = userService.join(user);
 
@@ -38,13 +34,14 @@ class UserServiceTest {
 
     @Test
     public void 전체_회원_조회() {
-        String email = "test01@email.com";
-        String password = "password";
-        User user = new User(email, password);
+        int expectedAllUsers = 2;
+        User user = createUser("test01@email.com", "password");
+        User user2 = createUser("test02@email.com", "password2");
 
         userService.join(user);
+        userService.join(user2);
 
         List<User> allUsers = userService.findAllUsers();
-        Assertions.assertThat(allUsers.getFirst().getEmail()).isEqualTo(email);
+        Assertions.assertThat(allUsers.size()).isEqualTo(expectedAllUsers);
     }
 }
