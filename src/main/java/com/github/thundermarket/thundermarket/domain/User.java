@@ -1,5 +1,7 @@
 package com.github.thundermarket.thundermarket.domain;
 
+import com.github.thundermarket.thundermarket.Util.Email;
+
 public class User {
 
     private Long id;
@@ -36,5 +38,9 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isEmailValid() {
+        return Email.isValid(this.email);
     }
 }
