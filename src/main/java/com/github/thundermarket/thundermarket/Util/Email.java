@@ -3,7 +3,7 @@ package com.github.thundermarket.thundermarket.Util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EmailValidator {
+public class Email {
 
     public static final String NOT_VALID_EMAIL_MESSAGE = "not valid email";
     private static final String EMAIL_PATTERN =
