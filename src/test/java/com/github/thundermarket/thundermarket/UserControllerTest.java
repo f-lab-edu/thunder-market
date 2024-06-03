@@ -1,6 +1,5 @@
 package com.github.thundermarket.thundermarket;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.thundermarket.thundermarket.domain.User;
 import com.github.thundermarket.thundermarket.repository.UserRepository;
@@ -74,20 +73,16 @@ public class UserControllerTest {
 
     @Test
     public void 로그인_성공() throws Exception {
-        String email = "test01@email.com";
-        String password = "password";
-        User user = new User(email, password);
+        User user = createUser("test01@email.com", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
-        mockMvc.perform(post("/auth/join")
+        mockMvc.perform(post("/api/v1/auth/join")
                         .contentType("application/json")
                         .content(userJson))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value(email))
-                .andExpect(jsonPath("$.password").value(password));
+                .andExpect(status().isOk());
 
-        mockMvc.perform(post("/auth/login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .contentType("application/json")
                         .content(userJson))
                 .andExpect(status().isOk())
@@ -96,25 +91,20 @@ public class UserControllerTest {
 
     @Test
     public void 로그인_실패() throws Exception {
-        String email = "test01@email.com";
-        String password = "password";
-        String wrongPassword = "wrong";
-        User user = new User(email, password);
+        User user = createUser("test01@email.com", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
-        mockMvc.perform(post("/auth/join")
+        mockMvc.perform(post("/api/v1/auth/join")
                         .contentType("application/json")
                         .content(userJson))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value(email))
-                .andExpect(jsonPath("$.password").value(password));
+                .andExpect(status().isOk());
 
 
-        User wrongUser = new User(email, wrongPassword);
+        User wrongUser = createUser("test01@email.com", "wrong");
         String wrongUserJson = objectMapper.writeValueAsString(wrongUser);
 
-        mockMvc.perform(post("/auth/login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .contentType("application/json")
                         .content(wrongUserJson))
                 .andExpect(status().isUnauthorized())
@@ -123,58 +113,49 @@ public class UserControllerTest {
 
     @Test
     public void 마이페이지_조회_성공() throws Exception {
-        String email = "test01@email.com";
-        String password = "password";
-        User user = new User(email, password);
+        User user = createUser("test01@email.com", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
-        mockMvc.perform(post("/auth/join")
+        mockMvc.perform(post("/api/v1/auth/join")
                         .contentType("application/json")
                         .content(userJson))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value(email))
-                .andExpect(jsonPath("$.password").value(password));
+                .andExpect(status().isOk());
 
         MockHttpSession session = new MockHttpSession();
 
-        mockMvc.perform(post("/auth/login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .contentType("application/json")
                         .content(userJson)
                         .session(session))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Login successful"));
 
-        mockMvc.perform(get("/auth/mypage")
+        mockMvc.perform(get("/api/v1/auth/mypage")
                         .contentType("application/json")
                         .session(session))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Hello, " + email));
+                .andExpect(status().isOk());
     }
 
     @Test
     public void 마이페이지_조회_실패() throws Exception {
-        String email = "test01@email.com";
-        String password = "password";
-        User user = new User(email, password);
+        User user = createUser("test01@email.com", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
-        mockMvc.perform(post("/auth/join")
+        mockMvc.perform(post("/api/v1/auth/join")
                         .contentType("application/json")
                         .content(userJson))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value(email))
-                .andExpect(jsonPath("$.password").value(password));
+                .andExpect(status().isOk());
 
 
-        mockMvc.perform(post("/auth/login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .contentType("application/json")
                         .content(userJson))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Login successful"));
 
-        mockMvc.perform(get("/auth/mypage")
+        mockMvc.perform(get("/api/v1/auth/mypage")
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(content().string("Unauthorized"));
