@@ -34,7 +34,7 @@ public class UserController {
 
     @PostMapping("/api/v1/auth/login")
     public ResponseEntity<?> login(@RequestBody User user, HttpSession session) {
-        if(!userService.checkPassword(user)) {
+        if(!userService.checkCredential(user)) {
             return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
         }
         session.setAttribute("userEmail", user.getEmail());

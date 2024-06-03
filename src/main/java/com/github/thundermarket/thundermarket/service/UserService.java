@@ -25,7 +25,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public boolean checkPassword(User user) {
+    public boolean checkCredential(User user) {
         User validUser = userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
         return validUser != null;
     }
