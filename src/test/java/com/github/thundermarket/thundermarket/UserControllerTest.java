@@ -7,12 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -69,5 +69,95 @@ public class UserControllerTest {
         mockMvc.perform(get("/api/v1/users")
                         .contentType("application/json"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void 로그인_성공() throws Exception {
+        User user = createUser("test01@email.com", "password");
+
+        String userJson = objectMapper.writeValueAsString(user);
+
+        mockMvc.perform(post("/api/v1/auth/join")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Login successful"));
+    }
+
+    @Test
+    public void 로그인_실패() throws Exception {
+        User user = createUser("test01@email.com", "password");
+
+        String userJson = objectMapper.writeValueAsString(user);
+
+        mockMvc.perform(post("/api/v1/auth/join")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk());
+
+
+        User wrongUser = createUser("test01@email.com", "wrong");
+        String wrongUserJson = objectMapper.writeValueAsString(wrongUser);
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType("application/json")
+                        .content(wrongUserJson))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("Invalid credentials"));
+    }
+
+    @Test
+    public void 마이페이지_조회_성공() throws Exception {
+        User user = createUser("test01@email.com", "password");
+
+        String userJson = objectMapper.writeValueAsString(user);
+
+        mockMvc.perform(post("/api/v1/auth/join")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk());
+
+        MockHttpSession session = new MockHttpSession();
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType("application/json")
+                        .content(userJson)
+                        .session(session))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Login successful"));
+
+        mockMvc.perform(get("/api/v1/auth/mypage")
+                        .contentType("application/json")
+                        .session(session))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void 마이페이지_조회_실패() throws Exception {
+        User user = createUser("test01@email.com", "password");
+
+        String userJson = objectMapper.writeValueAsString(user);
+
+        mockMvc.perform(post("/api/v1/auth/join")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk());
+
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Login successful"));
+
+        mockMvc.perform(get("/api/v1/auth/mypage")
+                        .contentType("application/json"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("Unauthorized"));
     }
 }

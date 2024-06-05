@@ -3,12 +3,11 @@ package com.github.thundermarket.thundermarket.controller;
 import com.github.thundermarket.thundermarket.Util.Email;
 import com.github.thundermarket.thundermarket.domain.User;
 import com.github.thundermarket.thundermarket.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class UserController {
@@ -31,5 +30,23 @@ public class UserController {
             return new ResponseEntity<>(Email.NOT_VALID_EMAIL_MESSAGE, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(userService.join(user), HttpStatus.OK);
+    }
+
+    @PostMapping("/api/v1/auth/login")
+    public ResponseEntity<?> login(@RequestBody User user, HttpSession session) {
+        if(!userService.checkCredential(user)) {
+            return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
+        }
+        session.setAttribute("userEmail", user.getEmail());
+        return new ResponseEntity<>("Login successful", HttpStatus.OK);
+    }
+
+    @GetMapping("/api/v1/auth/mypage")
+    public ResponseEntity<?> mypage(HttpSession session) {
+        String userEmail = (String) session.getAttribute("userEmail");
+        if (userEmail == null) {
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>("Hello, " + userEmail, HttpStatus.OK);
     }
 }
