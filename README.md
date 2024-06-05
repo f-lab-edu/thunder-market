@@ -67,6 +67,26 @@
     </br>
     </br>
 
+## API Path 규칙
+- /api/{버전} 으로 시작한다. (ex. /api/v1)
+- RESTful API 설계를 사용한다.
+  - 예시
+  ```java
+    // 사용자 정보 조회 API
+    GET /api/v1/users/{userId}
+
+    // 사용자 정보 생성 API
+    POST /api/v1/users
+
+    // 사용자 정보 수정 API
+    PUT /api/v1/users/{userId}
+
+    // 사용자 정보 삭제 API
+    DELETE /api/v1/users/{userId}
+    ```
+    </br>
+    </br>
+
 ## 기술 환경
 - Java
 - JDK 21
