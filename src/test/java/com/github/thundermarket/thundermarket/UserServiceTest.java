@@ -4,7 +4,7 @@ import com.github.thundermarket.thundermarket.domain.User;
 import com.github.thundermarket.thundermarket.repository.InMemoryUserRepository;
 import com.github.thundermarket.thundermarket.service.UserService;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -14,8 +14,8 @@ class UserServiceTest {
     InMemoryUserRepository userRepository = new InMemoryUserRepository();
     UserService userService = new UserService(userRepository);
 
-    @AfterEach
-    void tearDown() {
+    @BeforeEach
+    void setUp() {
         userRepository.deleteAll();
     }
 
