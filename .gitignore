@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### infra
+infra/.env
+
+infra/mysql/data/*
+!infra/mysql/data/.gitkeep
