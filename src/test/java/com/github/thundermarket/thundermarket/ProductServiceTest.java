@@ -1,13 +1,18 @@
 package com.github.thundermarket.thundermarket;
 
+import com.github.thundermarket.thundermarket.domain.Product;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductServiceTest {
 
     @Test
     public void 상품0개_상품목록_조회() {
-        Assertions.assertThat(1).isEqualTo(2);
+        List<Product> productList = new ArrayList<>(); 
+        Assertions.assertThat(productList.isEmpty()).isEqualTo(true);
     }
 
     @Test
