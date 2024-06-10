@@ -3,6 +3,7 @@ package com.github.thundermarket.thundermarket;
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.service.ProductService;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -10,6 +11,11 @@ import java.util.List;
 public class ProductServiceTest {
 
     private final ProductService productService = new ProductService();
+
+    @BeforeEach
+    void setUp() {
+        productService.clearAll();
+    }
 
     @Test
     public void 상품0개_상품목록_조회() {
@@ -20,7 +26,14 @@ public class ProductServiceTest {
 
     @Test
     public void 상품1개_상품목록_조회() {
-        Assertions.assertThat(1).isEqualTo(2);
+        String name = "아이폰11";
+        int price = 200000;
+        String status = "판매중";
+        productService.addProduct(name, price, status);
+
+        List<Product> productList = productService.getProductList();
+
+        Assertions.assertThat(productList.getFirst().getName()).isEqualTo(name);
     }
 
     @Test
