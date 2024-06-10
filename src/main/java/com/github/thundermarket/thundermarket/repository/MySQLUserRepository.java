@@ -16,7 +16,6 @@ public class MySQLUserRepository implements UserRepository {
 
     private final DataSource dataSource;
 
-    @Autowired
     public MySQLUserRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
