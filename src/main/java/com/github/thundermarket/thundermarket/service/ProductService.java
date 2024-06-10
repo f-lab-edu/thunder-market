@@ -20,4 +20,12 @@ public class ProductService {
     public void clearAll() {
         productList.clear();
     }
+
+    public void editProduct(String name2, int price2, String status2) {
+        productList.set(0, new Product(name2, price2, status2));
+    }
+
+    public void deleteProduct(String name, int price, String status) {
+        productList.remove(new Product(name, price, status));
+    }
 }

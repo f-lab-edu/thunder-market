@@ -1,5 +1,7 @@
 package com.github.thundermarket.thundermarket.domain;
 
+import java.util.Objects;
+
 public class Product {
 
     private String name;
@@ -34,5 +36,18 @@ public class Product {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return price == product.price && Objects.equals(name, product.name) && Objects.equals(status, product.status);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, price, status);
     }
 }
