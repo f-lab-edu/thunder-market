@@ -1,31 +1,32 @@
 package com.github.thundermarket.thundermarket.service;
 
 import com.github.thundermarket.thundermarket.domain.Product;
+import com.github.thundermarket.thundermarket.repository.ProductRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductService {
 
-    private static final List<Product> productList = new ArrayList<>();
+    private final ProductRepository userRepository;
+
+    public ProductService(ProductRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
 
     public List<Product> getProductList() {
-        return productList;
+        return userRepository.findAll();
     }
 
-    public void addProduct(String name, int price, String status) {
-        productList.add(new Product(name, price, status));
+    public Product addProduct(Product product) {
+        return userRepository.save(product);
     }
 
-    public void clearAll() {
-        productList.clear();
+    public Product editProduct(Long id, Product product) {
+        return userRepository.update(id, product);
     }
 
-    public void editProduct(String name2, int price2, String status2) {
-        productList.set(0, new Product(name2, price2, status2));
-    }
-
-    public void deleteProduct(String name, int price, String status) {
-        productList.remove(new Product(name, price, status));
+    public void deleteProduct(Long id) {
+        userRepository.delete(id);
     }
 }

@@ -1,0 +1,38 @@
+package com.github.thundermarket.thundermarket;
+
+import com.github.thundermarket.thundermarket.domain.Product;
+import com.github.thundermarket.thundermarket.repository.ProductRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductRepositoryStub implements ProductRepository {
+
+    private final static List<Product> products = new ArrayList<>();
+
+    @Override
+    public List<Product> findAll() {
+        return products;
+    }
+
+    @Override
+    public Product save(Product product) {
+        products.add(product);
+        return product;
+    }
+
+    @Override
+    public Product update(Long id, Product updatedProduct) {
+        products.set(id.intValue(), updatedProduct);
+        return updatedProduct;
+    }
+
+    @Override
+    public void delete(Long id) {
+        products.remove(id.intValue());
+    }
+
+    public void deleteAll() {
+        products.clear();
+    }
+}

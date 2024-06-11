@@ -10,11 +10,12 @@ import java.util.List;
 
 public class ProductServiceTest {
 
-    private final ProductService productService = new ProductService();
+    private final ProductRepositoryStub productRepository = new ProductRepositoryStub();
+    private final ProductService productService = new ProductService(productRepository);
 
     @BeforeEach
     void setUp() {
-        productService.clearAll();
+        productRepository.deleteAll();
     }
 
     @Test
@@ -29,7 +30,8 @@ public class ProductServiceTest {
         String name = "아이폰11";
         int price = 200000;
         String status = "판매중";
-        productService.addProduct(name, price, status);
+        Product product = new Product(name, price, status);
+        productService.addProduct(product);
 
         List<Product> productList = productService.getProductList();
 
@@ -41,12 +43,14 @@ public class ProductServiceTest {
         String name = "아이폰11";
         int price = 200000;
         String status = "판매중";
-        productService.addProduct(name, price, status);
+        Product product = new Product(name, price, status);
+        productService.addProduct(product);
 
         String name2 = "아이폰12";
         int price2 = 300000;
         String status2 = "판매중";
-        productService.addProduct(name2, price2, status2);
+        Product product2 = new Product(name2, price2, status2);
+        productService.addProduct(product2);
 
         List<Product> productList = productService.getProductList();
 
@@ -59,14 +63,16 @@ public class ProductServiceTest {
         String name = "아이폰11";
         int price = 200000;
         String status = "판매중";
-        productService.addProduct(name, price, status);
+        Product product = new Product(name, price, status);
+        productService.addProduct(product);
         List<Product> productList = productService.getProductList();
         Assertions.assertThat(productList.getFirst().getName()).isEqualTo(name);
 
         String name2 = "아이폰12";
         int price2 = 300000;
         String status2 = "판매중";
-        productService.addProduct(name2, price2, status2);
+        Product product2 = new Product(name2, price2, status2);
+        productService.addProduct(product2);
         List<Product> productList2 = productService.getProductList();
         Assertions.assertThat(productList2.get(1).getName()).isEqualTo(name2);
     }
@@ -76,14 +82,16 @@ public class ProductServiceTest {
         String name = "아이폰11";
         int price = 200000;
         String status = "판매중";
-        productService.addProduct(name, price, status);
+        Product product = new Product(name, price, status);
+        productService.addProduct(product);
         List<Product> productList = productService.getProductList();
         Assertions.assertThat(productList.getFirst().getName()).isEqualTo(name);
 
         String name2 = "아이폰12";
         int price2 = 300000;
         String status2 = "판매중";
-        productService.editProduct(name2, price2, status2);
+        Product product2 = new Product(name2, price2, status2);
+        productService.editProduct(0L, product2);
         List<Product> productList2 = productService.getProductList();
         Assertions.assertThat(productList2.getFirst().getName()).isEqualTo(name2);
     }
@@ -93,11 +101,12 @@ public class ProductServiceTest {
         String name = "아이폰11";
         int price = 200000;
         String status = "판매중";
-        productService.addProduct(name, price, status);
+        Product product = new Product(name, price, status);
+        productService.addProduct(product);
         List<Product> productList = productService.getProductList();
         Assertions.assertThat(productList.getFirst().getName()).isEqualTo(name);
 
-        productService.deleteProduct(name, price, status);
+        productService.deleteProduct(0L);
         Assertions.assertThat(productList.isEmpty()).isEqualTo(true);
     }
 
@@ -106,19 +115,21 @@ public class ProductServiceTest {
         String name = "아이폰11";
         int price = 200000;
         String status = "판매중";
-        productService.addProduct(name, price, status);
+        Product product = new Product(name, price, status);
+        productService.addProduct(product);
 
         String name2 = "아이폰12";
         int price2 = 300000;
         String status2 = "판매중";
-        productService.addProduct(name2, price2, status2);
+        Product product2 = new Product(name2, price2, status2);
+        productService.addProduct(product2);
 
         List<Product> productList = productService.getProductList();
 
         Assertions.assertThat(productList.getFirst().getName()).isEqualTo(name);
         Assertions.assertThat(productList.get(1).getName()).isEqualTo(name2);
 
-        productService.deleteProduct(name, price, status);
+        productService.deleteProduct(0L);
         Assertions.assertThat(productList.getFirst().getName()).isEqualTo(name2);
     }
 }
