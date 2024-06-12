@@ -13,7 +13,7 @@ public class ProductDetail {
     private String purchaseDate;
     private String warrantyDuration;
     private String tradeLocation;
-    private String deliveryFee;
+    private int deliveryFee;
 
     public ProductDetail() {
     }
@@ -90,11 +90,11 @@ public class ProductDetail {
         this.tradeLocation = tradeLocation;
     }
 
-    public String getDeliveryFee() {
+    public int getDeliveryFee() {
         return deliveryFee;
     }
 
-    public void setDeliveryFee(String deliveryFee) {
+    public void setDeliveryFee(int deliveryFee) {
         this.deliveryFee = deliveryFee;
     }
 
