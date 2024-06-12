@@ -4,14 +4,26 @@ import java.util.Objects;
 
 public class Product {
 
+    private Long id;
     private String name;
     private int price;
     private String status;
+
+    public Product() {
+    }
 
     public Product(String name, int price, String status) {
         this.name = name;
         this.price = price;
         this.status = status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -2,31 +2,33 @@ package com.github.thundermarket.thundermarket.service;
 
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.repository.ProductRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ProductService {
 
-    private final ProductRepository userRepository;
+    private final ProductRepository productRepository;
 
     public ProductService(ProductRepository userRepository) {
-        this.userRepository = userRepository;
+        this.productRepository = userRepository;
     }
 
 
     public List<Product> getProductList() {
-        return userRepository.findAll();
+        return productRepository.findAll();
     }
 
     public Product addProduct(Product product) {
-        return userRepository.save(product);
+        return productRepository.save(product);
     }
 
     public Product editProduct(Long id, Product product) {
-        return userRepository.update(id, product);
+        return productRepository.update(id, product);
     }
 
     public void deleteProduct(Long id) {
-        userRepository.delete(id);
+        productRepository.delete(id);
     }
 }
