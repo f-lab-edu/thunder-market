@@ -3,7 +3,6 @@ package com.github.thundermarket.thundermarket.service;
 import com.github.thundermarket.thundermarket.domain.User;
 import com.github.thundermarket.thundermarket.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +13,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(@Qualifier("mySQLUserRepository") UserRepository userRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
