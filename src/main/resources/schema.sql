@@ -10,3 +10,17 @@ CREATE TABLE products (
    price int NOT NULL,
    status VARCHAR(255) NOT NULL
 );
+
+create table productsDetails
+(
+    id int not null primary key,
+    color            varchar(255) null,
+    productCondition      varchar(255) null,
+    batteryCondition varchar(255) null,
+    cameraCondition  varchar(255) null,
+    accessories      varchar(255) null,
+    purchaseDate     varchar(255) null,
+    warrantyDuration varchar(255) null,
+    tradeLocation    varchar(255) null,
+    deliveryFee      int          null
+)
