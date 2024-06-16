@@ -6,7 +6,7 @@ import com.github.thundermarket.thundermarket.repository.ProductRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductRepositoryStub implements ProductRepository {
+public class ProductFakeRepository implements ProductRepository {
 
     private final static List<Product> products = new ArrayList<>();
 

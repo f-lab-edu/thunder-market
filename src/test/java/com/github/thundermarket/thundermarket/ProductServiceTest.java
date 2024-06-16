@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ProductServiceTest {
 
-    private final ProductRepositoryStub productRepository = new ProductRepositoryStub();
+    private final ProductFakeRepository productRepository = new ProductFakeRepository();
     private final ProductService productService = new ProductService(productRepository);
 
     @BeforeEach
