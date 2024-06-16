@@ -61,7 +61,7 @@ public class MySQLProductRepository implements ProductRepository {
     }
 
     @Override
-    public Product update(Long id, Product product) {
+    public Product update(Product product) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

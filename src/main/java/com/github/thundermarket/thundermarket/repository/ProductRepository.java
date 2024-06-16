@@ -8,6 +8,6 @@ public interface ProductRepository {
 
     List<Product> findAll();
     Product save(Product product);
-    Product update(Long id, Product product);
+    Product update(Product product);
     void delete(Long id);
 }

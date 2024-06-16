@@ -91,7 +91,7 @@ public class ProductServiceTest {
         int price2 = 300000;
         String status2 = "판매중";
         Product product2 = new Product(name2, price2, status2);
-        productService.editProduct(0L, product2);
+        productService.editProduct(product2);
         List<Product> productList2 = productService.getProductList();
         Assertions.assertThat(productList2.getFirst().getName()).isEqualTo(name2);
     }

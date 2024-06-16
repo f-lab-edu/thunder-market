@@ -22,8 +22,8 @@ public class ProductRepositoryStub implements ProductRepository {
     }
 
     @Override
-    public Product update(Long id, Product updatedProduct) {
-        products.set(id.intValue(), updatedProduct);
+    public Product update(Product updatedProduct) {
+        products.set(0, updatedProduct);
         return updatedProduct;
     }
 
