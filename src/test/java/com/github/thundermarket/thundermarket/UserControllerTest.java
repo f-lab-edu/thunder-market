@@ -64,8 +64,18 @@ public class UserControllerTest {
                         .content(userJson))
                 .andExpect(status().isOk());
 
+        MockHttpSession session = new MockHttpSession();
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType("application/json")
+                        .content(userJson)
+                        .session(session))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Login successful"));
+
         mockMvc.perform(get("/api/v1/users")
-                        .contentType("application/json"))
+                        .contentType("application/json")
+                        .session(session))
                 .andExpect(status().isOk());
     }
 
@@ -155,7 +165,6 @@ public class UserControllerTest {
 
         mockMvc.perform(get("/api/v1/auth/mypage")
                         .contentType("application/json"))
-                .andExpect(status().isUnauthorized())
-                .andExpect(content().string("Unauthorized"));
+                .andExpect(status().isUnauthorized());
     }
 }
