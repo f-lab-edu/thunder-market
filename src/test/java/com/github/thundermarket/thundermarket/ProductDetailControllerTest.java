@@ -24,16 +24,11 @@ public class ProductDetailControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private MockHttpSession session;
-
-    @BeforeEach
-    void setUp() {
-        session = new MockHttpSession();
-        session.setAttribute("userEmail", "test01@test.com");
-    }
-
     @Test
     public void 상품상세정보_존재하지않으면_400응답() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("userEmail", "test01@test.com");
+
         mockMvc.perform(get("/api/v1/products/0")
                         .contentType("application/json")
                         .session(session))
@@ -43,6 +38,9 @@ public class ProductDetailControllerTest {
     @Test
     @Sql("/productDetailControllerTest.sql")
     public void 상품상세정보_존재하면_200응답() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("userEmail", "test01@test.com");
+
         mockMvc.perform(get("/api/v1/products/1")
                         .contentType("application/json")
                         .session(session))
