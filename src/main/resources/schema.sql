@@ -11,7 +11,7 @@ CREATE TABLE products (
    status VARCHAR(255) NOT NULL
 );
 
-create table productsDetails
+create table productDetails
 (
     id int not null primary key,
     color            varchar(255) null,
