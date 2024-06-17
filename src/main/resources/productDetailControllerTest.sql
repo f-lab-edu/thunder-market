@@ -1,4 +1,4 @@
-DELETE FROM productsDetails;
+DELETE FROM productDetails;
 
-INSERT INTO productsDetails (id, color)
+INSERT INTO productDetails (id, color)
 VALUES (1, 'white');

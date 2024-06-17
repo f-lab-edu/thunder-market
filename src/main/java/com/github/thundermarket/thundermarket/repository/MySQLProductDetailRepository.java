@@ -32,7 +32,7 @@ public class MySQLProductDetailRepository implements ProductDetailRepository {
 
     @Override
     public ProductDetail findById(Long id) {
-        String sql = "SELECT * FROM productsDetails WHERE id = ?";
+        String sql = "SELECT * FROM productDetails WHERE id = ?";
         Connection conn = null;
 
         try {
