@@ -18,83 +18,15 @@ public class ProductDetail {
     public ProductDetail() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
+    public ProductDetail(String color, String productCondition, String batteryCondition, String cameraCondition, String accessories, String purchaseDate, String warrantyDuration, String tradeLocation, int deliveryFee) {
         this.color = color;
-    }
-
-    public String getProductCondition() {
-        return productCondition;
-    }
-
-    public void setProductCondition(String productCondition) {
         this.productCondition = productCondition;
-    }
-
-    public String getBatteryCondition() {
-        return batteryCondition;
-    }
-
-    public void setBatteryCondition(String batteryCondition) {
         this.batteryCondition = batteryCondition;
-    }
-
-    public String getCameraCondition() {
-        return cameraCondition;
-    }
-
-    public void setCameraCondition(String cameraCondition) {
         this.cameraCondition = cameraCondition;
-    }
-
-    public String getAccessories() {
-        return accessories;
-    }
-
-    public void setAccessories(String accessories) {
         this.accessories = accessories;
-    }
-
-    public String getPurchaseDate() {
-        return purchaseDate;
-    }
-
-    public void setPurchaseDate(String purchaseDate) {
         this.purchaseDate = purchaseDate;
-    }
-
-    public String getWarrantyDuration() {
-        return warrantyDuration;
-    }
-
-    public void setWarrantyDuration(String warrantyDuration) {
         this.warrantyDuration = warrantyDuration;
-    }
-
-    public String getTradeLocation() {
-        return tradeLocation;
-    }
-
-    public void setTradeLocation(String tradeLocation) {
         this.tradeLocation = tradeLocation;
-    }
-
-    public int getDeliveryFee() {
-        return deliveryFee;
-    }
-
-    public void setDeliveryFee(int deliveryFee) {
         this.deliveryFee = deliveryFee;
     }
 
@@ -109,5 +41,19 @@ public class ProductDetail {
     @Override
     public int hashCode() {
         return Objects.hash(id, color, productCondition, batteryCondition, cameraCondition, accessories, purchaseDate, warrantyDuration, tradeLocation, deliveryFee);
+    }
+
+    public ProductDetailResponse toResponse() {
+        return new ProductDetailResponse(
+                this.color,
+                this.productCondition,
+                this.batteryCondition,
+                this.cameraCondition,
+                this.accessories,
+                this.purchaseDate,
+                this.warrantyDuration,
+                this.tradeLocation,
+                this.deliveryFee
+        );
     }
 }

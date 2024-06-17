@@ -2,6 +2,7 @@ package com.github.thundermarket.thundermarket.controller;
 
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
+import com.github.thundermarket.thundermarket.domain.ProductDetailResponse;
 import com.github.thundermarket.thundermarket.service.ProductDetailService;
 import com.github.thundermarket.thundermarket.service.ProductService;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class ProductController {
 
     @GetMapping("/api/v1/products/{id}")
     public ResponseEntity<?> getProductDetail(@PathVariable("id") Long id) {
-        ProductDetail productDetail = productDetailService.getProductDetail(id);
-        return new ResponseEntity<>(productDetail, HttpStatus.OK);
+        ProductDetailResponse productDetailResponse = productDetailService.getProductDetail(id);
+        return new ResponseEntity<>(productDetailResponse, HttpStatus.OK);
     }
 }

@@ -42,18 +42,17 @@ public class MySQLProductDetailRepository implements ProductDetailRepository {
 
                 try (ResultSet resultSet = ps.executeQuery()) {
                     if (resultSet.next()) {
-                        ProductDetail productDetail = new ProductDetail();
-                        productDetail.setColor(resultSet.getString("color"));
-                        productDetail.setProductCondition(resultSet.getString("productCondition"));
-                        productDetail.setBatteryCondition(resultSet.getString("batteryCondition"));
-                        productDetail.setCameraCondition(resultSet.getString("cameraCondition"));
-                        productDetail.setAccessories(resultSet.getString("accessories"));
-                        productDetail.setPurchaseDate(resultSet.getString("purchaseDate"));
-                        productDetail.setWarrantyDuration(resultSet.getString("warrantyDuration"));
-                        productDetail.setTradeLocation(resultSet.getString("tradeLocation"));
-                        productDetail.setDeliveryFee(resultSet.getInt("deliveryFee"));
+                        String color = resultSet.getString("color");
+                        String productCondition = resultSet.getString("productCondition");
+                        String batteryCondition = resultSet.getString("batteryCondition");
+                        String cameraCondition = resultSet.getString("cameraCondition");
+                        String accessories = resultSet.getString("accessories");
+                        String purchaseDate = resultSet.getString("purchaseDate");
+                        String warrantyDuration = resultSet.getString("warrantyDuration");
+                        String tradeLocation = resultSet.getString("tradeLocation");
+                        int deliveryFee = resultSet.getInt("deliveryFee");
 
-                        return productDetail;
+                        return new ProductDetail(color, productCondition, batteryCondition, cameraCondition, accessories, purchaseDate, warrantyDuration, tradeLocation, deliveryFee);
                     }
                 }
             }
