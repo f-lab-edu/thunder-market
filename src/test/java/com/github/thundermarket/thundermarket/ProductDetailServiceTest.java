@@ -1,6 +1,7 @@
 package com.github.thundermarket.thundermarket;
 
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
+import com.github.thundermarket.thundermarket.exception.ResourceNotFoundException;
 import com.github.thundermarket.thundermarket.repository.ProductDetailRepository;
 import com.github.thundermarket.thundermarket.service.ProductDetailService;
 import org.assertj.core.api.Assertions;
@@ -39,10 +40,7 @@ public class ProductDetailServiceTest {
         Long productId = 1L;
         when(productDetailRepository.findById(productId)).thenReturn(null);
 
-        ProductDetail productDetail = productDetailService.getProductDetail(productId);
-
-        verify(productDetailRepository).findById(productId);
-        Assertions.assertThat(productDetail).isEqualTo(null);
+        Assertions.assertThatThrownBy(() -> productDetailService.getProductDetail(productId)).isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test

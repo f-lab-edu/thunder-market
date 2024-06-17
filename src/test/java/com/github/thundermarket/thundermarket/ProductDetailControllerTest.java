@@ -1,7 +1,5 @@
 package com.github.thundermarket.thundermarket;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,18 +19,15 @@ public class ProductDetailControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @Test
-    public void 상품상세정보_존재하지않으면_400응답() throws Exception {
+    public void 상품상세정보_존재하지않으면_404응답() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userEmail", "test01@test.com");
 
         mockMvc.perform(get("/api/v1/products/0")
                         .contentType("application/json")
                         .session(session))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
