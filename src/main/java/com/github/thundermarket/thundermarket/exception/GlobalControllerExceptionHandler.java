@@ -25,4 +25,10 @@ public class GlobalControllerExceptionHandler {
     {
         return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.FORBIDDEN);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleException(ResourceNotFoundException e)
+    {
+        return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.NOT_FOUND);
+    }
 }

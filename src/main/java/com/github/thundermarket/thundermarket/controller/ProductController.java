@@ -32,9 +32,6 @@ public class ProductController {
     @GetMapping("/api/v1/products/{id}")
     public ResponseEntity<?> getProductDetail(@PathVariable("id") Long id) {
         ProductDetail productDetail = productDetailService.getProductDetail(id);
-        if (productDetail == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
         return new ResponseEntity<>(productDetail, HttpStatus.OK);
     }
 }
