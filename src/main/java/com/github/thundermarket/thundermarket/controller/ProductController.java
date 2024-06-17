@@ -4,7 +4,6 @@ import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.service.ProductDetailService;
 import com.github.thundermarket.thundermarket.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,6 @@ public class ProductController {
     private final ProductService productService;
     private final ProductDetailService productDetailService;
 
-    @Autowired
     public ProductController(ProductService productService, ProductDetailService productDetailService) {
         this.productService = productService;
         this.productDetailService = productDetailService;

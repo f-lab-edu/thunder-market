@@ -5,7 +5,6 @@ import com.github.thundermarket.thundermarket.aspect.NoSessionCheck;
 import com.github.thundermarket.thundermarket.domain.User;
 import com.github.thundermarket.thundermarket.service.UserService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
