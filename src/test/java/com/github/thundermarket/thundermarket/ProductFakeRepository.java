@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ProductFakeRepository implements ProductRepository {
 
-    private final static List<Product> products = new ArrayList<>();
+    private final List<Product> products = new ArrayList<>();
 
     @Override
     public List<Product> findAll() {
@@ -30,9 +30,5 @@ public class ProductFakeRepository implements ProductRepository {
     @Override
     public void delete(Long id) {
         products.remove(id.intValue());
-    }
-
-    public void deleteAll() {
-        products.clear();
     }
 }

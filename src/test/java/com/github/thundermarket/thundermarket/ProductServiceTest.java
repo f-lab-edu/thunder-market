@@ -3,7 +3,6 @@ package com.github.thundermarket.thundermarket;
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.service.ProductService;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -11,15 +10,10 @@ import java.util.List;
 public class ProductServiceTest {
 
     private final ProductFakeRepository productRepository = new ProductFakeRepository();
-    private final ProductService productService = new ProductService(productRepository);
-
-    @BeforeEach
-    void setUp() {
-        productRepository.deleteAll();
-    }
 
     @Test
     public void 상품0개_상품목록_조회() {
+        ProductService productService = new ProductService(productRepository);
         List<Product> productList = productService.getProductList();
 
         Assertions.assertThat(productList.isEmpty()).isEqualTo(true);
@@ -27,6 +21,7 @@ public class ProductServiceTest {
 
     @Test
     public void 상품1개_상품목록_조회() {
+        ProductService productService = new ProductService(productRepository);
         Long id = 0L;
         String name = "아이폰11";
         int price = 200000;
@@ -41,6 +36,7 @@ public class ProductServiceTest {
 
     @Test
     public void 상품2개_상품목록_조회() {
+        ProductService productService = new ProductService(productRepository);
         Long id = 0L;
         String name = "아이폰11";
         int price = 200000;
@@ -63,6 +59,7 @@ public class ProductServiceTest {
 
     @Test
     public void 상품1개_상품목록_조회_후_상품1개추가_다시조회() {
+        ProductService productService = new ProductService(productRepository);
         Long id = 0L;
         String name = "아이폰11";
         int price = 200000;
@@ -84,6 +81,7 @@ public class ProductServiceTest {
 
     @Test
     public void 상품1개_상품목록_조회_후_상품정보수정_다시조회() {
+        ProductService productService = new ProductService(productRepository);
         Long id = 0L;
         String name = "아이폰11";
         int price = 200000;
@@ -105,6 +103,7 @@ public class ProductServiceTest {
 
     @Test
     public void 상품1개_상품목록_조회_후_상품삭제_다시조회() {
+        ProductService productService = new ProductService(productRepository);
         Long id = 0L;
         String name = "아이폰11";
         int price = 200000;
@@ -120,6 +119,7 @@ public class ProductServiceTest {
 
     @Test
     public void 상품2개_상품목록_조회_후_상품삭제_다시조회() {
+        ProductService productService = new ProductService(productRepository);
         Long id = 0L;
         String name = "아이폰11";
         int price = 200000;
