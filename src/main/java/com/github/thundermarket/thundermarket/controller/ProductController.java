@@ -25,11 +25,7 @@ public class ProductController {
     }
 
     @GetMapping("/api/v1/products")
-    public ResponseEntity<List<Product>> getProductList(HttpSession session) {
-        String userEmail = (String) session.getAttribute("userEmail");
-        if (userEmail == null) {
-            throw new UnauthenticatedException(ErrorMessage.FORBIDDEN.toString());
-        }
+    public ResponseEntity<List<Product>> getProductList() {
         return new ResponseEntity<>(productService.getProductList(), HttpStatus.OK);
     }
 }
