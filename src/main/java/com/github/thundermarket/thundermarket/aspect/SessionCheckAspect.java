@@ -17,7 +17,7 @@ public class SessionCheckAspect {
         this.session = session;
     }
 
-    @Before("execution(* com.github.thundermarket.thundermarket.controller.*.*(..)) && !@annotation(com.github.thundermarket.thundermarket.aspect.NoSessionCheck)")
+    @Before("execution(* com.github.thundermarket.thundermarket.controller.*.*(..)) && !@annotation(com.github.thundermarket.thundermarket.aspect.AvailableWithoutSession)")
     public void checkSession() {
         String userEmail = (String) session.getAttribute("userEmail");
         if (userEmail == null) {

@@ -1,7 +1,7 @@
 package com.github.thundermarket.thundermarket.controller;
 
 import com.github.thundermarket.thundermarket.Util.Email;
-import com.github.thundermarket.thundermarket.aspect.NoSessionCheck;
+import com.github.thundermarket.thundermarket.aspect.AvailableWithoutSession;
 import com.github.thundermarket.thundermarket.domain.User;
 import com.github.thundermarket.thundermarket.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -25,7 +25,7 @@ public class UserController {
         return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }
 
-    @NoSessionCheck
+    @AvailableWithoutSession
     @PostMapping("/api/v1/auth/join")
     public ResponseEntity<?> join(@RequestBody User user) {
         if(!user.isEmailValid()) {
@@ -34,7 +34,7 @@ public class UserController {
         return new ResponseEntity<>(userService.join(user), HttpStatus.OK);
     }
 
-    @NoSessionCheck
+    @AvailableWithoutSession
     @PostMapping("/api/v1/auth/login")
     public ResponseEntity<?> login(@RequestBody User user, HttpSession session) {
         if(!userService.checkCredential(user)) {
