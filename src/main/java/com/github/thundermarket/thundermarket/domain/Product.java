@@ -9,6 +9,9 @@ public class Product {
     private int price;
     private String status;
 
+    /**
+     * RestController에서 JSON 역직렬화 과정 중 ObjectMapper가 리플랙션을 사용하여 객체를 생성하기 위해 기본 생성자가 필요함
+     */
     public Product() {
     }
 
