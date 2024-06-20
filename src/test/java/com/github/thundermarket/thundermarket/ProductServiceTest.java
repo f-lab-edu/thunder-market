@@ -27,7 +27,7 @@ public class ProductServiceTest {
         int price = 200000;
         String status = "판매중";
         Product product = new Product(id, name, price, status);
-        productService.addProduct(product);
+        productService.add(product);
 
         List<Product> productList = productService.getProductList();
 
@@ -42,14 +42,14 @@ public class ProductServiceTest {
         int price = 200000;
         String status = "판매중";
         Product product = new Product(id, name, price, status);
-        productService.addProduct(product);
+        productService.add(product);
 
         Long id2 = 1L;
         String name2 = "아이폰12";
         int price2 = 300000;
         String status2 = "판매중";
         Product product2 = new Product(id2, name2, price2, status2);
-        productService.addProduct(product2);
+        productService.add(product2);
 
         List<Product> productList = productService.getProductList();
 
@@ -65,7 +65,7 @@ public class ProductServiceTest {
         int price = 200000;
         String status = "판매중";
         Product product = new Product(id, name, price, status);
-        productService.addProduct(product);
+        productService.add(product);
         List<Product> productList = productService.getProductList();
         Assertions.assertThat(productList.getFirst()).isEqualTo(product);
 
@@ -74,7 +74,7 @@ public class ProductServiceTest {
         int price2 = 300000;
         String status2 = "판매중";
         Product product2 = new Product(id2, name2, price2, status2);
-        productService.addProduct(product2);
+        productService.add(product2);
         List<Product> productList2 = productService.getProductList();
         Assertions.assertThat(productList2.get(1)).isEqualTo(product2);
     }
@@ -87,16 +87,15 @@ public class ProductServiceTest {
         int price = 200000;
         String status = "판매중";
         Product product = new Product(id, name, price, status);
-        productService.addProduct(product);
+        productService.add(product);
         List<Product> productList = productService.getProductList();
         Assertions.assertThat(productList.getFirst()).isEqualTo(product);
 
-        Long id2 = 1L;
         String name2 = "아이폰12";
         int price2 = 300000;
         String status2 = "판매중";
-        Product product2 = new Product(id2, name2, price2, status2);
-        productService.editProduct(product2);
+        Product product2 = new Product(id, name2, price2, status2);
+        productService.update(product2);
         List<Product> productList2 = productService.getProductList();
         Assertions.assertThat(productList2.getFirst()).isEqualTo(product2);
     }
@@ -109,11 +108,11 @@ public class ProductServiceTest {
         int price = 200000;
         String status = "판매중";
         Product product = new Product(id, name, price, status);
-        productService.addProduct(product);
+        productService.add(product);
         List<Product> productList = productService.getProductList();
         Assertions.assertThat(productList.getFirst()).isEqualTo(product);
 
-        productService.deleteProduct(0L);
+        productService.delete(0L);
         Assertions.assertThat(productList.isEmpty()).isEqualTo(true);
     }
 
@@ -125,21 +124,21 @@ public class ProductServiceTest {
         int price = 200000;
         String status = "판매중";
         Product product = new Product(id, name, price, status);
-        productService.addProduct(product);
+        productService.add(product);
 
         Long id2 = 1L;
         String name2 = "아이폰12";
         int price2 = 300000;
         String status2 = "판매중";
         Product product2 = new Product(id2, name2, price2, status2);
-        productService.addProduct(product2);
+        productService.add(product2);
 
         List<Product> productList = productService.getProductList();
 
         Assertions.assertThat(productList.getFirst()).isEqualTo(product);
         Assertions.assertThat(productList.get(1)).isEqualTo(product2);
 
-        productService.deleteProduct(0L);
+        productService.delete(0L);
         Assertions.assertThat(productList.getFirst()).isEqualTo(product2);
     }
 }

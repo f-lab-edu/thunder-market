@@ -20,15 +20,15 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product addProduct(Product product) {
+    public Product add(Product product) {
         return productRepository.save(product);
     }
 
-    public Product editProduct(Product product) {
-        return productRepository.update(product);
+    public Product update(Product product) {
+        return productRepository.save(product);
     }
 
-    public void deleteProduct(Long id) {
+    public void delete(Long id) {
         productRepository.delete(id);
     }
 }
