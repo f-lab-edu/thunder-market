@@ -17,14 +17,14 @@ public class ProductFakeRepository implements ProductRepository {
 
     @Override
     public Product save(Product product) {
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getId().equals(product.getId())) {
+                products.set(i, product);
+                return product;
+            }
+        }
         products.add(product);
         return product;
-    }
-
-    @Override
-    public Product update(Product updatedProduct) {
-        products.set(0, updatedProduct);
-        return updatedProduct;
     }
 
     @Override
