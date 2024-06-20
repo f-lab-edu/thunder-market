@@ -87,6 +87,18 @@
     </br>
     </br>
 
+## API Request, Response 흐름
+- Controller는 Request DTO를 통해 요청값을 받아서 유효성을 검증한다.
+- Request DTO를 Domain 객체로 변환하여 주요 서비스 로직을 수행한다.
+- (Repository 접근 부분은 추후 수정 예정)
+- 서비스 로직 수행 후 사용자에게 반환할 Response DTO 객체를 생성해서 Controller에 반환한다.
+- Controller는 사용자(View)에게 결과를 반환한다.
+- 다음은 Product(상품) 도메인 request, response 흐름 예시이다.
+- ![image](https://github.com/f-lab-edu/thunder-market/assets/25719259/93c30eb6-8ff1-4e41-8818-5700e2923ad7)
+
+    </br>
+    </br>
+
 ## 기술 환경
 - Java
 - JDK 21
