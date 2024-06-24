@@ -5,14 +5,6 @@ public class ProductRequest {
     private Product product;
     private ProductDetail productDetail;
 
-    private ProductRequest(Product product, ProductDetail productDetail) {
-        this.product = product;
-        this.productDetail = productDetail;
-    }
-
-    public ProductRequest() {
-    }
-
     public Product getProduct() {
         return product;
     }
