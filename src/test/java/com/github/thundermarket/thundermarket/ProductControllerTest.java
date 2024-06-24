@@ -26,9 +26,6 @@ public class ProductControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     private MockHttpSession session;
 
     @BeforeEach
