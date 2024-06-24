@@ -1,5 +1,6 @@
 package com.github.thundermarket.thundermarket.repository;
 
+import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.domain.User;
 import org.springframework.jdbc.datasource.DataSourceUtils;
@@ -42,17 +43,17 @@ public class MySQLProductDetailRepository implements ProductDetailRepository {
 
                 try (ResultSet resultSet = ps.executeQuery()) {
                     if (resultSet.next()) {
-                        String color = resultSet.getString("color");
-                        String productCondition = resultSet.getString("productCondition");
-                        String batteryCondition = resultSet.getString("batteryCondition");
-                        String cameraCondition = resultSet.getString("cameraCondition");
-                        String accessories = resultSet.getString("accessories");
-                        String purchaseDate = resultSet.getString("purchaseDate");
-                        String warrantyDuration = resultSet.getString("warrantyDuration");
-                        String tradeLocation = resultSet.getString("tradeLocation");
-                        int deliveryFee = resultSet.getInt("deliveryFee");
-
-                        return new ProductDetail(color, productCondition, batteryCondition, cameraCondition, accessories, purchaseDate, warrantyDuration, tradeLocation, deliveryFee);
+                        return new ProductDetail.Builder()
+                                .withColor(resultSet.getString("color"))
+                                .withProductCondition(resultSet.getString("productCondition"))
+                                .withBatteryCondition(resultSet.getString("batteryCondition"))
+                                .withCameraCondition(resultSet.getString("cameraCondition"))
+                                .withAccessories(resultSet.getString("accessories"))
+                                .withPurchaseDate(resultSet.getString("purchaseDate"))
+                                .withWarrantyDuration(resultSet.getString("warrantyDuration"))
+                                .withTradeLocation(resultSet.getString("tradeLocation"))
+                                .withDeliveryFee(resultSet.getInt("deliveryFee"))
+                                .build();
                     }
                 }
             }
