@@ -24,4 +24,12 @@ public class ProductResponse {
     public static ProductResponse of(Product product, ProductDetail productDetail) {
         return new ProductResponse(product, productDetail);
     }
+
+    @Override
+    public String toString() {
+        return "ProductResponse{" +
+                "product=" + product +
+                ", productDetail=" + productDetail +
+                '}';
+    }
 }
