@@ -1,5 +1,6 @@
 package com.github.thundermarket.thundermarket;
 
+import com.github.thundermarket.thundermarket.TestDouble.ProductDetailRepositoryStub;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.domain.ProductDetailResponse;
 import com.github.thundermarket.thundermarket.exception.ResourceNotFoundException;

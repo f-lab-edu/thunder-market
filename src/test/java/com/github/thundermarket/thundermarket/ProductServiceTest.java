@@ -1,5 +1,7 @@
 package com.github.thundermarket.thundermarket;
 
+import com.github.thundermarket.thundermarket.TestDouble.ProductDetailFakeRepository;
+import com.github.thundermarket.thundermarket.TestDouble.ProductFakeRepository;
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.service.ProductService;

@@ -1,4 +1,4 @@
-package com.github.thundermarket.thundermarket;
+package com.github.thundermarket.thundermarket.TestDouble;
 
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.repository.ProductDetailRepository;
