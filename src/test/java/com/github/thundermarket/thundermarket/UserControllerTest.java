@@ -26,7 +26,10 @@ public class UserControllerTest {
     private ObjectMapper objectMapper;
 
     private User createUser(String email, String password) {
-        return new User(email, password);
+        return new User.Builder()
+                .withEmail(email)
+                .withPassword(password)
+                .build();
     }
 
     @Test
