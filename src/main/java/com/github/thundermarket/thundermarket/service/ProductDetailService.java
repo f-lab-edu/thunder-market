@@ -20,6 +20,6 @@ public class ProductDetailService {
         if (productDetail == null) {
             throw new ResourceNotFoundException("Product detail not found with id: " + productId);
         }
-        return productDetail.toResponse();
+        return ProductDetailResponse.of(productDetail);
     }
 }

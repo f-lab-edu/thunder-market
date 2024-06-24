@@ -22,7 +22,7 @@ public class ProductDetailServiceTest {
     public void 상품1개_상세정보_조회() {
         ProductDetailService productDetailService = new ProductDetailService(new ProductDetailRepositoryStub());
         ProductDetail productDetail = new ProductDetail("white", "", "", "", "", "", "", "", 0);
-        ProductDetailResponse expectedProductDetail = productDetail.toResponse();
+        ProductDetailResponse expectedProductDetail = ProductDetailResponse.of(productDetail);
         Long productId = 1L;
 
         ProductDetailResponse productDetailResponse = productDetailService.productDetail(productId);
