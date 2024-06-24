@@ -29,7 +29,37 @@ public class MySQLProductRepository implements ProductRepository {
 
     @Override
     public Product save(Product product) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        String sql = "INSERT INTO products (name, price, status) VALUES (?, ?, ?)";
+        Connection conn = null;
+        long generatedKey = 0L;
+
+        try {
+            conn = getConnection();
+            try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                ps.setString(1, product.getName());
+                ps.setInt(2, product.getPrice());
+                ps.setString(3, product.getStatus());
+                int affectedRows = ps.executeUpdate();
+
+                if (affectedRows == 0) {
+                    throw new RuntimeException("Create products failed, no affectedRows");
+                }
+
+                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                    if (!generatedKeys.next()) {
+                        throw new RuntimeException("Create products failed, no generatedKeys");
+                    }
+                    generatedKey = generatedKeys.getLong(1);
+                }
+                return new Product.Builder(product)
+                        .withId(generatedKey)
+                        .build();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Create products failed", e);
+        } finally {
+            releaseConnection(conn);
+        }
     }
 
     @Override

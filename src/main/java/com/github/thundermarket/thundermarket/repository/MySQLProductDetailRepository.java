@@ -28,7 +28,43 @@ public class MySQLProductDetailRepository implements ProductDetailRepository {
 
     @Override
     public ProductDetail save(ProductDetail productDetail) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        String sql = "INSERT INTO productDetails (color, productCondition, batteryCondition, cameraCondition, accessories, purchaseDate, warrantyDuration, tradeLocation, deliveryFee) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        Connection conn = null;
+        long generatedKey = 0L;
+
+        try {
+            conn = getConnection();
+            try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                ps.setString(1, productDetail.getColor());
+                ps.setString(2, productDetail.getProductCondition());
+                ps.setString(3, productDetail.getBatteryCondition());
+                ps.setString(4, productDetail.getCameraCondition());
+                ps.setString(5, productDetail.getAccessories());
+                ps.setString(6, productDetail.getPurchaseDate());
+                ps.setString(7, productDetail.getWarrantyDuration());
+                ps.setString(8, productDetail.getTradeLocation());
+                ps.setInt(9, productDetail.getDeliveryFee());
+                int affectedRows = ps.executeUpdate();
+
+                if (affectedRows == 0) {
+                    throw new RuntimeException("Create productDetails failed, no affectedRows");
+                }
+
+                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                    if (!generatedKeys.next()) {
+                        throw new RuntimeException("Create productDetails failed, no generatedKeys");
+                    }
+                    generatedKey = generatedKeys.getLong(1);
+                }
+                return new ProductDetail.Builder(productDetail)
+                        .withId(generatedKey)
+                        .build();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Create productDetails failed", e);
+        } finally {
+            releaseConnection(conn);
+        }
     }
 
     @Override
