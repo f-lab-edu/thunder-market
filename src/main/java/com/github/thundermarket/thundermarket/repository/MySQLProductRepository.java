@@ -48,7 +48,13 @@ public class MySQLProductRepository implements ProductRepository {
                     String name = resultSet.getString("name");
                     int price = resultSet.getInt("price");
                     String status = resultSet.getString("status");
-                    products.add(new Product(id, name, price, status));
+                    products.add(new Product.Builder()
+                                    .withId(id)
+                                    .withName(name)
+                                    .withPrice(price)
+                                    .withStatus(status)
+                                    .build()
+                    );
                 }
                 return products;
             }
