@@ -13,7 +13,7 @@ CREATE TABLE products (
 
 create table productDetails
 (
-    id int not null primary key,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     color            varchar(255) null,
     productCondition      varchar(255) null,
     batteryCondition varchar(255) null,
