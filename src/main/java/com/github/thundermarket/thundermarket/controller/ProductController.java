@@ -1,7 +1,6 @@
 package com.github.thundermarket.thundermarket.controller;
 
 import com.github.thundermarket.thundermarket.domain.Product;
-import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.domain.ProductDetailResponse;
 import com.github.thundermarket.thundermarket.service.ProductDetailService;
 import com.github.thundermarket.thundermarket.service.ProductService;
@@ -25,7 +24,7 @@ public class ProductController {
 
     @GetMapping("/api/v1/products")
     public ResponseEntity<List<Product>> products() {
-        return new ResponseEntity<>(productService.getProductList(), HttpStatus.OK);
+        return new ResponseEntity<>(productService.products(), HttpStatus.OK);
     }
 
     @GetMapping("/api/v1/products/{id}")
