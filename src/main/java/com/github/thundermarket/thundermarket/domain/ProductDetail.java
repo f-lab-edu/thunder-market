@@ -112,20 +112,6 @@ public class ProductDetail {
                 '}';
     }
 
-    public ProductDetailResponse toResponse() {
-        return new ProductDetailResponse(
-                this.color,
-                this.productCondition,
-                this.batteryCondition,
-                this.cameraCondition,
-                this.accessories,
-                this.purchaseDate,
-                this.warrantyDuration,
-                this.tradeLocation,
-                this.deliveryFee
-        );
-    }
-
     public static class Builder {
         private Long id;
         private String color;
