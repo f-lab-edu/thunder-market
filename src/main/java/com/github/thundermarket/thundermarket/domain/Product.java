@@ -15,15 +15,58 @@ public class Product {
     public Product() {
     }
 
-    public Product(Long id, String name, int price, String status) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.status = status;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    private Product(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.price = builder.price;
+        this.status = builder.status;
+    }
+
+    public static class Builder {
+        private Long id;
+        private String name;
+        private int price;
+        private String status;
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder withPrice(int price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder withStatus(String status) {
+            this.status = status;
+            return this;
+        }
+
+        public Product build() {
+            return new Product(this);
+        }
     }
 
     @Override
@@ -37,5 +80,15 @@ public class Product {
     @Override
     public int hashCode() {
         return Objects.hash(name, price, status);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", status='" + status + '\'' +
+                '}';
     }
 }
