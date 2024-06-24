@@ -83,35 +83,6 @@ public class ProductDetail {
         this.deliveryFee = deliveryFee;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProductDetail that = (ProductDetail) o;
-        return Objects.equals(id, that.id) && Objects.equals(color, that.color) && Objects.equals(productCondition, that.productCondition) && Objects.equals(batteryCondition, that.batteryCondition) && Objects.equals(cameraCondition, that.cameraCondition) && Objects.equals(accessories, that.accessories) && Objects.equals(purchaseDate, that.purchaseDate) && Objects.equals(warrantyDuration, that.warrantyDuration) && Objects.equals(tradeLocation, that.tradeLocation) && Objects.equals(deliveryFee, that.deliveryFee);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, color, productCondition, batteryCondition, cameraCondition, accessories, purchaseDate, warrantyDuration, tradeLocation, deliveryFee);
-    }
-
-    @Override
-    public String toString() {
-        return "ProductDetail{" +
-                "id=" + id +
-                ", color='" + color + '\'' +
-                ", productCondition='" + productCondition + '\'' +
-                ", batteryCondition='" + batteryCondition + '\'' +
-                ", cameraCondition='" + cameraCondition + '\'' +
-                ", accessories='" + accessories + '\'' +
-                ", purchaseDate='" + purchaseDate + '\'' +
-                ", warrantyDuration='" + warrantyDuration + '\'' +
-                ", tradeLocation='" + tradeLocation + '\'' +
-                ", deliveryFee=" + deliveryFee +
-                '}';
-    }
-
     public static class Builder {
         private Long id;
         private String color;
@@ -192,5 +163,34 @@ public class ProductDetail {
         public ProductDetail build() {
             return new ProductDetail(this);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductDetail that = (ProductDetail) o;
+        return Objects.equals(id, that.id) && Objects.equals(color, that.color) && Objects.equals(productCondition, that.productCondition) && Objects.equals(batteryCondition, that.batteryCondition) && Objects.equals(cameraCondition, that.cameraCondition) && Objects.equals(accessories, that.accessories) && Objects.equals(purchaseDate, that.purchaseDate) && Objects.equals(warrantyDuration, that.warrantyDuration) && Objects.equals(tradeLocation, that.tradeLocation) && Objects.equals(deliveryFee, that.deliveryFee);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, color, productCondition, batteryCondition, cameraCondition, accessories, purchaseDate, warrantyDuration, tradeLocation, deliveryFee);
+    }
+
+    @Override
+    public String toString() {
+        return "ProductDetail{" +
+                "id=" + id +
+                ", color='" + color + '\'' +
+                ", productCondition='" + productCondition + '\'' +
+                ", batteryCondition='" + batteryCondition + '\'' +
+                ", cameraCondition='" + cameraCondition + '\'' +
+                ", accessories='" + accessories + '\'' +
+                ", purchaseDate='" + purchaseDate + '\'' +
+                ", warrantyDuration='" + warrantyDuration + '\'' +
+                ", tradeLocation='" + tradeLocation + '\'' +
+                ", deliveryFee=" + deliveryFee +
+                '}';
     }
 }

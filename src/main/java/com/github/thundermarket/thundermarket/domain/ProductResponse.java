@@ -1,5 +1,7 @@
 package com.github.thundermarket.thundermarket.domain;
 
+import java.util.Objects;
+
 public class ProductResponse {
 
     private Product product;
@@ -23,6 +25,19 @@ public class ProductResponse {
 
     public static ProductResponse of(Product product, ProductDetail productDetail) {
         return new ProductResponse(product, productDetail);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductResponse that = (ProductResponse) o;
+        return Objects.equals(product, that.product) && Objects.equals(productDetail, that.productDetail);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(product, productDetail);
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.github.thundermarket.thundermarket.domain;
 
 import com.github.thundermarket.thundermarket.Util.Email;
 
+import java.util.Objects;
+
 public class User {
 
     private Long id;
@@ -67,5 +69,27 @@ public class User {
         public User build() {
             return new User(this);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, password);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

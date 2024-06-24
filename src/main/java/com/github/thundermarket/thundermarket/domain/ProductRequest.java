@@ -1,5 +1,7 @@
 package com.github.thundermarket.thundermarket.domain;
 
+import java.util.Objects;
+
 public class ProductRequest {
 
     private Product product;
@@ -33,5 +35,26 @@ public class ProductRequest {
                 .withTradeLocation(productDetail.getTradeLocation())
                 .withDeliveryFee(productDetail.getDeliveryFee())
                 .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductRequest that = (ProductRequest) o;
+        return Objects.equals(product, that.product) && Objects.equals(productDetail, that.productDetail);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(product, productDetail);
+    }
+
+    @Override
+    public String toString() {
+        return "ProductRequest{" +
+                "product=" + product +
+                ", productDetail=" + productDetail +
+                '}';
     }
 }
