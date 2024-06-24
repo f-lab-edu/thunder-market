@@ -15,7 +15,7 @@ public class ProductDetailServiceTest {
         Long productId = 0L;
         ProductDetailService productDetailService = new ProductDetailService(new ProductDetailRepositoryStub());
 
-        Assertions.assertThatThrownBy(() -> productDetailService.getProductDetail(productId)).isInstanceOf(ResourceNotFoundException.class);
+        Assertions.assertThatThrownBy(() -> productDetailService.productDetail(productId)).isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -25,7 +25,7 @@ public class ProductDetailServiceTest {
         ProductDetailResponse expectedProductDetail = productDetail.toResponse();
         Long productId = 1L;
 
-        ProductDetailResponse productDetailResponse = productDetailService.getProductDetail(productId);
+        ProductDetailResponse productDetailResponse = productDetailService.productDetail(productId);
 
         Assertions.assertThat(productDetailResponse).isEqualTo(expectedProductDetail);
     }
