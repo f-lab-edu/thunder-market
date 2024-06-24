@@ -4,6 +4,7 @@ import com.github.thundermarket.thundermarket.TestDouble.ProductDetailFakeReposi
 import com.github.thundermarket.thundermarket.TestDouble.ProductFakeRepository;
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
+import com.github.thundermarket.thundermarket.domain.ProductsResponse;
 import com.github.thundermarket.thundermarket.service.ProductService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -37,9 +38,9 @@ public class ProductServiceTest {
     @Test
     public void 상품0개_상품목록_조회() {
         ProductService productService = new ProductService(productRepository, productDetailFakeRepository);
-        List<Product> productList = productService.products();
+        ProductsResponse products = productService.products();
 
-        Assertions.assertThat(productList.isEmpty()).isEqualTo(true);
+        Assertions.assertThat(products.getProducts().isEmpty()).isEqualTo(true);
     }
 
     @Test
@@ -48,9 +49,9 @@ public class ProductServiceTest {
         Product product = createProduct();
         productService.add(product, createProductDetail());
 
-        List<Product> productList = productService.products();
+        ProductsResponse products = productService.products();
 
-        Assertions.assertThat(productList.getFirst()).isEqualTo(product);
+        Assertions.assertThat(products.getProducts().getFirst()).isEqualTo(product);
     }
 
     @Test
@@ -71,11 +72,11 @@ public class ProductServiceTest {
                 .build();
         productService.add(product2, createProductDetail());
 
-        List<Product> productList = productService.products();
-        System.out.println(productList);
+        ProductsResponse products = productService.products();
+        System.out.println(products);
 
-        Assertions.assertThat(productList.getFirst()).isEqualTo(product);
-        Assertions.assertThat(productList.get(1)).isEqualTo(product2);
+        Assertions.assertThat(products.getProducts().getFirst()).isEqualTo(product);
+        Assertions.assertThat(products.getProducts().get(1)).isEqualTo(product2);
     }
 
     @Test
@@ -83,8 +84,8 @@ public class ProductServiceTest {
         ProductService productService = new ProductService(productRepository, productDetailFakeRepository);
         Product product = createProduct();
         productService.add(product, createProductDetail());
-        List<Product> productList = productService.products();
-        Assertions.assertThat(productList.getFirst()).isEqualTo(product);
+        ProductsResponse products = productService.products();
+        Assertions.assertThat(products.getProducts().getFirst()).isEqualTo(product);
 
         Long id2 = 2L;
         String name2 = "아이폰13";
@@ -97,8 +98,8 @@ public class ProductServiceTest {
                 .withStatus(status2)
                 .build();
         productService.add(product2, createProductDetail());
-        List<Product> productList2 = productService.products();
-        Assertions.assertThat(productList2.get(1)).isEqualTo(product2);
+        ProductsResponse products2 = productService.products();
+        Assertions.assertThat(products2.getProducts().get(1)).isEqualTo(product2);
     }
 
     @Test
@@ -106,8 +107,8 @@ public class ProductServiceTest {
         ProductService productService = new ProductService(productRepository, productDetailFakeRepository);
         Product product = createProduct();
         productService.add(product, createProductDetail());
-        List<Product> productList = productService.products();
-        Assertions.assertThat(productList.getFirst()).isEqualTo(product);
+        ProductsResponse products = productService.products();
+        Assertions.assertThat(products.getProducts().getFirst()).isEqualTo(product);
 
         Long originalId = 1L;
         String name2 = "아이폰13";
@@ -120,8 +121,8 @@ public class ProductServiceTest {
                 .withStatus(status2)
                 .build();
         productService.update(product2);
-        List<Product> productList2 = productService.products();
-        Assertions.assertThat(productList2.getFirst()).isEqualTo(product2);
+        ProductsResponse products2 = productService.products();
+        Assertions.assertThat(products2.getProducts().getFirst()).isEqualTo(product2);
     }
 
     @Test
@@ -129,11 +130,11 @@ public class ProductServiceTest {
         ProductService productService = new ProductService(productRepository, productDetailFakeRepository);
         Product product = createProduct();
         productService.add(product, createProductDetail());
-        List<Product> productList = productService.products();
-        Assertions.assertThat(productList.getFirst()).isEqualTo(product);
+        ProductsResponse products = productService.products();
+        Assertions.assertThat(products.getProducts().getFirst()).isEqualTo(product);
 
         productService.delete(0L);
-        Assertions.assertThat(productList.isEmpty()).isEqualTo(true);
+        Assertions.assertThat(products.getProducts().isEmpty()).isEqualTo(true);
     }
 
     @Test
@@ -154,12 +155,12 @@ public class ProductServiceTest {
                 .build();
         productService.add(product2, createProductDetail());
 
-        List<Product> productList = productService.products();
+        ProductsResponse products = productService.products();
 
-        Assertions.assertThat(productList.getFirst()).isEqualTo(product);
-        Assertions.assertThat(productList.get(1)).isEqualTo(product2);
+        Assertions.assertThat(products.getProducts().getFirst()).isEqualTo(product);
+        Assertions.assertThat(products.getProducts().get(1)).isEqualTo(product2);
 
         productService.delete(0L);
-        Assertions.assertThat(productList.getFirst()).isEqualTo(product2);
+        Assertions.assertThat(products.getProducts().getFirst()).isEqualTo(product2);
     }
 }

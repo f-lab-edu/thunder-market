@@ -1,9 +1,6 @@
 package com.github.thundermarket.thundermarket.controller;
 
-import com.github.thundermarket.thundermarket.domain.Product;
-import com.github.thundermarket.thundermarket.domain.ProductDetailResponse;
-import com.github.thundermarket.thundermarket.domain.ProductRequest;
-import com.github.thundermarket.thundermarket.domain.ProductResponse;
+import com.github.thundermarket.thundermarket.domain.*;
 import com.github.thundermarket.thundermarket.service.ProductDetailService;
 import com.github.thundermarket.thundermarket.service.ProductService;
 import org.springframework.http.HttpStatus;
@@ -24,7 +21,7 @@ public class ProductController {
     }
 
     @GetMapping("/api/v1/products")
-    public ResponseEntity<List<Product>> products() {
+    public ResponseEntity<ProductsResponse> products() {
         return new ResponseEntity<>(productService.products(), HttpStatus.OK);
     }
 

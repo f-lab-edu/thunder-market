@@ -3,6 +3,7 @@ package com.github.thundermarket.thundermarket.service;
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.domain.ProductResponse;
+import com.github.thundermarket.thundermarket.domain.ProductsResponse;
 import com.github.thundermarket.thundermarket.repository.ProductDetailRepository;
 import com.github.thundermarket.thundermarket.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,8 @@ public class ProductService {
     }
 
 
-    public List<Product> products() {
-        return productRepository.findAll();
+    public ProductsResponse products() {
+        return ProductsResponse.of(productRepository.findAll());
     }
 
     public ProductResponse add(Product product, ProductDetail productDetail) {

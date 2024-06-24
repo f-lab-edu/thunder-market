@@ -29,7 +29,7 @@ public class ProductControllerTest {
                         .contentType("application/json")
                         .session(session))
                 .andExpect(status().isOk())
-                .andExpect(content().string("[]"));
+                .andExpect(content().string("{\"products\":[]}"));
     }
 
     @Test
