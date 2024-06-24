@@ -44,6 +44,16 @@ public class Product {
         private int price;
         private String status;
 
+        public Builder() {
+        }
+
+        public Builder(Product product) {
+            this.id = product.id;
+            this.name = product.name;
+            this.price = product.price;
+            this.status = product.status;
+        }
+
         public Builder withId(Long id) {
             this.id = id;
             return this;

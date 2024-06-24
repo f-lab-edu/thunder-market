@@ -138,6 +138,21 @@ public class ProductDetail {
         private String tradeLocation;
         private int deliveryFee;
 
+        public Builder() {}
+
+        public Builder(ProductDetail productDetail) {
+            this.id = productDetail.id;
+            this.color = productDetail.color;
+            this.productCondition = productDetail.productCondition;
+            this.batteryCondition = productDetail.batteryCondition;
+            this.cameraCondition = productDetail.cameraCondition;
+            this.accessories = productDetail.accessories;
+            this.purchaseDate = productDetail.purchaseDate;
+            this.warrantyDuration = productDetail.warrantyDuration;
+            this.tradeLocation = productDetail.tradeLocation;
+            this.deliveryFee = productDetail.deliveryFee;
+        }
+
         public Builder withId(Long id) {
             this.id = id;
             return this;
