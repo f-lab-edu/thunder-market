@@ -26,16 +26,11 @@ public class ProductControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private MockHttpSession session;
-
-    @BeforeEach
-    void setUp() {
-        session = new MockHttpSession();
-        session.setAttribute("userEmail", "test01@test.com");
-    }
-
     @Test
     public void 상품0개_상품목록조회() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("userEmail", "test01@test.com");
+
         mockMvc.perform(get("/api/v1/products")
                         .contentType("application/json")
                         .session(session))
