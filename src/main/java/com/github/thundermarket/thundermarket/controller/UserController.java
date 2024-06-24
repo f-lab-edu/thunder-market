@@ -41,13 +41,4 @@ public class UserController {
         session.setAttribute("userEmail", user.getEmail());
         return new ResponseEntity<>("Login successful", HttpStatus.OK);
     }
-
-    @GetMapping("/api/v1/auth/mypage")
-    public ResponseEntity<?> mypage(HttpSession session) {
-        String userEmail = (String) session.getAttribute("userEmail");
-        if (userEmail == null) {
-            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
-        }
-        return new ResponseEntity<>("Hello, " + userEmail, HttpStatus.OK);
-    }
 }
