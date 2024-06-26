@@ -71,11 +71,12 @@ public class MySQLUserRepository implements UserRepository {
                 List<User> users = new ArrayList<>();
 
                 while (resultSet.next()) {
-                    User user = new User();
-                    user.setId(resultSet.getLong("id"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setPassword(resultSet.getString("password"));
-                    users.add(user);
+                    users.add(new User.Builder()
+                            .withId(resultSet.getLong("id"))
+                            .withEmail(resultSet.getString("email"))
+                            .withPassword(resultSet.getString("password"))
+                            .build()
+                    );
                 }
                 return users;
             }

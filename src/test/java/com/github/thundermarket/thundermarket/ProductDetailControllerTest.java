@@ -40,6 +40,6 @@ public class ProductDetailControllerTest {
                         .contentType("application/json")
                         .session(session))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.color").value("white"));
+                .andExpect(jsonPath("$.productDetail.color").value("white"));
     }
 }

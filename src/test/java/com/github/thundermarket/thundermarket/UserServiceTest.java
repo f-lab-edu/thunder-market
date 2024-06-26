@@ -4,27 +4,24 @@ import com.github.thundermarket.thundermarket.domain.User;
 import com.github.thundermarket.thundermarket.repository.InMemoryUserRepository;
 import com.github.thundermarket.thundermarket.service.UserService;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 class UserServiceTest {
 
-    InMemoryUserRepository userRepository = new InMemoryUserRepository();
-    UserService userService = new UserService(userRepository);
-
-    @BeforeEach
-    void setUp() {
-        userRepository.deleteAll();
-    }
-
     private User createUser(String email, String password) {
-        return new User(email, password);
+        return new User.Builder()
+                .withEmail(email)
+                .withPassword(password)
+                .build();
     }
 
     @Test
     void 회원가입_성공() {
+        InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+        UserService userService = new UserService(inMemoryUserRepository);
+        inMemoryUserRepository.deleteAll();
         User user = createUser("test01@email.com", "password");
 
         User savedUser = userService.join(user);
@@ -34,6 +31,9 @@ class UserServiceTest {
 
     @Test
     public void 전체_회원_조회() {
+        InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+        UserService userService = new UserService(inMemoryUserRepository);
+        inMemoryUserRepository.deleteAll();
         int expectedAllUsers = 2;
         User user = createUser("test01@email.com", "password");
         User user2 = createUser("test02@email.com", "password2");

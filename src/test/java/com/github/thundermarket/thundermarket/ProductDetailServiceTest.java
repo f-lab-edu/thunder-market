@@ -1,5 +1,6 @@
 package com.github.thundermarket.thundermarket;
 
+import com.github.thundermarket.thundermarket.TestDouble.ProductDetailRepositoryStub;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.domain.ProductDetailResponse;
 import com.github.thundermarket.thundermarket.exception.ResourceNotFoundException;
@@ -14,17 +15,17 @@ public class ProductDetailServiceTest {
         Long productId = 0L;
         ProductDetailService productDetailService = new ProductDetailService(new ProductDetailRepositoryStub());
 
-        Assertions.assertThatThrownBy(() -> productDetailService.getProductDetail(productId)).isInstanceOf(ResourceNotFoundException.class);
+        Assertions.assertThatThrownBy(() -> productDetailService.productDetail(productId)).isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
     public void 상품1개_상세정보_조회() {
         ProductDetailService productDetailService = new ProductDetailService(new ProductDetailRepositoryStub());
         ProductDetail productDetail = new ProductDetail("white", "", "", "", "", "", "", "", 0);
-        ProductDetailResponse expectedProductDetail = productDetail.toResponse();
+        ProductDetailResponse expectedProductDetail = ProductDetailResponse.of(productDetail);
         Long productId = 1L;
 
-        ProductDetailResponse productDetailResponse = productDetailService.getProductDetail(productId);
+        ProductDetailResponse productDetailResponse = productDetailService.productDetail(productId);
 
         Assertions.assertThat(productDetailResponse).isEqualTo(expectedProductDetail);
     }

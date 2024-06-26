@@ -15,11 +15,11 @@ public class ProductDetailService {
         this.productDetailRepository = productDetailRepository;
     }
 
-    public ProductDetailResponse getProductDetail(Long productId) {
+    public ProductDetailResponse productDetail(Long productId) {
         ProductDetail productDetail = productDetailRepository.findById(productId);
         if (productDetail == null) {
             throw new ResourceNotFoundException("Product detail not found with id: " + productId);
         }
-        return productDetail.toResponse();
+        return ProductDetailResponse.of(productDetail);
     }
 }
