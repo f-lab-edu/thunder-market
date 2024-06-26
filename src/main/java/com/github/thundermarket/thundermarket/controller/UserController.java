@@ -2,6 +2,8 @@ package com.github.thundermarket.thundermarket.controller;
 
 import com.github.thundermarket.thundermarket.Util.Email;
 import com.github.thundermarket.thundermarket.aspect.Authenticated;
+import com.github.thundermarket.thundermarket.constant.SessionConst;
+import com.github.thundermarket.thundermarket.domain.SessionUser;
 import com.github.thundermarket.thundermarket.domain.User;
 import com.github.thundermarket.thundermarket.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -38,7 +40,10 @@ public class UserController {
         if(!userService.checkCredential(user)) {
             return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
         }
-        session.setAttribute("userEmail", user.getEmail());
+        session.setAttribute(SessionConst.SESSION_USER,
+                new SessionUser.Builder()
+                .userEmail(user.getEmail())
+                .build());
         return new ResponseEntity<>("Login successful", HttpStatus.OK);
     }
 }
