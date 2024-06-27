@@ -1,5 +1,7 @@
 package com.github.thundermarket.thundermarket;
 
+import com.github.thundermarket.thundermarket.constant.SessionConst;
+import com.github.thundermarket.thundermarket.domain.SessionUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,7 +25,7 @@ public class ProductControllerTest {
     @Test
     public void 상품0개_상품목록조회() throws Exception {
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userEmail", "test01@test.com");
+        session.setAttribute(SessionConst.SESSION_USER, new SessionUser());
 
         mockMvc.perform(get("/api/v1/products")
                         .contentType("application/json")
@@ -35,7 +37,7 @@ public class ProductControllerTest {
     @Test
     public void 상품_등록_성공() throws Exception {
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userEmail", "test01@test.com");
+        session.setAttribute(SessionConst.SESSION_USER, new SessionUser());
 
         String productRequestJson = "{\n" +
                 "  \"product\": {\n" +

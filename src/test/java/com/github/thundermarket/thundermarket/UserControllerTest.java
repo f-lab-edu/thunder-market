@@ -2,6 +2,8 @@ package com.github.thundermarket.thundermarket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.thundermarket.thundermarket.domain.User;
+import org.assertj.core.api.Assertions;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -120,5 +122,34 @@ public class UserControllerTest {
                         .content(wrongUserJson))
                 .andExpect(status().isUnauthorized())
                 .andExpect(content().string("Invalid credentials"));
+    }
+
+    @Test
+    public void 마이페이지_조회() throws Exception {
+        User user = createUser("test01@email.com", "password");
+
+        String userJson = objectMapper.writeValueAsString(user);
+
+        mockMvc.perform(post("/api/v1/auth/join")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk());
+
+        MockHttpSession session = new MockHttpSession();
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType("application/json")
+                        .content(userJson)
+                        .session(session))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Login successful"));
+
+        String response = mockMvc.perform(get("/api/v1/mypage")
+                        .contentType("application/json")
+                        .session(session))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        Assertions.assertThat(user.getEmail()).isEqualTo(new JSONObject(response).getString("email"));
     }
 }
