@@ -2,6 +2,7 @@ package com.github.thundermarket.thundermarket.controller;
 
 import com.github.thundermarket.thundermarket.Util.Email;
 import com.github.thundermarket.thundermarket.aspect.Authenticated;
+import com.github.thundermarket.thundermarket.aspect.SessionUserParam;
 import com.github.thundermarket.thundermarket.constant.SessionConst;
 import com.github.thundermarket.thundermarket.domain.SessionUser;
 import com.github.thundermarket.thundermarket.domain.User;
@@ -45,5 +46,10 @@ public class UserController {
                 .userEmail(user.getEmail())
                 .build());
         return new ResponseEntity<>("Login successful", HttpStatus.OK);
+    }
+
+    @GetMapping("/api/v1/mypage")
+    public ResponseEntity<SessionUser> mypage(@SessionUserParam SessionUser sessionUser) {
+        return new ResponseEntity<>(sessionUser, HttpStatus.OK);
     }
 }
