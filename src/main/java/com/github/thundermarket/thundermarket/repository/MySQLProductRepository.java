@@ -64,7 +64,7 @@ public class MySQLProductRepository implements ProductRepository {
 
     @Override
     public List<Product> findAll(Long cursorId, int limit) {
-        String sql = "SELECT * FROM products WHERE id > ? ORDER BY id ASC LIMIT ?";
+        String sql = "SELECT * FROM products WHERE id > ? ORDER BY id DESC LIMIT ?";
         List<Product> products = new ArrayList<>();
 
         try (Connection conn = dataSource.getConnection();
