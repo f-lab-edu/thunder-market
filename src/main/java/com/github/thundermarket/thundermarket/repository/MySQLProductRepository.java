@@ -99,21 +99,4 @@ public class MySQLProductRepository implements ProductRepository {
     public void delete(Long id) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
-    @Override
-    public long count() {
-        String sql = "SELECT COUNT(*) FROM products";
-
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-
-            if (rs.next()) {
-                return rs.getLong(1);
-            }
-            return 0;
-        } catch (SQLException e) {
-            throw new RuntimeException("Counting products failed", e);
-        }
-    }
 }

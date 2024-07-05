@@ -8,14 +8,12 @@ public class ProductsResponse {
     private final List<Product> products;
     private final Long cursorId;
     private final int limit;
-    private final long totalCount;
 
 
-    public ProductsResponse(List<Product> products, Long cursorId, int limit, long totalCount) {
+    public ProductsResponse(List<Product> products, Long cursorId, int limit) {
         this.products = products;
         this.cursorId = cursorId;
         this.limit = limit;
-        this.totalCount = totalCount;
     }
 
     public List<Product> getProducts() {
@@ -30,12 +28,8 @@ public class ProductsResponse {
         return limit;
     }
 
-    public long getTotalCount() {
-        return totalCount;
-    }
-
-    public static ProductsResponse of(List<Product> products, Long newCursorId, int limit, Long totalCount) {
-        return new ProductsResponse(products, newCursorId, limit, totalCount);
+    public static ProductsResponse of(List<Product> products, Long newCursorId, int limit) {
+        return new ProductsResponse(products, newCursorId, limit);
     }
 
     @Override

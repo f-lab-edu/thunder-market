@@ -29,8 +29,7 @@ public class ProductService {
 
         List<Product> products = productRepository.findAll(effectiveCursorId, effectiveLimit);
         Long newCursorId = products.isEmpty() ? null : products.get(products.size() - 1).getId();
-        long totalCount = productRepository.count();
-        return ProductsResponse.of(products, newCursorId, limit, totalCount);
+        return ProductsResponse.of(products, newCursorId, limit);
     }
 
     public ProductResponse add(Product product, ProductDetail productDetail) {

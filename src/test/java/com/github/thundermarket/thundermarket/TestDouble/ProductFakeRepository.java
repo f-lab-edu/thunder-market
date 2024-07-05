@@ -31,9 +31,4 @@ public class ProductFakeRepository implements ProductRepository {
     public void delete(Long id) {
         products.remove(id.intValue());
     }
-
-    @Override
-    public long count() {
-        return products.size();
-    }
 }

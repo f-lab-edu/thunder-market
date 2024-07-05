@@ -41,9 +41,4 @@ public class PaginatedProductFakeRepository extends ProductFakeRepository {
 
         return result;
     }
-
-    @Override
-    public long count() {
-        return products.size();
-    }
 }
