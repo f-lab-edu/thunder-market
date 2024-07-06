@@ -6,7 +6,7 @@ public interface FileStorage {
 
     boolean save(MultipartFile file);
     boolean delete(String fileName);
-    boolean validateFileExtension(String extension);
-    boolean validateVideoLength(int seconds);
-    boolean validateFileSize(long size);
+    boolean validateFileExtension();
+    boolean validateVideoLength();
+    boolean validateFileSize();
 }
