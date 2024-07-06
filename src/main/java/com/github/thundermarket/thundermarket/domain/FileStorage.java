@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public interface FileStorage {
 
-    boolean save(MultipartFile file);
+    String save(MultipartFile file) throws IOException;
     boolean delete(String fileName);
     boolean validateFileExtension();
     boolean validateVideoLength() throws IOException;
