@@ -1,14 +1,17 @@
 package com.github.thundermarket.thundermarket.domain;
 
+import com.github.thundermarket.thundermarket.Util.VideoUtils;
 import com.github.thundermarket.thundermarket.constant.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
 public class LocalFileStorage implements FileStorage {
 
+    private final MultipartFile file;
     private final String fileName;
     private final String extension;
     private final long size;
@@ -16,6 +19,7 @@ public class LocalFileStorage implements FileStorage {
     private static final String STORAGE_LOCATION = "/path/to/storage/directory";
 
     public LocalFileStorage(MultipartFile file) {
+        this.file = file;
         this.fileName = UUID.randomUUID().toString();
         this.extension = getFileExtension(file.getOriginalFilename());
         this.size = file.getSize();
@@ -39,8 +43,11 @@ public class LocalFileStorage implements FileStorage {
     }
 
     @Override
-    public boolean validateVideoLength() {
-        return true; // 비디오 길이 구하는 로직 추가 이후에 구현하기
+    public boolean validateVideoLength() throws IOException {
+        if (VideoUtils.getVideoDuration(file) <= FileStorageConst.MAX_VIDEO_LENGTH) {
+            return true;
+        };
+        return false;
     }
 
     @Override
