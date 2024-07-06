@@ -9,6 +9,7 @@ import com.github.thundermarket.thundermarket.domain.*;
 import com.github.thundermarket.thundermarket.service.ProductService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.util.unit.DataSize;
 
 public class ProductServiceAddTest {
@@ -52,10 +53,12 @@ public class ProductServiceAddTest {
 
     @Test
     public void 동영상_파일_유효성검증() {
-        FileStorage localFileStorage = new LocalFileStorage();
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "test-video.mp4", "video/mp4", new byte[200 * 1024 * 1024]);
+        System.out.println(mockMultipartFile.getSize());
+        FileStorage localFileStorage = new LocalFileStorage(mockMultipartFile);
 
-        Assertions.assertThat(localFileStorage.validateFileExtension("mp4")).isEqualTo(true);
-        Assertions.assertThat(localFileStorage.validateVideoLength(10)).isEqualTo(true);
-        Assertions.assertThat(localFileStorage.validateFileSize(DataSize.ofMegabytes(20).toBytes())).isEqualTo(true);
+        Assertions.assertThat(localFileStorage.validateFileExtension()).isEqualTo(true);
+        Assertions.assertThat(localFileStorage.validateFileSize()).isEqualTo(true);
+        Assertions.assertThat(localFileStorage.validateVideoLength()).isEqualTo(true);
     }
 }
