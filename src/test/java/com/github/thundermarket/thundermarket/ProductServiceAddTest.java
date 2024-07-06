@@ -5,12 +5,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.thundermarket.thundermarket.TestDouble.ProductDetailFakeRepository;
 import com.github.thundermarket.thundermarket.TestDouble.ProductFakeRepository;
-import com.github.thundermarket.thundermarket.domain.Product;
-import com.github.thundermarket.thundermarket.domain.ProductDetail;
-import com.github.thundermarket.thundermarket.domain.ProductResponse;
+import com.github.thundermarket.thundermarket.domain.*;
 import com.github.thundermarket.thundermarket.service.ProductService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.util.unit.DataSize;
 
 public class ProductServiceAddTest {
 
@@ -49,5 +48,14 @@ public class ProductServiceAddTest {
 
         Assertions.assertThat(productName).isEqualTo(expectedProductName);
         Assertions.assertThat(productDetailColor).isEqualTo(expectedProductDetailColor);
+    }
+
+    @Test
+    public void 동영상_파일_유효성검증() {
+        FileStorage localFileStorage = new LocalFileStorage();
+
+        Assertions.assertThat(localFileStorage.validateFileExtension("mp4")).isEqualTo(true);
+        Assertions.assertThat(localFileStorage.validateVideoLength(10)).isEqualTo(true);
+        Assertions.assertThat(localFileStorage.validateFileSize(DataSize.ofMegabytes(20).toBytes())).isEqualTo(true);
     }
 }
