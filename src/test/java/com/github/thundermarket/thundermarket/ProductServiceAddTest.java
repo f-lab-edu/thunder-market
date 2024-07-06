@@ -62,4 +62,13 @@ public class ProductServiceAddTest {
         Assertions.assertThat(localFileStorage.validateFileSize()).isEqualTo(true);
         Assertions.assertThat(localFileStorage.validateVideoLength()).isEqualTo(true);
     }
+
+    @Test
+    public void 동영상_파일_저장() throws IOException {
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "test-video.mp4", "video/mp4", new FileInputStream(ResourceUtils.getFile("classpath:5sec.mp4")));
+        FileStorage localFileStorage = new LocalFileStorage(mockMultipartFile);
+
+        Assertions.assertThat(localFileStorage.save(mockMultipartFile)).startsWith("/tmp/app/storage/video/upload/");
+        Assertions.assertThat(localFileStorage.save(mockMultipartFile)).endsWith(".mp4");
+    }
 }
