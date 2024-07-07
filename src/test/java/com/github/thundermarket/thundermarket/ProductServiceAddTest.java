@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.util.ResourceUtils;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class ProductServiceAddTest {
@@ -25,13 +26,14 @@ public class ProductServiceAddTest {
                 .build();
     }
 
-    public ProductDetail createProductDetail() {
+    public ProductDetail createProductDetail(String videoFilePath) {
         return new ProductDetail.Builder()
                 .withId(1L)
                 .withColor("white")
                 .withBatteryCondition("80%")
                 .withCameraCondition("good")
                 .withDeliveryFee(3000)
+                .withVideo(videoFilePath)
                 .build();
     }
 
@@ -42,7 +44,7 @@ public class ProductServiceAddTest {
         String expectedProductName = "iPhone12";
         String expectedProductDetailColor = "white";
 
-        ProductResponse productResponse = productService.add(createProduct(), createProductDetail());
+        ProductResponse productResponse = productService.add(createProduct(), createProductDetail(""));
 
         String productResponseJson = objectMapper.writeValueAsString(productResponse);
         JsonNode jsonNode = objectMapper.readTree(productResponseJson);
@@ -70,5 +72,18 @@ public class ProductServiceAddTest {
 
         Assertions.assertThat(localFileStorage.save(mockMultipartFile)).startsWith("/tmp/app/storage/video/upload/");
         Assertions.assertThat(localFileStorage.save(mockMultipartFile)).endsWith(".mp4");
+    }
+
+    @Test
+    public void 동영상_파일_저장하고_상품상세정보_응답값에_추가() throws IOException {
+        ProductService productService = new ProductService(new ProductFakeRepository(), new ProductDetailFakeRepository());
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "test-video.mp4", "video/mp4", new FileInputStream(ResourceUtils.getFile("classpath:5sec.mp4")));
+        FileStorage localFileStorage = new LocalFileStorage(mockMultipartFile);
+        ProductResponse productResponse = productService.add(createProduct(), createProductDetail(localFileStorage.save(mockMultipartFile)));
+
+        String videoFilePath = productResponse.getProductDetail().getVideoFilePath();
+
+        Assertions.assertThat(videoFilePath).startsWith("/tmp/app/storage/video/upload/");
+        Assertions.assertThat(videoFilePath).endsWith(".mp4");
     }
 }
