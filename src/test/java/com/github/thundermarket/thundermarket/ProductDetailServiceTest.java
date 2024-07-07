@@ -21,7 +21,7 @@ public class ProductDetailServiceTest {
     @Test
     public void 상품1개_상세정보_조회() {
         ProductDetailService productDetailService = new ProductDetailService(new ProductDetailRepositoryStub());
-        ProductDetail productDetail = new ProductDetail("white", "", "", "", "", "", "", "", 0);
+        ProductDetail productDetail = new ProductDetail("white", "", "", "", "", "", "", "", 0, "");
         ProductDetailResponse expectedProductDetail = ProductDetailResponse.of(productDetail);
         Long productId = 1L;
 
