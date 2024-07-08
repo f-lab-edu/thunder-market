@@ -1,7 +1,7 @@
 package com.github.thundermarket.thundermarket.config;
 
-import com.github.thundermarket.thundermarket.repository.MySQLUserRepository;
-import com.github.thundermarket.thundermarket.repository.UserRepository;
+import com.github.thundermarket.thundermarket.repository.*;
+import com.github.thundermarket.thundermarket.service.ProductService;
 import com.github.thundermarket.thundermarket.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,5 +25,22 @@ public class RepositoryConfig {
     @Bean
     public UserRepository userRepository() {
         return new MySQLUserRepository(dataSource);
+    }
+
+    @Bean
+    public FileStorage fileStorage() {
+        return new NCloudStorage();
+    }
+
+    @Bean
+    public ProductService productService(
+            ProductRepository productRepository,
+            ProductDetailRepository productDetailRepository
+    ) {
+        return new ProductService(
+                productRepository,
+                productDetailRepository,
+                fileStorage()
+        );
     }
 }
