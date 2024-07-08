@@ -4,6 +4,9 @@ import org.bytedeco.ffmpeg.global.avutil;
 import org.bytedeco.javacv.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -25,6 +28,31 @@ public class VideoUtils {
             return duration;
         } catch (Exception e) {
             throw new IOException("Failed to get video duration", e);
+        }
+    }
+
+    public static String generateThumbnail(MultipartFile file, String outputPath) throws IOException {
+        try (InputStream inputStream = file.getInputStream();
+             FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(inputStream)) {
+
+            grabber.start();
+            Frame frame = grabber.grabImage();
+
+            if (frame != null) {
+                Java2DFrameConverter converter = new Java2DFrameConverter();
+                BufferedImage bufferedImage = converter.getBufferedImage(frame);
+
+                String thumbnailFileName = "thumbnail_" + System.currentTimeMillis() + ".jpg";
+                File outputFile = new File(outputPath, thumbnailFileName);
+                ImageIO.write(bufferedImage, "jpg", outputFile);
+
+                grabber.stop();
+                return outputFile.getAbsolutePath();
+            } else {
+                throw new IOException("Failed to grab video frame");
+            }
+        } catch (Exception e) {
+            throw new IOException("Failed to generate thumbnail", e);
         }
     }
 }
