@@ -116,6 +116,7 @@ public class ProductDetail {
             this.warrantyDuration = productDetail.warrantyDuration;
             this.tradeLocation = productDetail.tradeLocation;
             this.deliveryFee = productDetail.deliveryFee;
+            this.videoFilePath = productDetail.videoFilePath;
         }
 
         public Builder withId(Long id) {
