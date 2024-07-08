@@ -1,28 +1,31 @@
 package com.github.thundermarket.thundermarket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.thundermarket.thundermarket.constant.SessionConst;
-import com.github.thundermarket.thundermarket.domain.SessionUser;
 import com.github.thundermarket.thundermarket.domain.User;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpSession;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ResourceUtils;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import java.io.FileInputStream;
+
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.startsWith;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -132,12 +135,18 @@ public class ProductControllerTest {
                 "  }\n" +
                 "}";
 
-        mockMvc.perform(post("/api/v1/products")
-                        .contentType("application/json")
-                        .cookie(new Cookie("SESSION", sessionId))
-                        .content(productRequestJson))
+        MockMultipartFile productRequest = new MockMultipartFile("productRequest", "", "application/json", productRequestJson.getBytes());
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("video", "test-video.mp4", "video/mp4", new FileInputStream(ResourceUtils.getFile("classpath:5sec.mp4")));
+
+        mockMvc.perform(multipart("/api/v1/products")
+                        .file(productRequest)
+                        .file(mockMultipartFile)
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .cookie(new Cookie("SESSION", sessionId)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.product.name").value("iPhone11"))
-                .andExpect(jsonPath("$.productDetail.color").value("white"));
+                .andExpect(jsonPath("$.productDetail.color").value("white"))
+                .andExpect(jsonPath("$.productDetail.videoFilePath").value(startsWith("/tmp/app/storage/video/upload/")))
+                .andExpect(jsonPath("$.productDetail.videoFilePath").value(endsWith(".mp4")));
     }
 }
