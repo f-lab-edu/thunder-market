@@ -12,6 +12,7 @@ public class FileStorageConst {
     public static final String NCLOUD_REGION_NAME = "kr-standard";
     public static final String NCLOUD_BUCKET_NAME = "thunder-market-bucket";
     public static final String NCLOUD_VIDEO_DIRECTORY = "video/";
+    public static final String NCLOUD_THUMBNAIL_DIRECTORY = "thumbnail/";
     public static final String NCLOUD_ACCESS_KEY = System.getenv("NCLOUD_ACCESS_KEY");
     public static final String NCLOUD_SECRET_KEY = System.getenv("NCLOUD_SECRET_KEY");
 }

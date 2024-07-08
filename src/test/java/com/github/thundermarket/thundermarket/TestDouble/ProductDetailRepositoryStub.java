@@ -20,6 +20,7 @@ public class ProductDetailRepositoryStub implements ProductDetailRepository {
                 "",
                 "",
                 0,
+                "",
                 ""
         );
     }

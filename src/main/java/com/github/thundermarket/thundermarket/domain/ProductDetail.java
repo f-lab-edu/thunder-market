@@ -15,6 +15,7 @@ public class ProductDetail {
     private String tradeLocation;
     private int deliveryFee;
     private String videoFilePath;
+    private String thumbnailFilePath;
 
     public ProductDetail() {
     }
@@ -63,6 +64,10 @@ public class ProductDetail {
         return videoFilePath;
     }
 
+    public String getThumbnailFilePath() {
+        return thumbnailFilePath;
+    }
+
     private ProductDetail(Builder builder) {
         this.id = builder.id;
         this.color = builder.color;
@@ -75,9 +80,10 @@ public class ProductDetail {
         this.tradeLocation = builder.tradeLocation;
         this.deliveryFee = builder.deliveryFee;
         this.videoFilePath = builder.videoFilePath;
+        this.thumbnailFilePath = builder.thumbnailFilePath;
     }
 
-    public ProductDetail(String color, String productCondition, String batteryCondition, String cameraCondition, String accessories, String purchaseDate, String warrantyDuration, String tradeLocation, int deliveryFee, String videoFilePath) {
+    public ProductDetail(String color, String productCondition, String batteryCondition, String cameraCondition, String accessories, String purchaseDate, String warrantyDuration, String tradeLocation, int deliveryFee, String videoFilePath, String thumbnailFilePath) {
         this.color = color;
         this.productCondition = productCondition;
         this.batteryCondition = batteryCondition;
@@ -88,6 +94,7 @@ public class ProductDetail {
         this.tradeLocation = tradeLocation;
         this.deliveryFee = deliveryFee;
         this.videoFilePath = videoFilePath;
+        this.thumbnailFilePath = thumbnailFilePath;
     }
 
     public static class Builder {
@@ -102,6 +109,7 @@ public class ProductDetail {
         private String tradeLocation;
         private int deliveryFee;
         private String videoFilePath;
+        private String thumbnailFilePath;
 
         public Builder() {}
 
@@ -117,6 +125,7 @@ public class ProductDetail {
             this.tradeLocation = productDetail.tradeLocation;
             this.deliveryFee = productDetail.deliveryFee;
             this.videoFilePath = productDetail.videoFilePath;
+            this.thumbnailFilePath = productDetail.thumbnailFilePath;
         }
 
         public Builder withId(Long id) {
@@ -174,6 +183,11 @@ public class ProductDetail {
             return this;
         }
 
+        public Builder withThumbnailFilePath(String thumbnailFilePath) {
+            this.thumbnailFilePath = thumbnailFilePath;
+            return this;
+        }
+
         public ProductDetail build() {
             return new ProductDetail(this);
         }
@@ -184,12 +198,12 @@ public class ProductDetail {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductDetail that = (ProductDetail) o;
-        return deliveryFee == that.deliveryFee && Objects.equals(id, that.id) && Objects.equals(color, that.color) && Objects.equals(productCondition, that.productCondition) && Objects.equals(batteryCondition, that.batteryCondition) && Objects.equals(cameraCondition, that.cameraCondition) && Objects.equals(accessories, that.accessories) && Objects.equals(purchaseDate, that.purchaseDate) && Objects.equals(warrantyDuration, that.warrantyDuration) && Objects.equals(tradeLocation, that.tradeLocation) && Objects.equals(videoFilePath, that.videoFilePath);
+        return deliveryFee == that.deliveryFee && Objects.equals(id, that.id) && Objects.equals(color, that.color) && Objects.equals(productCondition, that.productCondition) && Objects.equals(batteryCondition, that.batteryCondition) && Objects.equals(cameraCondition, that.cameraCondition) && Objects.equals(accessories, that.accessories) && Objects.equals(purchaseDate, that.purchaseDate) && Objects.equals(warrantyDuration, that.warrantyDuration) && Objects.equals(tradeLocation, that.tradeLocation) && Objects.equals(videoFilePath, that.videoFilePath) && Objects.equals(thumbnailFilePath, that.thumbnailFilePath);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, color, productCondition, batteryCondition, cameraCondition, accessories, purchaseDate, warrantyDuration, tradeLocation, deliveryFee, videoFilePath);
+        return Objects.hash(id, color, productCondition, batteryCondition, cameraCondition, accessories, purchaseDate, warrantyDuration, tradeLocation, deliveryFee, videoFilePath, thumbnailFilePath);
     }
 
     @Override
@@ -206,6 +220,7 @@ public class ProductDetail {
                 ", tradeLocation='" + tradeLocation + '\'' +
                 ", deliveryFee=" + deliveryFee +
                 ", videoFilePath='" + videoFilePath + '\'' +
+                ", thumbnailFilePath='" + thumbnailFilePath + '\'' +
                 '}';
     }
 }

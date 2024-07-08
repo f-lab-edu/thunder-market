@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +32,7 @@ public class VideoUtils {
         }
     }
 
-    public static String generateThumbnail(MultipartFile file, String outputPath) throws IOException {
+    public static byte[] generateThumbnail(MultipartFile file) throws IOException {
         try (InputStream inputStream = file.getInputStream();
              FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(inputStream)) {
 
@@ -42,12 +43,11 @@ public class VideoUtils {
                 Java2DFrameConverter converter = new Java2DFrameConverter();
                 BufferedImage bufferedImage = converter.getBufferedImage(frame);
 
-                String thumbnailFileName = "thumbnail_" + System.currentTimeMillis() + ".jpg";
-                File outputFile = new File(outputPath, thumbnailFileName);
-                ImageIO.write(bufferedImage, "jpg", outputFile);
-
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(bufferedImage, "jpg", baos);
                 grabber.stop();
-                return outputFile.getAbsolutePath();
+
+                return baos.toByteArray();
             } else {
                 throw new IOException("Failed to grab video frame");
             }

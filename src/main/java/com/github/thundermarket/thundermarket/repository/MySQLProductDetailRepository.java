@@ -1,8 +1,6 @@
 package com.github.thundermarket.thundermarket.repository;
 
-import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
-import com.github.thundermarket.thundermarket.domain.User;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
@@ -28,7 +26,7 @@ public class MySQLProductDetailRepository implements ProductDetailRepository {
 
     @Override
     public ProductDetail save(ProductDetail productDetail) {
-        String sql = "INSERT INTO productDetails (color, productCondition, batteryCondition, cameraCondition, accessories, purchaseDate, warrantyDuration, tradeLocation, deliveryFee, videoFilePath) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO productDetails (color, productCondition, batteryCondition, cameraCondition, accessories, purchaseDate, warrantyDuration, tradeLocation, deliveryFee, videoFilePath, thumbnailFilePath) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         Connection conn = null;
         long generatedKey = 0L;
 
@@ -45,6 +43,7 @@ public class MySQLProductDetailRepository implements ProductDetailRepository {
                 ps.setString(8, productDetail.getTradeLocation());
                 ps.setInt(9, productDetail.getDeliveryFee());
                 ps.setString(10, productDetail.getVideoFilePath());
+                ps.setString(11, productDetail.getThumbnailFilePath());
                 int affectedRows = ps.executeUpdate();
 
                 if (affectedRows == 0) {
@@ -90,6 +89,8 @@ public class MySQLProductDetailRepository implements ProductDetailRepository {
                                 .withWarrantyDuration(resultSet.getString("warrantyDuration"))
                                 .withTradeLocation(resultSet.getString("tradeLocation"))
                                 .withDeliveryFee(resultSet.getInt("deliveryFee"))
+                                .withVideo(resultSet.getString("videoFilePath"))
+                                .withThumbnailFilePath(resultSet.getString("thumbnailFilePath"))
                                 .build();
                     }
                 }
