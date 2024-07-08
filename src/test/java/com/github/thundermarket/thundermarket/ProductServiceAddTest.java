@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.thundermarket.thundermarket.TestDouble.ProductDetailFakeRepository;
 import com.github.thundermarket.thundermarket.TestDouble.ProductFakeRepository;
+import com.github.thundermarket.thundermarket.Util.VideoUtils;
 import com.github.thundermarket.thundermarket.domain.*;
 import com.github.thundermarket.thundermarket.repository.FileStorage;
 import com.github.thundermarket.thundermarket.repository.LocalProductVideoStorage;
@@ -14,6 +15,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.util.ResourceUtils;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class ProductServiceAddTest {
 
@@ -69,9 +72,11 @@ public class ProductServiceAddTest {
         MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "test-video.mp4", "video/mp4", new FileInputStream(ResourceUtils.getFile("classpath:5sec.mp4")));
         ProductService productService = new ProductService(new ProductFakeRepository(), new ProductDetailFakeRepository(), new LocalProductVideoStorage());
         ProductResponse productResponse = productService.add(createProduct(), createProductDetail(), mockMultipartFile);
-
+        String generatedThumbnailPath = VideoUtils.generateThumbnail(mockMultipartFile, Files.createTempDirectory("thumbnails").toString());
         String videoFilePath = productResponse.getProductDetail().getVideoFilePath();
+
         Assertions.assertThat(videoFilePath).startsWith("/tmp/app/storage/video/upload/");
         Assertions.assertThat(videoFilePath).endsWith(".mp4");
+        Assertions.assertThat(generatedThumbnailPath).endsWith(".jpg");
     }
 }
