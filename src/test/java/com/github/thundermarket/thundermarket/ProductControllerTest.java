@@ -1,12 +1,14 @@
 package com.github.thundermarket.thundermarket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.thundermarket.thundermarket.TestDouble.TestConfig;
 import com.github.thundermarket.thundermarket.domain.User;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -20,11 +22,8 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
-
 import java.io.FileInputStream;
-
 import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -32,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @Testcontainers
+@Import(TestConfig.class) // 통합 테스트에서 Fake 객체를 주입하기 위한 설정
 public class ProductControllerTest {
 
     @Container
@@ -146,7 +146,6 @@ public class ProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.product.name").value("iPhone11"))
                 .andExpect(jsonPath("$.productDetail.color").value("white"))
-                .andExpect(jsonPath("$.productDetail.videoFilePath").value(startsWith("/tmp/app/storage/video/upload/")))
                 .andExpect(jsonPath("$.productDetail.videoFilePath").value(endsWith(".mp4")));
     }
 }

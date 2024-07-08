@@ -1,5 +1,6 @@
 package com.github.thundermarket.thundermarket;
 
+import com.github.thundermarket.thundermarket.TestDouble.FileFakeStorage;
 import com.github.thundermarket.thundermarket.TestDouble.PaginatedProductFakeRepository;
 import com.github.thundermarket.thundermarket.TestDouble.ProductDetailFakeRepository;
 import com.github.thundermarket.thundermarket.TestDouble.ProductFakeRepository;
@@ -7,7 +8,6 @@ import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.domain.ProductsResponse;
 import com.github.thundermarket.thundermarket.repository.FileStorage;
-import com.github.thundermarket.thundermarket.repository.LocalProductVideoStorage;
 import com.github.thundermarket.thundermarket.service.ProductService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ public class ProductServiceTest {
     private final ProductFakeRepository productRepository = new ProductFakeRepository();
     private final PaginatedProductFakeRepository paginatedProductFakeRepository = new PaginatedProductFakeRepository();
     private final ProductDetailFakeRepository productDetailFakeRepository = new ProductDetailFakeRepository();
-    private final FileStorage fileStorage = new LocalProductVideoStorage();
+    private final FileStorage fileStorage = new FileFakeStorage();
 
     public Product createProduct() {
         return new Product.Builder()
