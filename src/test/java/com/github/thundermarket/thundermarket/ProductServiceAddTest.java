@@ -2,12 +2,11 @@ package com.github.thundermarket.thundermarket;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.thundermarket.thundermarket.TestDouble.FileFakeStorage;
 import com.github.thundermarket.thundermarket.TestDouble.ProductDetailFakeRepository;
 import com.github.thundermarket.thundermarket.TestDouble.ProductFakeRepository;
-import com.github.thundermarket.thundermarket.Util.VideoUtils;
 import com.github.thundermarket.thundermarket.domain.*;
 import com.github.thundermarket.thundermarket.repository.FileStorage;
-import com.github.thundermarket.thundermarket.repository.LocalProductVideoStorage;
 import com.github.thundermarket.thundermarket.service.ProductService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,8 +14,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.util.ResourceUtils;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class ProductServiceAddTest {
 
@@ -41,7 +38,7 @@ public class ProductServiceAddTest {
 
     @Test
     public void 상품_추가_성공() throws IOException {
-        ProductService productService = new ProductService(new ProductFakeRepository(), new ProductDetailFakeRepository(), new LocalProductVideoStorage());
+        ProductService productService = new ProductService(new ProductFakeRepository(), new ProductDetailFakeRepository(), new FileFakeStorage());
         MockMultipartFile emptyMockMultipartFile = new MockMultipartFile("video", "test-video.mp4", "video/mp4", new FileInputStream(ResourceUtils.getFile("classpath:5sec.mp4")));
         ObjectMapper objectMapper = new ObjectMapper();
         String expectedProductName = "iPhone12";
@@ -61,22 +58,22 @@ public class ProductServiceAddTest {
     @Test
     public void 동영상_파일_저장() throws IOException {
         MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "test-video.mp4", "video/mp4", new FileInputStream(ResourceUtils.getFile("classpath:5sec.mp4")));
-        FileStorage localFileStorage = new LocalProductVideoStorage();
+        FileStorage localFileStorage = new FileFakeStorage();
+        FileUploadResult fileUploadResult = localFileStorage.save(mockMultipartFile);
 
-        Assertions.assertThat(localFileStorage.save(mockMultipartFile)).startsWith("/tmp/app/storage/video/upload/");
-        Assertions.assertThat(localFileStorage.save(mockMultipartFile)).endsWith(".mp4");
+        Assertions.assertThat(fileUploadResult.getVideoFilePath()).endsWith(".mp4");
     }
 
     @Test
-    public void 동영상_파일_저장하고_상품상세정보_응답값에_추가() throws IOException {
+    public void 동영상_파일_및_썸네일_저장() throws IOException {
         MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "test-video.mp4", "video/mp4", new FileInputStream(ResourceUtils.getFile("classpath:5sec.mp4")));
-        ProductService productService = new ProductService(new ProductFakeRepository(), new ProductDetailFakeRepository(), new LocalProductVideoStorage());
+        ProductService productService = new ProductService(new ProductFakeRepository(), new ProductDetailFakeRepository(), new FileFakeStorage());
         ProductResponse productResponse = productService.add(createProduct(), createProductDetail(), mockMultipartFile);
-        String generatedThumbnailPath = VideoUtils.generateThumbnail(mockMultipartFile, Files.createTempDirectory("thumbnails").toString());
-        String videoFilePath = productResponse.getProductDetail().getVideoFilePath();
 
-        Assertions.assertThat(videoFilePath).startsWith("/tmp/app/storage/video/upload/");
+        String videoFilePath = productResponse.getProductDetail().getVideoFilePath();
+        String thumbnailFilePath = productResponse.getProductDetail().getThumbnailFilePath();
+
         Assertions.assertThat(videoFilePath).endsWith(".mp4");
-        Assertions.assertThat(generatedThumbnailPath).endsWith(".jpg");
+        Assertions.assertThat(thumbnailFilePath).endsWith(".jpg");
     }
 }
