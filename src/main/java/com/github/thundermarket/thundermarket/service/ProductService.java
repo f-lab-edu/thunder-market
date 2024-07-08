@@ -35,9 +35,9 @@ public class ProductService {
     }
 
     public ProductResponse add(Product product, ProductDetail productDetail, MultipartFile video) throws IOException {
-        String videoFilePath = fileStorage.save(video);
-        ProductDetail productDetailWithVideo = new ProductDetail.Builder(productDetail).withVideo(videoFilePath).build();
-        return ProductResponse.of(productRepository.save(product), productDetailRepository.save(productDetailWithVideo));
+        FileUploadResult fileUploadResult = fileStorage.save(video);
+        ProductDetail productDetailWithVideoAndThumbnail = new ProductDetail.Builder(productDetail).withVideo(fileUploadResult.getVideoFilePath()).withThumbnailFilePath(fileUploadResult.getThumbnailFilePath()).build();
+        return ProductResponse.of(productRepository.save(product), productDetailRepository.save(productDetailWithVideoAndThumbnail));
     }
 
     public Product update(Product product) {

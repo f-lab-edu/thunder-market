@@ -1,6 +1,7 @@
 package com.github.thundermarket.thundermarket.repository;
 
 import com.github.thundermarket.thundermarket.Util.VideoUtils;
+import com.github.thundermarket.thundermarket.domain.FileUploadResult;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import com.github.thundermarket.thundermarket.constant.*;
@@ -19,7 +20,7 @@ import java.util.UUID;
 public class NCloudStorage implements FileStorage {
 
     @Override
-    public String save(MultipartFile file) throws IOException {
+    public FileUploadResult save(MultipartFile file) throws IOException {
         validateFile(file);
 
         S3Client s3 = S3Client.builder()
@@ -29,18 +30,33 @@ public class NCloudStorage implements FileStorage {
                 .region(Region.of(FileStorageConst.NCLOUD_REGION_NAME))
                 .build();
 
-        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-        String objectKey = FileStorageConst.NCLOUD_VIDEO_DIRECTORY + fileName;
+        UUID uuid = UUID.randomUUID();
+        String fileName = "video_" + uuid + "_" + file.getOriginalFilename();
+        String videoObjectKey = FileStorageConst.NCLOUD_VIDEO_DIRECTORY + fileName;
 
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(FileStorageConst.NCLOUD_BUCKET_NAME)
-                .key(objectKey)
+                .key(videoObjectKey)
                 .contentType(file.getContentType())
                 .build();
 
         s3.putObject(putObjectRequest, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
 
-        return FileStorageConst.NCLOUD_ENDPOINT + "/" + FileStorageConst.NCLOUD_BUCKET_NAME + "/" + objectKey;
+        byte[] thumbnailBytes = VideoUtils.generateThumbnail(file);
+        String thumbnailFileName = "thumbnail_" + uuid + ".jpg";
+        String thumbnailObjectKey = FileStorageConst.NCLOUD_THUMBNAIL_DIRECTORY + thumbnailFileName;
+
+        PutObjectRequest thumbnailPutRequest = PutObjectRequest.builder()
+                .bucket(FileStorageConst.NCLOUD_BUCKET_NAME)
+                .key(thumbnailObjectKey)
+                .contentType("image/jpeg")
+                .build();
+
+        s3.putObject(thumbnailPutRequest, RequestBody.fromBytes(thumbnailBytes));
+
+        String videoFilePath = FileStorageConst.NCLOUD_ENDPOINT + "/" + FileStorageConst.NCLOUD_BUCKET_NAME + "/" + videoObjectKey;
+        String thumbnailFilePath = FileStorageConst.NCLOUD_ENDPOINT + "/" + FileStorageConst.NCLOUD_BUCKET_NAME + "/" + thumbnailObjectKey;
+        return new FileUploadResult(videoFilePath, thumbnailFilePath);
     }
 
     @Override
