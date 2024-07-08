@@ -16,25 +16,30 @@ public class LocalProductVideoStorage implements FileStorage {
 
     private static final String STORAGE_LOCATION = System.getProperty("app.storage.path", "/tmp/app/storage/video/upload");
 
-    static {
-        try {
-            Files.createDirectories(Paths.get(STORAGE_LOCATION));
-        } catch (IOException e) {
-            throw new RuntimeException("Could not create storage directory", e);
-        }
-    }
-
     public LocalProductVideoStorage() {
+        createStorageDirectory();
     }
-
 
     @Override
     public String save(MultipartFile file) throws IOException {
-        String fileName = UUID.randomUUID().toString();
-        String extension = getFileExtension(file.getOriginalFilename());
-        Path storagePath = Paths.get(STORAGE_LOCATION).resolve(fileName + "." + extension);
+        validateFile(file);
 
-        if (!FileStorageConst.ALLOWED_FILE_EXTENSIONS.contains(extension)) {
+        Path storagePath = Paths.get(STORAGE_LOCATION).resolve(UUID.randomUUID() + "." + getFileExtension(file.getOriginalFilename()));
+        file.transferTo(storagePath);
+        return String.valueOf(storagePath);
+    }
+
+    @Override
+    public boolean delete(String filePath) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    private void validateFile(MultipartFile file) throws IOException {
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("File must not be null or empty");
+        }
+
+        if (!FileStorageConst.ALLOWED_FILE_EXTENSIONS.contains(getFileExtension(file.getOriginalFilename()))) {
             throw new IllegalArgumentException("File extension not allowed");
         }
 
@@ -45,17 +50,22 @@ public class LocalProductVideoStorage implements FileStorage {
         if (FileStorageConst.MAX_FILE_SIZE < file.getSize()) {
             throw new IllegalArgumentException("File size exceeds the limit");
         }
-
-        file.transferTo(storagePath);
-        return String.valueOf(storagePath);
-    }
-
-    @Override
-    public boolean delete(String filePath) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     private static String getFileExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+    }
+
+    private void createStorageDirectory() {
+        Path path = Paths.get(LocalProductVideoStorage.STORAGE_LOCATION);
+        if (Files.exists(path)) {
+            return;
+        }
+
+        try {
+            Files.createDirectories(path);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not create storage directory", e);
+        }
     }
 }
