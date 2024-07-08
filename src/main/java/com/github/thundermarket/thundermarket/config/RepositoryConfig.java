@@ -26,21 +26,4 @@ public class RepositoryConfig {
     public UserRepository userRepository() {
         return new MySQLUserRepository(dataSource);
     }
-
-    @Bean
-    public FileStorage fileStorage() {
-        return new NCloudStorage();
-    }
-
-    @Bean
-    public ProductService productService(
-            ProductRepository productRepository,
-            ProductDetailRepository productDetailRepository
-    ) {
-        return new ProductService(
-                productRepository,
-                productDetailRepository,
-                fileStorage()
-        );
-    }
 }
