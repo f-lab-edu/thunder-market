@@ -6,8 +6,8 @@ import com.github.thundermarket.thundermarket.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 
 @RestController
 public class ProductController {
@@ -34,7 +34,8 @@ public class ProductController {
     }
 
     @PostMapping("/api/v1/products")
-    public ResponseEntity<ProductResponse> add(@RequestBody ProductRequest productRequest) {
-        return new ResponseEntity<>(productService.add(productRequest.toProduct(), productRequest.toProductDetail()), HttpStatus.OK);
+    public ResponseEntity<ProductResponse> add(@RequestPart("productRequest") ProductRequest productRequest,
+                                               @RequestPart("video") MultipartFile video) throws IOException {
+        return new ResponseEntity<>(productService.add(productRequest.toProduct(), productRequest.toProductDetail(), video), HttpStatus.OK);
     }
 }
