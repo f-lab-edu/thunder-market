@@ -22,5 +22,6 @@ create table productDetails
     purchaseDate     varchar(255) null,
     warrantyDuration varchar(255) null,
     tradeLocation    varchar(255) null,
-    deliveryFee      int          null
+    deliveryFee      int          null,
+    videoFilePath    varchar(255) null
 )
