@@ -1,13 +1,13 @@
 package com.github.thundermarket.thundermarket.service;
 
-import com.github.thundermarket.thundermarket.domain.Product;
-import com.github.thundermarket.thundermarket.domain.ProductDetail;
-import com.github.thundermarket.thundermarket.domain.ProductResponse;
-import com.github.thundermarket.thundermarket.domain.ProductsResponse;
+import com.github.thundermarket.thundermarket.domain.*;
+import com.github.thundermarket.thundermarket.repository.FileStorage;
 import com.github.thundermarket.thundermarket.repository.ProductDetailRepository;
 import com.github.thundermarket.thundermarket.repository.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -17,10 +17,12 @@ public class ProductService {
     public static final int maxPaginationLimit = 100;
     private final ProductRepository productRepository;
     private final ProductDetailRepository productDetailRepository;
+    private final FileStorage fileStorage;
 
-    public ProductService(ProductRepository userRepository, ProductDetailRepository productDetailRepository) {
+    public ProductService(ProductRepository userRepository, ProductDetailRepository productDetailRepository, FileStorage fileStorage) {
         this.productRepository = userRepository;
         this.productDetailRepository = productDetailRepository;
+        this.fileStorage = fileStorage;
     }
 
     public ProductsResponse products(Long cursorId, int limit) {
@@ -32,8 +34,10 @@ public class ProductService {
         return ProductsResponse.of(products, newCursorId, limit);
     }
 
-    public ProductResponse add(Product product, ProductDetail productDetail) {
-        return ProductResponse.of(productRepository.save(product), productDetailRepository.save(productDetail));
+    public ProductResponse add(Product product, ProductDetail productDetail, MultipartFile video) throws IOException {
+        String videoFilePath = fileStorage.save(video);
+        ProductDetail productDetailWithVideo = new ProductDetail.Builder(productDetail).withVideo(videoFilePath).build();
+        return ProductResponse.of(productRepository.save(product), productDetailRepository.save(productDetailWithVideo));
     }
 
     public Product update(Product product) {

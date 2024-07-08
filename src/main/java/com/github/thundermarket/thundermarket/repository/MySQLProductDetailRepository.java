@@ -28,7 +28,7 @@ public class MySQLProductDetailRepository implements ProductDetailRepository {
 
     @Override
     public ProductDetail save(ProductDetail productDetail) {
-        String sql = "INSERT INTO productDetails (color, productCondition, batteryCondition, cameraCondition, accessories, purchaseDate, warrantyDuration, tradeLocation, deliveryFee) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO productDetails (color, productCondition, batteryCondition, cameraCondition, accessories, purchaseDate, warrantyDuration, tradeLocation, deliveryFee, videoFilePath) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         Connection conn = null;
         long generatedKey = 0L;
 
@@ -44,6 +44,7 @@ public class MySQLProductDetailRepository implements ProductDetailRepository {
                 ps.setString(7, productDetail.getWarrantyDuration());
                 ps.setString(8, productDetail.getTradeLocation());
                 ps.setInt(9, productDetail.getDeliveryFee());
+                ps.setString(10, productDetail.getVideoFilePath());
                 int affectedRows = ps.executeUpdate();
 
                 if (affectedRows == 0) {
