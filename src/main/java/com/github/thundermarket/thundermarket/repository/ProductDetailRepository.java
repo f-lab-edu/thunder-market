@@ -4,7 +4,7 @@ import com.github.thundermarket.thundermarket.domain.ProductDetail;
 
 public interface ProductDetailRepository {
 
-    public ProductDetail save(ProductDetail productDetail);
-    public ProductDetail findById(Long productId);
+    ProductDetail save(ProductDetail productDetail);
+    ProductDetail findById(Long productId);
 
 }
