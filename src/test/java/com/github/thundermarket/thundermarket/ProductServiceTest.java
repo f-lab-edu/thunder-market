@@ -1,14 +1,20 @@
 package com.github.thundermarket.thundermarket;
 
+import com.github.thundermarket.thundermarket.TestDouble.FileFakeStorage;
 import com.github.thundermarket.thundermarket.TestDouble.PaginatedProductFakeRepository;
 import com.github.thundermarket.thundermarket.TestDouble.ProductDetailFakeRepository;
 import com.github.thundermarket.thundermarket.TestDouble.ProductFakeRepository;
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.domain.ProductsResponse;
+import com.github.thundermarket.thundermarket.repository.FileStorage;
 import com.github.thundermarket.thundermarket.service.ProductService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.util.ResourceUtils;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 
 public class ProductServiceTest {
@@ -16,6 +22,7 @@ public class ProductServiceTest {
     private final ProductFakeRepository productRepository = new ProductFakeRepository();
     private final PaginatedProductFakeRepository paginatedProductFakeRepository = new PaginatedProductFakeRepository();
     private final ProductDetailFakeRepository productDetailFakeRepository = new ProductDetailFakeRepository();
+    private final FileStorage fileStorage = new FileFakeStorage();
 
     public Product createProduct() {
         return new Product.Builder()
@@ -36,19 +43,23 @@ public class ProductServiceTest {
                 .build();
     }
 
+    public MockMultipartFile createMockMultipartFile() throws IOException {
+        return new MockMultipartFile("video", "test-video.mp4", "video/mp4", new FileInputStream(ResourceUtils.getFile("classpath:5sec.mp4")));
+    }
+
     @Test
     public void 상품0개_상품목록_조회() {
-        ProductService productService = new ProductService(productRepository, productDetailFakeRepository);
+        ProductService productService = new ProductService(productRepository, productDetailFakeRepository, fileStorage);
         ProductsResponse products = productService.products(0L, 10);
 
         Assertions.assertThat(products.getProducts().isEmpty()).isEqualTo(true);
     }
 
     @Test
-    public void 상품1개_상품목록_조회() {
-        ProductService productService = new ProductService(productRepository, productDetailFakeRepository);
+    public void 상품1개_상품목록_조회() throws IOException {
+        ProductService productService = new ProductService(productRepository, productDetailFakeRepository, fileStorage);
         Product product = createProduct();
-        productService.add(product, createProductDetail());
+        productService.add(product, createProductDetail(), createMockMultipartFile());
 
         ProductsResponse products = productService.products(0L, 10);
 
@@ -56,10 +67,10 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void 상품2개_상품목록_조회() {
-        ProductService productService = new ProductService(productRepository, productDetailFakeRepository);
+    public void 상품2개_상품목록_조회() throws IOException {
+        ProductService productService = new ProductService(productRepository, productDetailFakeRepository, fileStorage);
         Product product = createProduct();
-        productService.add(product, createProductDetail());
+        productService.add(product, createProductDetail(), createMockMultipartFile());
 
         Long id2 = 2L;
         String name2 = "아이폰13";
@@ -71,7 +82,7 @@ public class ProductServiceTest {
                 .withPrice(price2)
                 .withStatus(status2)
                 .build();
-        productService.add(product2, createProductDetail());
+        productService.add(product2, createProductDetail(), createMockMultipartFile());
 
         ProductsResponse products = productService.products(0L, 10);
         System.out.println(products);
@@ -81,10 +92,10 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void 상품1개_상품목록_조회_후_상품1개추가_다시조회() {
-        ProductService productService = new ProductService(productRepository, productDetailFakeRepository);
+    public void 상품1개_상품목록_조회_후_상품1개추가_다시조회() throws IOException {
+        ProductService productService = new ProductService(productRepository, productDetailFakeRepository, fileStorage);
         Product product = createProduct();
-        productService.add(product, createProductDetail());
+        productService.add(product, createProductDetail(), createMockMultipartFile());
         ProductsResponse products = productService.products(0L, 10);
         Assertions.assertThat(products.getProducts().getFirst()).isEqualTo(product);
 
@@ -98,16 +109,16 @@ public class ProductServiceTest {
                 .withPrice(price2)
                 .withStatus(status2)
                 .build();
-        productService.add(product2, createProductDetail());
+        productService.add(product2, createProductDetail(), createMockMultipartFile());
         ProductsResponse products2 = productService.products(0L, 10);
         Assertions.assertThat(products2.getProducts().get(1)).isEqualTo(product2);
     }
 
     @Test
-    public void 상품1개_상품목록_조회_후_상품정보수정_다시조회() {
-        ProductService productService = new ProductService(productRepository, productDetailFakeRepository);
+    public void 상품1개_상품목록_조회_후_상품정보수정_다시조회() throws IOException {
+        ProductService productService = new ProductService(productRepository, productDetailFakeRepository, fileStorage);
         Product product = createProduct();
-        productService.add(product, createProductDetail());
+        productService.add(product, createProductDetail(), createMockMultipartFile());
         ProductsResponse products = productService.products(0L, 10);
         Assertions.assertThat(products.getProducts().getFirst()).isEqualTo(product);
 
@@ -127,10 +138,10 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void 상품1개_상품목록_조회_후_상품삭제_다시조회() {
-        ProductService productService = new ProductService(productRepository, productDetailFakeRepository);
+    public void 상품1개_상품목록_조회_후_상품삭제_다시조회() throws IOException {
+        ProductService productService = new ProductService(productRepository, productDetailFakeRepository, fileStorage);
         Product product = createProduct();
-        productService.add(product, createProductDetail());
+        productService.add(product, createProductDetail(), createMockMultipartFile());
         ProductsResponse products = productService.products(0L, 10);
         Assertions.assertThat(products.getProducts().getFirst()).isEqualTo(product);
 
@@ -139,10 +150,10 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void 상품2개_상품목록_조회_후_상품삭제_다시조회() {
-        ProductService productService = new ProductService(productRepository, productDetailFakeRepository);
+    public void 상품2개_상품목록_조회_후_상품삭제_다시조회() throws IOException {
+        ProductService productService = new ProductService(productRepository, productDetailFakeRepository, fileStorage);
         Product product = createProduct();
-        productService.add(product, createProductDetail());
+        productService.add(product, createProductDetail(), createMockMultipartFile());
 
         Long id2 = 2L;
         String name2 = "아이폰13";
@@ -154,7 +165,7 @@ public class ProductServiceTest {
                 .withPrice(price2)
                 .withStatus(status2)
                 .build();
-        productService.add(product2, createProductDetail());
+        productService.add(product2, createProductDetail(), createMockMultipartFile());
 
         ProductsResponse products = productService.products(0L, 10);
 
@@ -168,7 +179,7 @@ public class ProductServiceTest {
     @Test
     public void 페이지네이션_cursor_limit_검증() {
         // 테스트 데이터를 생성해놓은 paginatedProductFakeRepository 사용
-        ProductService productService = new ProductService(paginatedProductFakeRepository, productDetailFakeRepository);
+        ProductService productService = new ProductService(paginatedProductFakeRepository, productDetailFakeRepository, fileStorage);
 
         // cursorId 0L, limit 1 일 때 product id가 1인 것이 반환되어야 함
         ProductsResponse products = productService.products(0L, 1);
