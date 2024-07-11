@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ProductRepository {
 
-    List<Product> findAll();
+    List<Product> findAll(Long cursorId, int limit);
     Product save(Product product);
     void delete(Long id);
 }

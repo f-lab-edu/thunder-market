@@ -11,7 +11,7 @@ public class ProductFakeRepository implements ProductRepository {
     private final List<Product> products = new ArrayList<>();
 
     @Override
-    public List<Product> findAll() {
+    public List<Product> findAll(Long cursorId, int limit) {
         return products;
     }
 
