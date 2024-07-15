@@ -30,7 +30,7 @@ public class ProductService {
         int effectiveLimit = Math.min(maxPaginationLimit, Math.max(minPaginationLimit, limit));
 
         List<Product> products = productRepository.findAll(effectiveCursorId, effectiveLimit);
-        Long newCursorId = products.isEmpty() ? null : products.get(products.size() - 1).getId();
+        Long newCursorId = products.isEmpty() ? null : products.getFirst().getId();
         return ProductsResponse.of(products, newCursorId, limit);
     }
 

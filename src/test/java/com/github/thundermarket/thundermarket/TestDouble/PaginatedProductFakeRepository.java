@@ -32,7 +32,7 @@ public class PaginatedProductFakeRepository extends ProductFakeRepository {
 
         for (Product product : products) {
             if (product.getId() > effectiveCursorId) {
-                result.add(product);
+                result.addFirst(product);
                 if (result.size() == limit) {
                     break;  // 원하는 개수만큼 찾았으면 반복 중단
                 }
