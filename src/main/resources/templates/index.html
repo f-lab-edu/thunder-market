@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>썬더마켓</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .hidden {
+            display: none;
+        }
+        .product {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            padding: 20px;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        .product:hover {
+            transform: translateY(-5px);
+        }
+        .product-thumbnail {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 20px;
+            border-radius: 4px;
+        }
+        .product-info {
+            flex-grow: 1;
+        }
+        form {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        input, button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #userInfo {
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        #loadMoreButton {
+            background-color: #e74c3c;
+        }
+        #loadMoreButton:hover {
+            background-color: #c0392b;
+        }
+        #productDetailContent {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .product-video {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+        .product-image {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>썬더마켓</h1>
+
+    <div id="userInfo" class="hidden">
+        <p>안녕하세요, <span id="userEmail"></span>님!</p>
+        <button onclick="logout()">로그아웃</button>
+    </div>
+
+    <div id="authButtons" class="hidden">
+        <button onclick="showSection('signup')">회원가입</button>
+        <button onclick="showSection('login')">로그인</button>
+    </div>
+
+    <div id="mainContent">
+        <div id="home" class="hidden">
+            <h2>상품 목록</h2>
+            <div id="productList"></div>
+            <button id="loadMoreButton" onclick="loadMoreProducts()">더 보기</button>
+            <button onclick="showSection('registerProduct')">상품 등록</button>
+        </div>
+
+        <div id="signup" class="hidden">
+            <h2>회원가입</h2>
+            <form id="signupForm">
+                <input type="email" id="signupEmail" placeholder="이메일" required>
+                <input type="password" id="signupPassword" placeholder="비밀번호" required>
+                <button type="submit">가입하기</button>
+            </form>
+        </div>
+
+        <div id="login" class="hidden">
+            <h2>로그인</h2>
+            <form id="loginForm">
+                <input type="email" id="loginEmail" placeholder="이메일" value="test01@email.com" required>
+                <input type="password" id="loginPassword" placeholder="비밀번호" value="password" required>
+                <button type="submit">로그인</button>
+            </form>
+        </div>
+
+        <div id="productDetail" class="hidden">
+            <h2>상품 상세 정보</h2>
+            <div id="productDetailContent"></div>
+            <button onclick="showSection('home')">목록으로 돌아가기</button>
+        </div>
+
+        <div id="registerProduct" class="hidden">
+            <h2>상품 등록</h2>
+            <form id="registerProductForm">
+                <input type="text" id="name" placeholder="상품명" required>
+                <input type="number" id="price" placeholder="가격" required>
+                <input type="text" id="status" placeholder="상태" required>
+                <input type="text" id="color" placeholder="색상" required>
+                <input type="text" id="productCondition" placeholder="상품 상태" required>
+                <input type="text" id="batteryCondition" placeholder="배터리 상태" required>
+                <input type="text" id="cameraCondition" placeholder="카메라 상태" required>
+                <input type="text" id="accessories" placeholder="구성품" required>
+                <input type="date" id="purchaseDate" required>
+                <input type="text" id="warrantyDuration" placeholder="보증 기간" required>
+                <input type="text" id="tradeLocation" placeholder="거래 장소" required>
+                <input type="number" id="deliveryFee" placeholder="배송비" required>
+                <input type="file" id="productVideo" accept="video/*" required>
+                <button type="submit">상품 등록</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    let cursorId = null;
+    let isLoggedIn = false;
+    let isLastPage = false;
+
+    function showSection(sectionId) {
+        document.querySelectorAll('#mainContent > div').forEach(div => div.classList.add('hidden'));
+        document.getElementById(sectionId).classList.remove('hidden');
+        if (sectionId === 'home') loadMoreProducts();
+    }
+
+    function updateAuthUI() {
+        document.getElementById('userInfo').classList.toggle('hidden', !isLoggedIn);
+        document.getElementById('authButtons').classList.toggle('hidden', isLoggedIn);
+        if (isLoggedIn) showSection('home');
+    }
+
+    function loadMoreProducts() {
+        fetch(`/api/v1/products?cursorId=${cursorId || ''}`)
+            .then(response => response.json())
+            .then(data => {
+                const productList = document.getElementById('productList');
+
+                data.products.forEach(product => {
+                    const productDiv = document.createElement('div');
+                    productDiv.className = 'product';
+                    productDiv.innerHTML = `
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p>가격: ${product.price}원</p>
+                            <p>상태: ${product.status}</p>
+                            <button onclick="showProductDetail(${product.id}, this)">상세 보기</button>
+                        </div>
+                    `;
+                    productDiv.dataset.productInfo = JSON.stringify(product);
+                    productList.appendChild(productDiv);
+                });
+
+                cursorId = data.cursorId;
+
+                if (data.products.length < data.limit) {
+                    isLastPage = true;
+                    document.getElementById('loadMoreButton').style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading products:', error);
+            });
+    }
+
+    function showProductDetail(id, button) {
+        const productInfo = JSON.parse(button.closest('.product').dataset.productInfo);
+
+        fetch(`/api/v1/products/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log('Product detail data:', data);
+                const detailContent = document.getElementById('productDetailContent');
+                if (data && data.productDetail) {
+                    detailContent.innerHTML = `
+                    ${data.productDetail.videoFilePath ? `<video controls src="${data.productDetail.videoFilePath}" class="product-video"></video>` : ''}
+                    <h3>${productInfo.name}</h3>
+                    <p>가격: ${productInfo.price}원</p>
+                    <p>상태: ${productInfo.status}</p>
+                    <p>색상: ${data.productDetail.color || 'N/A'}</p>
+                    <p>상품 상태: ${data.productDetail.productCondition || 'N/A'}</p>
+                    <p>배터리 상태: ${data.productDetail.batteryCondition || 'N/A'}</p>
+                    <p>카메라 상태: ${data.productDetail.cameraCondition || 'N/A'}</p>
+                    <p>구성품: ${data.productDetail.accessories || 'N/A'}</p>
+                    <p>구매일: ${data.productDetail.purchaseDate || 'N/A'}</p>
+                    <p>보증 기간: ${data.productDetail.warrantyDuration || 'N/A'}</p>
+                    <p>거래 장소: ${data.productDetail.tradeLocation || 'N/A'}</p>
+                    <p>배송비: ${data.productDetail.deliveryFee || 'N/A'}원</p>
+                `;
+                } else {
+                    detailContent.innerHTML = '<p>상품 정보를 불러오는데 실패했습니다.</p>';
+                }
+                showSection('productDetail');
+            })
+            .catch(error => {
+                console.error('Error fetching product detail:', error);
+                const detailContent = document.getElementById('productDetailContent');
+                detailContent.innerHTML = '<p>상품 정보를 불러오는데 오류가 발생했습니다.</p>';
+                showSection('productDetail');
+            });
+    }
+
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+        fetch('/api/v1/auth/join', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert('회원가입이 완료되었습니다. 로그인해주세요.');
+                showSection('login');
+            });
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        fetch('/api/v1/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        })
+            .then(response => response.text())
+            .then(data => {
+                if (data === 'Login successful') {
+                    isLoggedIn = true;
+                    document.getElementById('userEmail').textContent = email;
+                    updateAuthUI();
+                } else {
+                    alert('로그인에 실패했습니다.');
+                }
+            });
+    });
+
+    document.getElementById('registerProductForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData();
+        const productRequest = {
+            product: {
+                name: document.getElementById('name').value,
+                price: parseInt(document.getElementById('price').value),
+                status: document.getElementById('status').value
+            },
+            productDetail: {
+                color: document.getElementById('color').value,
+                productCondition: document.getElementById('productCondition').value,
+                batteryCondition: document.getElementById('batteryCondition').value,
+                cameraCondition: document.getElementById('cameraCondition').value,
+                accessories: document.getElementById('accessories').value,
+                purchaseDate: document.getElementById('purchaseDate').value,
+                warrantyDuration: document.getElementById('warrantyDuration').value,
+                tradeLocation: document.getElementById('tradeLocation').value,
+                deliveryFee: parseInt(document.getElementById('deliveryFee').value)
+            }
+        };
+
+        const productRequestBlob = new Blob([JSON.stringify(productRequest)], {
+            type: 'application/json'
+        });
+
+        formData.append('productRequest', productRequestBlob, 'productRequest.json');
+
+        const videoFile = document.getElementById('productVideo').files[0];
+        if (videoFile) {
+            formData.append('video', videoFile);
+        } else {
+            console.warn('No video file selected');
+            return;
+        }
+
+        fetch('/api/v1/products', {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error('Server responded with ' + response.status + ': ' + text);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                alert('상품이 등록되었습니다.');
+                showSection('home');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('상품 등록에 실패했습니다: ' + error.message);
+            });
+    });
+
+    function logout() {
+        isLoggedIn = false;
+        updateAuthUI();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        cursorId = null;
+        fetch('/api/v1/mypage')
+            .then(response => response.json())
+            .then(data => {
+                if (data.email) {
+                    isLoggedIn = true;
+                    document.getElementById('userEmail').textContent = data.email;
+                }
+                updateAuthUI();
+            });
+    });
+
+</script>
+</body>
+</html>
