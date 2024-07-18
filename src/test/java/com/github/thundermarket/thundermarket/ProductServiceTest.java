@@ -6,6 +6,7 @@ import com.github.thundermarket.thundermarket.TestDouble.ProductDetailFakeReposi
 import com.github.thundermarket.thundermarket.TestDouble.ProductFakeRepository;
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
+import com.github.thundermarket.thundermarket.domain.ProductFilterRequest;
 import com.github.thundermarket.thundermarket.domain.ProductsResponse;
 import com.github.thundermarket.thundermarket.repository.FileStorage;
 import com.github.thundermarket.thundermarket.service.ProductService;
@@ -208,5 +209,23 @@ public class ProductServiceTest {
         // cursorId 0L, limit 1 일 때 다음 커서 id는 2여야 함
         products = productService.products(1L, 1);
         Assertions.assertThat(products.getCursorId()).isEqualTo(2);
+    }
+
+    @Test
+    public void 상품조회_상품옵션필터링() {
+        String name = "iPhone11";
+        int priceMin = 1000;
+        int priceMax = 300000;
+        String color = "white";
+        String purchaseDateMin = "2023-01-01";
+        String purchaseDateMax = "2024-07-17";
+        ProductService productService = new ProductService(productRepository, productDetailFakeRepository, fileStorage);
+        ProductFilterRequest productFilterRequest = ProductFilterRequest.of(name, priceMin, priceMax, color, purchaseDateMin, purchaseDateMax);
+
+        Product product = productService.filter(productFilterRequest).getProducts().getFirst();
+
+        Assertions.assertThat(product.getName()).isEqualTo(name);
+        Assertions.assertThat(product.getPrice()).isGreaterThanOrEqualTo(priceMin);
+        Assertions.assertThat(product.getPrice()).isLessThanOrEqualTo(priceMax);
     }
 }
