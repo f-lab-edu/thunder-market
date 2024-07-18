@@ -16,6 +16,10 @@ public class ProductsResponse {
         this.limit = limit;
     }
 
+    public ProductsResponse(List<Product> products) {
+        this(products, null, 0);
+    }
+
     public List<Product> getProducts() {
         return products;
     }
@@ -26,6 +30,10 @@ public class ProductsResponse {
 
     public int getLimit() {
         return limit;
+    }
+
+    public static ProductsResponse of(List<Product> products) {
+        return new ProductsResponse(products);
     }
 
     public static ProductsResponse of(List<Product> products, Long newCursorId, int limit) {
