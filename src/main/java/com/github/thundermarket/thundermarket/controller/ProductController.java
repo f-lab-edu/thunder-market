@@ -38,4 +38,9 @@ public class ProductController {
                                                @RequestPart("video") MultipartFile video) throws IOException {
         return new ResponseEntity<>(productService.add(productRequest.toProduct(), productRequest.toProductDetail(), video), HttpStatus.OK);
     }
+
+    @GetMapping("/api/v1/products/filter")
+    public ResponseEntity<ProductsResponse> filteredProducts(@ModelAttribute ProductFilterRequest productFilterRequest) {
+        return new ResponseEntity<>(productService.filter(productFilterRequest), HttpStatus.OK);
+    }
 }
