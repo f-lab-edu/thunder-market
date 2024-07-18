@@ -107,7 +107,7 @@ public class MySQLProductRepository implements ProductRepository {
 
     @Override
     public List<Product> filterByProductOptions(ProductFilterRequest productFilterRequest) {
-        String sql = "SELECT * FROM products JOIN productDetails " +
+        String sql = "SELECT products.id, name, price, status FROM products JOIN productDetails " +
                 "ON products.id = productDetails.id " +
                 "WHERE products.name = ? " +
                 "AND products.price BETWEEN ? AND ? " +
