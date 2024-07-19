@@ -20,7 +20,7 @@ public class UserService {
     }
 
     public List<User> findAllUsers() {
-        return userRepository.findAll();
+        return (List<User>) userRepository.findAll();
     }
 
     public boolean checkCredential(User user) {
