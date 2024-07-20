@@ -28,6 +28,7 @@ public class ProductServiceTest {
     public Product createProduct() {
         return new Product.Builder()
                 .withId(1L)
+                .withTitle("아이폰 팝니다")
                 .withName("iPhone12")
                 .withPrice(200_000)
                 .withStatus("판매중")
@@ -79,6 +80,7 @@ public class ProductServiceTest {
         String status2 = "판매중";
         Product product2 = new Product.Builder()
                 .withId(id2)
+                .withTitle("아이폰 팝니다")
                 .withName(name2)
                 .withPrice(price2)
                 .withStatus(status2)
@@ -106,6 +108,7 @@ public class ProductServiceTest {
         String status2 = "판매중";
         Product product2 = new Product.Builder()
                 .withId(id2)
+                .withTitle("아이폰 팝니다")
                 .withName(name2)
                 .withPrice(price2)
                 .withStatus(status2)
@@ -129,6 +132,7 @@ public class ProductServiceTest {
         String status2 = "판매중";
         Product product2 = new Product.Builder()
                 .withId(originalId)
+                .withTitle("아이폰 팝니다")
                 .withName(name2)
                 .withPrice(price2)
                 .withStatus(status2)
@@ -162,6 +166,7 @@ public class ProductServiceTest {
         String status2 = "판매중";
         Product product2 = new Product.Builder()
                 .withId(id2)
+                .withTitle("아이폰 팝니다")
                 .withName(name2)
                 .withPrice(price2)
                 .withStatus(status2)
@@ -227,5 +232,16 @@ public class ProductServiceTest {
         Assertions.assertThat(product.getName()).isEqualTo(name);
         Assertions.assertThat(product.getPrice()).isGreaterThanOrEqualTo(priceMin);
         Assertions.assertThat(product.getPrice()).isLessThanOrEqualTo(priceMax);
+    }
+
+    @Test
+    public void 상품_제목_검색() throws IOException {
+        ProductService productService = new ProductService(productRepository, productDetailFakeRepository, fileStorage);
+        Product product = createProduct();
+        productService.add(product, createProductDetail(), createMockMultipartFile());
+
+        ProductsResponse productsResponse = productService.searchTitleKeyword("팝니다");
+
+        Assertions.assertThat(productsResponse.getProducts().getFirst().getTitle()).isEqualTo(product.getTitle());
     }
 }

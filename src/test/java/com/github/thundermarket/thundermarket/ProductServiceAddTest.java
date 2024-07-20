@@ -20,6 +20,7 @@ public class ProductServiceAddTest {
     public Product createProduct() {
         return new Product.Builder()
                 .withId(1L)
+                .withTitle("아이폰 팝니다")
                 .withName("iPhone12")
                 .withPrice(200_000)
                 .withStatus("판매중")
