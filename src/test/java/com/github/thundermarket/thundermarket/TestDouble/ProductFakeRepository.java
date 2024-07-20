@@ -1,6 +1,7 @@
 package com.github.thundermarket.thundermarket.TestDouble;
 
 import com.github.thundermarket.thundermarket.domain.Product;
+import com.github.thundermarket.thundermarket.domain.ProductFilterRequest;
 import com.github.thundermarket.thundermarket.repository.ProductRepository;
 
 import java.util.ArrayList;
@@ -30,5 +31,16 @@ public class ProductFakeRepository implements ProductRepository {
     @Override
     public void delete(Long id) {
         products.remove(id.intValue());
+    }
+
+    @Override
+    public List<Product> filterByProductOptions(ProductFilterRequest productFilterRequest) {
+        save(new Product.Builder().withName("iPhone11").withPrice(290000).withStatus("판매중").build());
+
+        return products.stream()
+                .filter(p -> p.getName().equals(productFilterRequest.getName())
+                        && p.getPrice() >= productFilterRequest.getPriceMin()
+                        && p.getPrice() <= productFilterRequest.getPriceMax())
+                .toList();
     }
 }

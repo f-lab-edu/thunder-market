@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import java.io.FileInputStream;
+
 import static org.hamcrest.Matchers.endsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -147,5 +149,47 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.product.name").value("iPhone11"))
                 .andExpect(jsonPath("$.productDetail.color").value("white"))
                 .andExpect(jsonPath("$.productDetail.videoFilePath").value(endsWith(".mp4")));
+    }
+
+    @Test
+    @Sql("/productFilterTest.sql")
+    public void 상품조회_상품옵션필터링() throws Exception {
+        User user = createUser("test01@email.com", "password");
+        String userJson = objectMapper.writeValueAsString(user);
+
+        mockMvc.perform(post("/api/v1/auth/join")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk());
+
+        MvcResult loginResult = mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Login successful"))
+                .andReturn();
+
+        String sessionId = loginResult.getResponse().getCookie("SESSION").getValue();
+
+        // 사용자 입력 값: 검색 조건 설정
+        String name = "iPhone11";
+        String priceMin = "1000";
+        String priceMax = "300000";
+        String color = "white";
+        String purchaseDateMin = "2022-01-01";
+        String purchaseDateMax = "2024-07-17";
+
+        mockMvc.perform(get("/api/v1/products/filter")
+                        .contentType("multipart/form-data")
+                        .param("name", name)
+                        .param("priceMin", priceMin)
+                        .param("priceMax", priceMax)
+                        .param("color", color)
+                        .param("purchaseDateMin", purchaseDateMin)
+                        .param("purchaseDateMax", purchaseDateMax)
+                        .cookie(new Cookie("SESSION", sessionId)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.products[0].name").value("iPhone11"))
+                .andExpect(jsonPath("$.products[0].price").value(200000));
     }
 }
