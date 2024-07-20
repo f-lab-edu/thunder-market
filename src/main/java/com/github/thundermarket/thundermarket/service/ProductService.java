@@ -1,6 +1,7 @@
 package com.github.thundermarket.thundermarket.service;
 
 import com.github.thundermarket.thundermarket.domain.*;
+import com.github.thundermarket.thundermarket.exception.ResourceNotFoundException;
 import com.github.thundermarket.thundermarket.repository.FileStorage;
 import com.github.thundermarket.thundermarket.repository.ProductDetailRepository;
 import com.github.thundermarket.thundermarket.repository.ProductRepository;
@@ -18,6 +19,8 @@ public class ProductService {
 
     public static final int minPaginationLimit = 1;
     public static final int maxPaginationLimit = 100;
+    public static final int minKeywordLength = 2;
+
     private final ProductRepository productRepository;
     private final ProductDetailRepository productDetailRepository;
     private final FileStorage fileStorage;
@@ -55,5 +58,12 @@ public class ProductService {
 
     public ProductsResponse filter(ProductFilterRequest productFilterRequest) {
         return ProductsResponse.of(productRepository.filterByProductOptions(productFilterRequest));
+    }
+
+    public ProductsResponse searchTitleKeyword(String keyword) {
+        if (keyword.length() < minKeywordLength) {
+            throw new ResourceNotFoundException("Search term requires at least two words");
+        }
+        return ProductsResponse.of(productRepository.findByTitleContainingIgnoreCase(keyword));
     }
 }
