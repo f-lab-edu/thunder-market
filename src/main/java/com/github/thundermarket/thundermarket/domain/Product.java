@@ -10,6 +10,7 @@ public class Product {
 
     @Id
     private Long id;
+    private String title;
     private String name;
     private int price;
     private String status;
@@ -18,6 +19,10 @@ public class Product {
      * RestController에서 JSON 역직렬화 과정 중 ObjectMapper가 리플랙션을 사용하여 객체를 생성하기 위해 기본 생성자가 필요함
      */
     public Product() {
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public Long getId() {
@@ -38,6 +43,7 @@ public class Product {
 
     private Product(Builder builder) {
         this.id = builder.id;
+        this.title = builder.title;
         this.name = builder.name;
         this.price = builder.price;
         this.status = builder.status;
@@ -45,6 +51,7 @@ public class Product {
 
     public static class Builder {
         private Long id;
+        private String title;
         private String name;
         private int price;
         private String status;
@@ -54,6 +61,7 @@ public class Product {
 
         public Builder(Product product) {
             this.id = product.id;
+            this.title = product.title;
             this.name = product.name;
             this.price = product.price;
             this.status = product.status;
@@ -61,6 +69,11 @@ public class Product {
 
         public Builder withId(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder withTitle(String title) {
+            this.title = title;
             return this;
         }
 
@@ -89,18 +102,19 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return price == product.price && Objects.equals(id, product.id) && Objects.equals(name, product.name) && Objects.equals(status, product.status);
+        return price == product.price && Objects.equals(id, product.id) && Objects.equals(title, product.title) && Objects.equals(name, product.name) && Objects.equals(status, product.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price, status);
+        return Objects.hash(id, title, name, price, status);
     }
 
     @Override
     public String toString() {
         return "Product{" +
                 "id=" + id +
+                ", title='" + title + '\'' +
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", status='" + status + '\'' +

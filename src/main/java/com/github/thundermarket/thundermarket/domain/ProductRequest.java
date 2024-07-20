@@ -17,6 +17,7 @@ public class ProductRequest {
 
     public Product toProduct() {
         return new Product.Builder()
+                .withTitle(product.getTitle())
                 .withName(product.getName())
                 .withPrice(product.getPrice())
                 .withStatus(product.getStatus())
