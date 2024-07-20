@@ -23,4 +23,6 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
             "AND (:#{#productFilterRequest.purchaseDateMin} IS NULL OR pd.purchase_date >= :#{#productFilterRequest.purchaseDateMin}) " +
             "AND (:#{#productFilterRequest.purchaseDateMax} IS NULL OR pd.purchase_date <= :#{#productFilterRequest.purchaseDateMax})")
     List<Product> filterByProductOptions(@Param("productFilterRequest") ProductFilterRequest productFilterRequest);
+
+    List<Product> findByTitleContainingIgnoreCase(String keyword);
 }
