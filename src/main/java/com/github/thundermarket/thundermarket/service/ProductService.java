@@ -19,8 +19,8 @@ public class ProductService {
     private final ProductDetailRepository productDetailRepository;
     private final FileStorage fileStorage;
 
-    public ProductService(ProductRepository userRepository, ProductDetailRepository productDetailRepository, FileStorage fileStorage) {
-        this.productRepository = userRepository;
+    public ProductService(ProductRepository productRepository, ProductDetailRepository productDetailRepository, FileStorage fileStorage) {
+        this.productRepository = productRepository;
         this.productDetailRepository = productDetailRepository;
         this.fileStorage = fileStorage;
     }
@@ -29,15 +29,16 @@ public class ProductService {
         long effectiveCursorId = (cursorId == null) ? 0 : cursorId;
         int effectiveLimit = Math.min(maxPaginationLimit, Math.max(minPaginationLimit, limit));
 
-        List<Product> products = productRepository.findAll(effectiveCursorId, effectiveLimit);
+        List<Product> products = productRepository.findAllByIdGreaterThanOrderByIdDesc(effectiveCursorId, effectiveLimit);
         Long newCursorId = products.isEmpty() ? null : products.getFirst().getId();
         return ProductsResponse.of(products, newCursorId, limit);
     }
 
     public ProductResponse add(Product product, ProductDetail productDetail, MultipartFile video) throws IOException {
+        Product savedProduct = productRepository.save(product);
         FileUploadResult fileUploadResult = fileStorage.save(video);
-        ProductDetail productDetailWithVideoAndThumbnail = new ProductDetail.Builder(productDetail).withVideo(fileUploadResult.getVideoFilePath()).withThumbnailFilePath(fileUploadResult.getThumbnailFilePath()).build();
-        return ProductResponse.of(productRepository.save(product), productDetailRepository.save(productDetailWithVideoAndThumbnail));
+        ProductDetail productDetailWithVideoAndThumbnail = new ProductDetail.Builder(productDetail).withProductId(savedProduct.getId()).withVideo(fileUploadResult.getVideoFilePath()).withThumbnailFilePath(fileUploadResult.getThumbnailFilePath()).build();
+        return ProductResponse.of(savedProduct, productDetailRepository.save(productDetailWithVideoAndThumbnail));
     }
 
     public Product update(Product product) {
@@ -45,7 +46,7 @@ public class ProductService {
     }
 
     public void delete(Long id) {
-        productRepository.delete(id);
+        productRepository.deleteById(id);
     }
 
     public ProductsResponse filter(ProductFilterRequest productFilterRequest) {
