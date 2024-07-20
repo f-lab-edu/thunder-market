@@ -26,7 +26,7 @@ public class PaginatedProductFakeRepository extends ProductFakeRepository {
     }
 
     @Override
-    public List<Product> findAll(Long cursorId, int limit) {
+    public List<Product> findAllByIdGreaterThanOrderByIdDesc(Long cursorId, int limit) {
         List<Product> result = new ArrayList<>();
         long effectiveCursorId = (cursorId == null) ? 0 : cursorId;
 
