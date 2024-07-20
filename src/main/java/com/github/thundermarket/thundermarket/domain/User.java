@@ -6,7 +6,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Objects;
 
-@Table("USERS")
+@Table("users")
 public class User {
 
     @Id

@@ -1,9 +1,14 @@
 package com.github.thundermarket.thundermarket.domain;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
 import java.util.Objects;
 
+@Table("products")
 public class Product {
 
+    @Id
     private Long id;
     private String name;
     private int price;
@@ -84,12 +89,12 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return price == product.price && Objects.equals(name, product.name) && Objects.equals(status, product.status);
+        return price == product.price && Objects.equals(id, product.id) && Objects.equals(name, product.name) && Objects.equals(status, product.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, price, status);
+        return Objects.hash(id, name, price, status);
     }
 
     @Override
