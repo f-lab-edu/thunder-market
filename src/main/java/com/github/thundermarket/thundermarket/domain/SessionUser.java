@@ -5,12 +5,18 @@ import java.util.Objects;
 
 public class SessionUser implements Serializable {
 
+    private Long id;
     private String email;
 
     public SessionUser() {}
 
     private SessionUser(Builder builder) {
+        this.id = builder.id;
         this.email = builder.email;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getEmail() {
@@ -18,15 +24,22 @@ public class SessionUser implements Serializable {
     }
 
     public static class Builder {
+        private Long id;
         private String email;
 
         public Builder() {}
 
         public Builder(SessionUser sessionUser) {
+            this.id = sessionUser.id;
             this.email = sessionUser.email;
         }
 
-        public Builder userEmail(String userEmail) {
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withEmail(String userEmail) {
             this.email = userEmail;
             return this;
         }
@@ -41,18 +54,19 @@ public class SessionUser implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SessionUser that = (SessionUser) o;
-        return Objects.equals(email, that.email);
+        return Objects.equals(id, that.id) && Objects.equals(email, that.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(email);
+        return Objects.hash(id, email);
     }
 
     @Override
     public String toString() {
         return "SessionUser{" +
-                "email='" + email + '\'' +
+                "id=" + id +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

@@ -23,8 +23,7 @@ public class UserService {
         return (List<User>) userRepository.findAll();
     }
 
-    public boolean checkCredential(User user) {
-        User validUser = userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
-        return validUser != null;
+    public User checkCredential(User user) {
+        return userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
     }
 }
