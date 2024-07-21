@@ -21,6 +21,7 @@ public class ProductRequest {
                 .withName(product.getName())
                 .withPrice(product.getPrice())
                 .withStatus(product.getStatus())
+                .withUserId(product.getUserId())
                 .build();
     }
 
