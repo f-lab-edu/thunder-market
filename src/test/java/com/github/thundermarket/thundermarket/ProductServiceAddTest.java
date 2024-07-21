@@ -24,6 +24,7 @@ public class ProductServiceAddTest {
                 .withName("iPhone12")
                 .withPrice(200_000)
                 .withStatus("판매중")
+                .withUserId(1L)
                 .build();
     }
 

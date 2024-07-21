@@ -158,10 +158,10 @@ public class ProductControllerTest {
         User user = createUser("test01@email.com", "password");
         String userJson = objectMapper.writeValueAsString(user);
 
-        mockMvc.perform(post("/api/v1/auth/join")
-                        .contentType("application/json")
-                        .content(userJson))
-                .andExpect(status().isOk());
+//        mockMvc.perform(post("/api/v1/auth/join")
+//                        .contentType("application/json")
+//                        .content(userJson))
+//                .andExpect(status().isOk());
 
         MvcResult loginResult = mockMvc.perform(post("/api/v1/auth/login")
                         .contentType("application/json")
@@ -200,10 +200,10 @@ public class ProductControllerTest {
         User user = createUser("test01@email.com", "password");
         String userJson = objectMapper.writeValueAsString(user);
 
-        mockMvc.perform(post("/api/v1/auth/join")
-                        .contentType("application/json")
-                        .content(userJson))
-                .andExpect(status().isOk());
+//        mockMvc.perform(post("/api/v1/auth/join")
+//                        .contentType("application/json")
+//                        .content(userJson))
+//                .andExpect(status().isOk());
 
         MvcResult loginResult = mockMvc.perform(post("/api/v1/auth/login")
                         .contentType("application/json")
@@ -224,5 +224,35 @@ public class ProductControllerTest {
                         .cookie(new Cookie("SESSION", sessionId)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.products[0].title").value(expectedKeyword));
+    }
+
+    @Test
+    @Sql("/InsertProductAndProductDetail.sql")
+    public void 상품_판매목록_조회() throws Exception {
+        User user = createUser("test01@email.com", "password");
+        String userJson = objectMapper.writeValueAsString(user);
+
+//        mockMvc.perform(post("/api/v1/auth/join")
+//                        .contentType("application/json")
+//                        .content(userJson))
+//                .andExpect(status().isOk());
+
+        MvcResult loginResult = mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Login successful"))
+                .andReturn();
+
+        String sessionId = loginResult.getResponse().getCookie("SESSION").getValue();
+
+        // 사용자 입력 값: 검색 조건 설정
+        String expectedProductName = "iPhone11";
+
+        mockMvc.perform(get("/api/v1/products/history/sales")
+                        .contentType("multipart/form-data")
+                        .cookie(new Cookie("SESSION", sessionId)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.products[0].name").value(expectedProductName));
     }
 }

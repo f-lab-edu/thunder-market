@@ -1,13 +1,7 @@
 package com.github.thundermarket.thundermarket;
 
-import com.github.thundermarket.thundermarket.TestDouble.FileFakeStorage;
-import com.github.thundermarket.thundermarket.TestDouble.PaginatedProductFakeRepository;
-import com.github.thundermarket.thundermarket.TestDouble.ProductDetailFakeRepository;
-import com.github.thundermarket.thundermarket.TestDouble.ProductFakeRepository;
-import com.github.thundermarket.thundermarket.domain.Product;
-import com.github.thundermarket.thundermarket.domain.ProductDetail;
-import com.github.thundermarket.thundermarket.domain.ProductFilterRequest;
-import com.github.thundermarket.thundermarket.domain.ProductsResponse;
+import com.github.thundermarket.thundermarket.TestDouble.*;
+import com.github.thundermarket.thundermarket.domain.*;
 import com.github.thundermarket.thundermarket.repository.FileStorage;
 import com.github.thundermarket.thundermarket.service.ProductService;
 import org.assertj.core.api.Assertions;
@@ -32,6 +26,7 @@ public class ProductServiceTest {
                 .withName("iPhone12")
                 .withPrice(200_000)
                 .withStatus("판매중")
+                .withUserId(1L)
                 .build();
     }
 
@@ -84,11 +79,11 @@ public class ProductServiceTest {
                 .withName(name2)
                 .withPrice(price2)
                 .withStatus(status2)
+                .withUserId(2L)
                 .build();
         productService.add(product2, createProductDetail(), createMockMultipartFile());
 
         ProductsResponse products = productService.products(0L, 10);
-        System.out.println(products);
 
         Assertions.assertThat(products.getProducts().getFirst()).isEqualTo(product);
         Assertions.assertThat(products.getProducts().get(1)).isEqualTo(product2);
@@ -112,6 +107,7 @@ public class ProductServiceTest {
                 .withName(name2)
                 .withPrice(price2)
                 .withStatus(status2)
+                .withUserId(2L)
                 .build();
         productService.add(product2, createProductDetail(), createMockMultipartFile());
         ProductsResponse products2 = productService.products(0L, 10);
@@ -136,6 +132,7 @@ public class ProductServiceTest {
                 .withName(name2)
                 .withPrice(price2)
                 .withStatus(status2)
+                .withUserId(2L)
                 .build();
         productService.update(product2);
         ProductsResponse products2 = productService.products(0L, 10);
@@ -170,6 +167,7 @@ public class ProductServiceTest {
                 .withName(name2)
                 .withPrice(price2)
                 .withStatus(status2)
+                .withUserId(2L)
                 .build();
         productService.add(product2, createProductDetail(), createMockMultipartFile());
 
@@ -243,5 +241,20 @@ public class ProductServiceTest {
         ProductsResponse productsResponse = productService.searchTitleKeyword("팝니다");
 
         Assertions.assertThat(productsResponse.getProducts().getFirst().getTitle()).isEqualTo(product.getTitle());
+    }
+
+    @Test
+    public void 상품_판매목록_조회() throws IOException {
+        String expectedProductName = "iPhone12";
+        ProductService productService = new ProductService(productRepository, productDetailFakeRepository, fileStorage);
+        productService.add(createProduct(), createProductDetail(), createMockMultipartFile());
+        SessionUser sessionUser = new SessionUser.Builder()
+                .withId(1L)
+                .withEmail("test01@email.com")
+                .build();
+
+        ProductsResponse salesHistory = productService.getSalesHistory(sessionUser);
+
+        Assertions.assertThat(salesHistory.getProducts().getFirst().getName()).isEqualTo(expectedProductName);
     }
 }

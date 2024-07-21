@@ -101,10 +101,10 @@ public class ProductDetailControllerTest {
 
         String userJson = objectMapper.writeValueAsString(user);
 
-        mockMvc.perform(post("/api/v1/auth/join")
-                        .contentType("application/json")
-                        .content(userJson))
-                .andExpect(status().isOk());
+//        mockMvc.perform(post("/api/v1/auth/join")
+//                        .contentType("application/json")
+//                        .content(userJson))
+//                .andExpect(status().isOk());
 
         MvcResult loginResult = mockMvc.perform(post("/api/v1/auth/login")
                         .contentType("application/json")

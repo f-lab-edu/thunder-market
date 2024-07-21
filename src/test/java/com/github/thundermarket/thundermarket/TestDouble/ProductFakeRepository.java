@@ -33,7 +33,7 @@ public class ProductFakeRepository implements ProductRepository {
 
     @Override
     public List<Product> filterByProductOptions(ProductFilterRequest productFilterRequest) {
-        save(new Product.Builder().withName("iPhone11").withPrice(290000).withStatus("판매중").build());
+        save(new Product.Builder().withName("iPhone11").withPrice(290000).withStatus("판매중").withUserId(1L).build());
 
         return products.stream()
                 .filter(p -> p.getName().equals(productFilterRequest.getName())
@@ -46,6 +46,15 @@ public class ProductFakeRepository implements ProductRepository {
     public List<Product> findByTitleContainingIgnoreCase(String keyword) {
         return products.stream()
                 .filter(p -> p.getTitle().toLowerCase().contains(keyword.toLowerCase()))
+                .toList();
+    }
+
+    @Override
+    public List<Product> findByUserId(Long userId) {
+        System.out.println(products.getFirst().getUserId());
+        System.out.println(userId);
+        return products.stream()
+                .filter(p -> p.getUserId().equals(userId))
                 .toList();
     }
 
