@@ -9,7 +9,9 @@ CREATE TABLE products (
    title VARCHAR(255) NOT NULL,
    name VARCHAR(255) NOT NULL,
    price int NOT NULL,
-   status VARCHAR(255) NOT NULL
+   status VARCHAR(255) NOT NULL,
+   user_id BIGINT,
+   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 create table productDetails
