@@ -5,13 +5,13 @@ import java.util.Objects;
 public class ProductFilterRequest {
 
     private String name;
-    private int priceMin;
-    private int priceMax;
+    private Integer priceMin;
+    private Integer priceMax;
     private String color;
     private String purchaseDateMin;
     private String purchaseDateMax;
 
-    public ProductFilterRequest(String name, int priceMin, int priceMax, String color, String purchaseDateMin, String purchaseDateMax) {
+    public ProductFilterRequest(String name, Integer priceMin, Integer priceMax, String color, String purchaseDateMin, String purchaseDateMax) {
         this.name = name;
         this.priceMin = priceMin;
         this.priceMax = priceMax;
@@ -20,7 +20,7 @@ public class ProductFilterRequest {
         this.purchaseDateMax = purchaseDateMax;
     }
 
-    public static ProductFilterRequest of(String name, int priceMin, int priceMax, String color, String purchaseDateMin, String purchaseDateMax) {
+    public static ProductFilterRequest of(String name, Integer priceMin, Integer priceMax, String color, String purchaseDateMin, String purchaseDateMax) {
         return new ProductFilterRequest(name, priceMin, priceMax, color, purchaseDateMin, purchaseDateMax);
     }
 
@@ -28,11 +28,11 @@ public class ProductFilterRequest {
         return name;
     }
 
-    public int getPriceMin() {
+    public Integer getPriceMin() {
         return priceMin;
     }
 
-    public int getPriceMax() {
+    public Integer getPriceMax() {
         return priceMax;
     }
 
