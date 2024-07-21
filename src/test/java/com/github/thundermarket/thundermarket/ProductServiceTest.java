@@ -253,7 +253,7 @@ public class ProductServiceTest {
                 .withEmail("test01@email.com")
                 .build();
 
-        ProductsResponse salesHistory = productService.getSalesHistory(sessionUser);
+        ProductsResponse salesHistory = productService.salesHistory(sessionUser);
 
         Assertions.assertThat(salesHistory.getProducts().getFirst().getName()).isEqualTo(expectedProductName);
     }

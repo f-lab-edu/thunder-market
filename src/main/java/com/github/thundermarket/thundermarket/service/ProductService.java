@@ -66,4 +66,8 @@ public class ProductService {
         }
         return ProductsResponse.of(productRepository.findByTitleContainingIgnoreCase(keyword));
     }
+
+    public ProductsResponse salesHistory(SessionUser sessionUser) {
+        return ProductsResponse.of(productRepository.findByUserId(sessionUser.getId()));
+    }
 }
