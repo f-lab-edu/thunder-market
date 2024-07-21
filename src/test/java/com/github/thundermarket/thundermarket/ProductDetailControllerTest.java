@@ -37,7 +37,7 @@ public class ProductDetailControllerTest {
             .withDatabaseName("testdb")
             .withUsername("test")
             .withPassword("test")
-            .withInitScript("schema.sql");
+            .withInitScript("schemaWithData.sql");
 
     @DynamicPropertySource
     static void registerMySQLProperties(DynamicPropertyRegistry registry) {
@@ -71,55 +71,28 @@ public class ProductDetailControllerTest {
 
     @Test
     public void 상품상세정보_존재하지않으면_404응답() throws Exception {
-        User user = createUser("test01@email.com", "password");
-        String userJson = objectMapper.writeValueAsString(user);
-
-        mockMvc.perform(post("/api/v1/auth/join")
-                        .contentType("application/json")
-                        .content(userJson))
-                .andExpect(status().isOk());
-
-        MvcResult loginResult = mockMvc.perform(post("/api/v1/auth/login")
-                        .contentType("application/json")
-                        .content(userJson))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Login successful"))
-                .andReturn();
-
-        String sessionId = loginResult.getResponse().getCookie("SESSION").getValue();
-
         mockMvc.perform(get("/api/v1/products/0")
                         .contentType("application/json")
-                        .cookie(new Cookie("SESSION", sessionId)))
+                        .cookie(new Cookie("SESSION", getSessionId())))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    @Sql("/InsertProductAndProductDetail.sql")
     public void 상품상세정보_존재하면_200응답() throws Exception {
-        User user = createUser("test01@email.com", "password");
-
-        String userJson = objectMapper.writeValueAsString(user);
-
-//        mockMvc.perform(post("/api/v1/auth/join")
-//                        .contentType("application/json")
-//                        .content(userJson))
-//                .andExpect(status().isOk());
-
-        MvcResult loginResult = mockMvc.perform(post("/api/v1/auth/login")
-                        .contentType("application/json")
-                        .content(userJson))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Login successful"))
-                .andReturn();
-
-        String sessionId = loginResult.getResponse().getCookie("SESSION").getValue();
-
         String productDetailId = "1";
         mockMvc.perform(get("/api/v1/products/" + productDetailId)
                         .contentType("application/json")
-                        .cookie(new Cookie("SESSION", sessionId)))
+                        .cookie(new Cookie("SESSION", getSessionId())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.productDetail.color").value("white"));
+    }
+
+    private String getSessionId() throws Exception {
+        return mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(createUser("test01@email.com", "password"))))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Login successful"))
+                .andReturn().getResponse().getCookie("SESSION").getValue();
     }
 }
