@@ -21,7 +21,20 @@ public class ProductDetailServiceTest {
     @Test
     public void 상품1개_상세정보_조회() {
         ProductDetailService productDetailService = new ProductDetailService(new ProductDetailRepositoryStub());
-        ProductDetail productDetail = new ProductDetail(1L, "white", "", "", "", "", "", "", "", 0, "", "");
+        ProductDetail productDetail = new ProductDetail.Builder()
+                .withProductId(1L)
+                .withColor("white")
+                .withProductCondition("")
+                .withBatteryCondition("")
+                .withCameraCondition("")
+                .withAccessories("")
+                .withPurchaseDate("")
+                .withWarrantyDuration("")
+                .withTradeLocation("")
+                .withDeliveryFee(0)
+                .withVideo("")
+                .withThumbnailFilePath("")
+                .build();
         ProductDetailResponse expectedProductDetail = ProductDetailResponse.of(productDetail);
         Long productId = 1L;
 

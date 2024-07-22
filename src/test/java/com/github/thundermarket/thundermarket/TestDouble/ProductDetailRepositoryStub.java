@@ -16,20 +16,20 @@ public class ProductDetailRepositoryStub implements ProductDetailRepository {
         if (productId == 0) {
             return null;
         }
-        return new ProductDetail(
-                1L,
-                "white",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                0,
-                "",
-                ""
-        );
+        return new ProductDetail.Builder()
+                .withProductId(1L)
+                .withColor("white")
+                .withProductCondition("")
+                .withBatteryCondition("")
+                .withCameraCondition("")
+                .withAccessories("")
+                .withPurchaseDate("")
+                .withWarrantyDuration("")
+                .withTradeLocation("")
+                .withDeliveryFee(0)
+                .withVideo("")
+                .withThumbnailFilePath("")
+                .build();
     }
 
     @Override
