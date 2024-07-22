@@ -3,6 +3,7 @@ package com.github.thundermarket.thundermarket.TestDouble;
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductFilterRequest;
 import com.github.thundermarket.thundermarket.repository.ProductRepository;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ public class ProductFakeRepository implements ProductRepository {
     private final List<Product> products = new ArrayList<>();
 
     @Override
-    public List<Product> findAllByIdGreaterThanOrderByIdDesc(Long cursorId, int limit) {
+    public List<Product> findByIdGreaterThanOrderByIdDesc(Long cursorId, Pageable pageable) {
         return products;
     }
 

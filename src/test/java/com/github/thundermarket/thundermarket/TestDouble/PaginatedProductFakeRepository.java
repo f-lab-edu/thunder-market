@@ -1,6 +1,7 @@
 package com.github.thundermarket.thundermarket.TestDouble;
 
 import com.github.thundermarket.thundermarket.domain.Product;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +27,14 @@ public class PaginatedProductFakeRepository extends ProductFakeRepository {
     }
 
     @Override
-    public List<Product> findAllByIdGreaterThanOrderByIdDesc(Long cursorId, int limit) {
+    public List<Product> findByIdGreaterThanOrderByIdDesc(Long cursorId, Pageable pageable) {
         List<Product> result = new ArrayList<>();
         long effectiveCursorId = (cursorId == null) ? 0 : cursorId;
 
         for (Product product : products) {
             if (product.getId() > effectiveCursorId) {
                 result.addFirst(product);
-                if (result.size() == limit) {
+                if (result.size() == pageable.getPageSize()) {
                     break;  // 원하는 개수만큼 찾았으면 반복 중단
                 }
             }

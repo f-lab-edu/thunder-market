@@ -4,6 +4,9 @@ import com.github.thundermarket.thundermarket.domain.*;
 import com.github.thundermarket.thundermarket.repository.FileStorage;
 import com.github.thundermarket.thundermarket.repository.ProductDetailRepository;
 import com.github.thundermarket.thundermarket.repository.ProductRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +32,8 @@ public class ProductService {
         long effectiveCursorId = (cursorId == null) ? 0 : cursorId;
         int effectiveLimit = Math.min(maxPaginationLimit, Math.max(minPaginationLimit, limit));
 
-        List<Product> products = productRepository.findAllByIdGreaterThanOrderByIdDesc(effectiveCursorId, effectiveLimit);
+        Pageable pageable = PageRequest.of(0, effectiveLimit, Sort.by(Sort.Direction.DESC, "id"));
+        List<Product> products = productRepository.findByIdGreaterThanOrderByIdDesc(effectiveCursorId, pageable);
         Long newCursorId = products.isEmpty() ? null : products.getFirst().getId();
         return ProductsResponse.of(products, newCursorId, limit);
     }
