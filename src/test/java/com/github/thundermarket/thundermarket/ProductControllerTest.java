@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.thundermarket.thundermarket.TestDouble.TestConfig;
 import com.github.thundermarket.thundermarket.domain.User;
 import jakarta.servlet.http.Cookie;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,6 +23,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
 
 import static org.hamcrest.Matchers.endsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -38,7 +40,7 @@ public class ProductControllerTest {
     static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0")
             .withDatabaseName("testdb")
             .withUsername("test")
-            .withPassword("test")
+            .withPassword("test").withCommand("--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci")
             .withInitScript("schemaWithData.sql");
 
     @DynamicPropertySource
@@ -73,11 +75,13 @@ public class ProductControllerTest {
 
     @Test
     public void 상품1개_상품목록조회() throws Exception {
-        mockMvc.perform(get("/api/v1/products")
+        String products = mockMvc.perform(get("/api/v1/products")
                         .contentType("application/json")
                         .cookie(new Cookie("SESSION", getSessionId())))
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"products\":[{\"id\":1,\"title\":\"아이폰 팝니다\",\"name\":\"iPhone11\",\"price\":200000,\"status\":\"available\",\"userId\":1}],\"cursorId\":1,\"limit\":10}"));
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        Assertions.assertThat(products).isEqualTo("{\"products\":[{\"id\":1,\"title\":\"아이폰 팝니다\",\"name\":\"iPhone11\",\"price\":200000,\"status\":\"available\",\"userId\":1}],\"cursorId\":1,\"limit\":10}");
     }
 
     @Test
