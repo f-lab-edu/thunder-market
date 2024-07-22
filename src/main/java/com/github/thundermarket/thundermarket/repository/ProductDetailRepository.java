@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface ProductDetailRepository extends CrudRepository<ProductDetail, Long> {
-    Optional<ProductDetail> findByProductId(Long productId);
+    ProductDetail findByProductId(Long productId);
 }

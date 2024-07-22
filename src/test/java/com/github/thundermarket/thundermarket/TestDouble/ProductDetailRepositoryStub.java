@@ -12,11 +12,11 @@ public class ProductDetailRepositoryStub implements ProductDetailRepository {
     }
 
     @Override
-    public Optional<ProductDetail> findByProductId(Long productId) {
+    public ProductDetail findByProductId(Long productId) {
         if (productId == 0) {
-            return Optional.empty();
+            return null;
         }
-        return Optional.of(new ProductDetail(
+        return new ProductDetail(
                 1L,
                 "white",
                 "",
@@ -29,7 +29,7 @@ public class ProductDetailRepositoryStub implements ProductDetailRepository {
                 0,
                 "",
                 ""
-        ));
+        );
     }
 
     @Override

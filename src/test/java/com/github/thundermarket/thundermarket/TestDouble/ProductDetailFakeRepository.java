@@ -18,7 +18,7 @@ public class ProductDetailFakeRepository implements ProductDetailRepository {
     }
 
     @Override
-    public Optional<ProductDetail> findByProductId(Long productId) {
+    public ProductDetail findByProductId(Long productId) {
         throw new UnsupportedOperationException();
     }
 

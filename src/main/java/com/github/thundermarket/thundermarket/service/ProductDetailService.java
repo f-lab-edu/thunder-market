@@ -18,10 +18,10 @@ public class ProductDetailService {
     }
 
     public ProductDetailResponse productDetail(Long productId) {
-        Optional<ProductDetail> productDetail = productDetailRepository.findByProductId(productId);
-        if (productDetail.isEmpty()) {
+        ProductDetail productDetail = productDetailRepository.findByProductId(productId);
+        if (productDetail == null) {
             throw new ResourceNotFoundException("Product detail not found with id: " + productId);
         }
-        return ProductDetailResponse.of(productDetail.get());
+        return ProductDetailResponse.of(productDetail);
     }
 }
