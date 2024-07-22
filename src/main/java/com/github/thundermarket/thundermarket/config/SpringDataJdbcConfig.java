@@ -14,7 +14,6 @@ import org.springframework.transaction.TransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableJdbcRepositories
 class SpringDataJdbcConfig extends AbstractJdbcConfiguration {
 
     @Bean
