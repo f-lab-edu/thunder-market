@@ -3,16 +3,18 @@ package com.github.thundermarket.thundermarket.TestDouble;
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductFilterRequest;
 import com.github.thundermarket.thundermarket.repository.ProductRepository;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ProductFakeRepository implements ProductRepository {
 
     private final List<Product> products = new ArrayList<>();
 
     @Override
-    public List<Product> findAll(Long cursorId, int limit) {
+    public List<Product> findByIdGreaterThanOrderByIdDesc(Long cursorId, Pageable pageable) {
         return products;
     }
 
@@ -29,11 +31,6 @@ public class ProductFakeRepository implements ProductRepository {
     }
 
     @Override
-    public void delete(Long id) {
-        products.remove(id.intValue());
-    }
-
-    @Override
     public List<Product> filterByProductOptions(ProductFilterRequest productFilterRequest) {
         save(new Product.Builder().withName("iPhone11").withPrice(290000).withStatus("판매중").build());
 
@@ -42,5 +39,60 @@ public class ProductFakeRepository implements ProductRepository {
                         && p.getPrice() >= productFilterRequest.getPriceMin()
                         && p.getPrice() <= productFilterRequest.getPriceMax())
                 .toList();
+    }
+
+    @Override
+    public <S extends Product> Iterable<S> saveAll(Iterable<S> entities) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Optional<Product> findById(Long aLong) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean existsById(Long aLong) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Iterable<Product> findAll() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Iterable<Product> findAllById(Iterable<Long> longs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public long count() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        products.remove(id.intValue());
+    }
+
+    @Override
+    public void delete(Product entity) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void deleteAllById(Iterable<? extends Long> longs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void deleteAll(Iterable<? extends Product> entities) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void deleteAll() {
+        throw new UnsupportedOperationException();
     }
 }

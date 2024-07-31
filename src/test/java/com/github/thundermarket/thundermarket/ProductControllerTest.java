@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @Testcontainers
-@Import(TestConfig.class) // 통합 테스트에서 Fake 객체를 주입하기 위한 설정
+@Import(TestConfig.class)
 public class ProductControllerTest {
 
     @Container
@@ -152,7 +152,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    @Sql("/productFilterTest.sql")
+    @Sql("/InsertProductAndProductDetail.sql")
     public void 상품조회_상품옵션필터링() throws Exception {
         User user = createUser("test01@email.com", "password");
         String userJson = objectMapper.writeValueAsString(user);

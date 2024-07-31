@@ -1,10 +1,12 @@
 package com.github.thundermarket.thundermarket.repository;
 
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ProductDetailRepository {
+import java.util.Optional;
 
-    ProductDetail save(ProductDetail productDetail);
-    ProductDetail findById(Long productId);
-
+@Repository
+public interface ProductDetailRepository extends CrudRepository<ProductDetail, Long> {
+    ProductDetail findByProductId(Long productId);
 }

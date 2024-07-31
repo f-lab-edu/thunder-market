@@ -6,6 +6,8 @@ import com.github.thundermarket.thundermarket.exception.ResourceNotFoundExceptio
 import com.github.thundermarket.thundermarket.repository.ProductDetailRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ProductDetailService {
 
@@ -16,7 +18,7 @@ public class ProductDetailService {
     }
 
     public ProductDetailResponse productDetail(Long productId) {
-        ProductDetail productDetail = productDetailRepository.findById(productId);
+        ProductDetail productDetail = productDetailRepository.findByProductId(productId);
         if (productDetail == null) {
             throw new ResourceNotFoundException("Product detail not found with id: " + productId);
         }

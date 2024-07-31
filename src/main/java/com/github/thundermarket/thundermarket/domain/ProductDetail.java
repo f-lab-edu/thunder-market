@@ -1,10 +1,16 @@
 package com.github.thundermarket.thundermarket.domain;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
 import java.util.Objects;
 
+@Table("productDetails")
 public class ProductDetail {
 
+    @Id
     private Long id;
+    private Long productId;
     private String color;
     private String productCondition;
     private String batteryCondition;
@@ -22,6 +28,10 @@ public class ProductDetail {
 
     public Long getId() {
         return id;
+    }
+
+    public Long getProductId() {
+        return productId;
     }
 
     public String getColor() {
@@ -70,6 +80,7 @@ public class ProductDetail {
 
     private ProductDetail(Builder builder) {
         this.id = builder.id;
+        this.productId = builder.productId;
         this.color = builder.color;
         this.productCondition = builder.productCondition;
         this.batteryCondition = builder.batteryCondition;
@@ -83,7 +94,8 @@ public class ProductDetail {
         this.thumbnailFilePath = builder.thumbnailFilePath;
     }
 
-    public ProductDetail(String color, String productCondition, String batteryCondition, String cameraCondition, String accessories, String purchaseDate, String warrantyDuration, String tradeLocation, int deliveryFee, String videoFilePath, String thumbnailFilePath) {
+    public ProductDetail(Long productId, String color, String productCondition, String batteryCondition, String cameraCondition, String accessories, String purchaseDate, String warrantyDuration, String tradeLocation, int deliveryFee, String videoFilePath, String thumbnailFilePath) {
+        this.productId = productId;
         this.color = color;
         this.productCondition = productCondition;
         this.batteryCondition = batteryCondition;
@@ -99,6 +111,7 @@ public class ProductDetail {
 
     public static class Builder {
         private Long id;
+        private Long productId;
         private String color;
         private String productCondition;
         private String batteryCondition;
@@ -115,6 +128,7 @@ public class ProductDetail {
 
         public Builder(ProductDetail productDetail) {
             this.id = productDetail.id;
+            this.productId = productDetail.productId;
             this.color = productDetail.color;
             this.productCondition = productDetail.productCondition;
             this.batteryCondition = productDetail.batteryCondition;
@@ -130,6 +144,11 @@ public class ProductDetail {
 
         public Builder withId(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder withProductId(Long productId) {
+            this.productId = productId;
             return this;
         }
 
@@ -198,18 +217,19 @@ public class ProductDetail {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductDetail that = (ProductDetail) o;
-        return deliveryFee == that.deliveryFee && Objects.equals(id, that.id) && Objects.equals(color, that.color) && Objects.equals(productCondition, that.productCondition) && Objects.equals(batteryCondition, that.batteryCondition) && Objects.equals(cameraCondition, that.cameraCondition) && Objects.equals(accessories, that.accessories) && Objects.equals(purchaseDate, that.purchaseDate) && Objects.equals(warrantyDuration, that.warrantyDuration) && Objects.equals(tradeLocation, that.tradeLocation) && Objects.equals(videoFilePath, that.videoFilePath) && Objects.equals(thumbnailFilePath, that.thumbnailFilePath);
+        return deliveryFee == that.deliveryFee && Objects.equals(id, that.id) && Objects.equals(productId, that.productId) && Objects.equals(color, that.color) && Objects.equals(productCondition, that.productCondition) && Objects.equals(batteryCondition, that.batteryCondition) && Objects.equals(cameraCondition, that.cameraCondition) && Objects.equals(accessories, that.accessories) && Objects.equals(purchaseDate, that.purchaseDate) && Objects.equals(warrantyDuration, that.warrantyDuration) && Objects.equals(tradeLocation, that.tradeLocation) && Objects.equals(videoFilePath, that.videoFilePath) && Objects.equals(thumbnailFilePath, that.thumbnailFilePath);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, color, productCondition, batteryCondition, cameraCondition, accessories, purchaseDate, warrantyDuration, tradeLocation, deliveryFee, videoFilePath, thumbnailFilePath);
+        return Objects.hash(id, productId, color, productCondition, batteryCondition, cameraCondition, accessories, purchaseDate, warrantyDuration, tradeLocation, deliveryFee, videoFilePath, thumbnailFilePath);
     }
 
     @Override
     public String toString() {
         return "ProductDetail{" +
                 "id=" + id +
+                ", productId=" + productId +
                 ", color='" + color + '\'' +
                 ", productCondition='" + productCondition + '\'' +
                 ", batteryCondition='" + batteryCondition + '\'' +
