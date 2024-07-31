@@ -1,5 +1,6 @@
 package com.github.thundermarket.thundermarket.controller;
 
+import com.github.thundermarket.thundermarket.aspect.SessionUserParam;
 import com.github.thundermarket.thundermarket.domain.*;
 import com.github.thundermarket.thundermarket.service.ProductDetailService;
 import com.github.thundermarket.thundermarket.service.ProductService;
@@ -47,5 +48,10 @@ public class ProductController {
     @GetMapping("/api/v1/products/keyword")
     public ResponseEntity<ProductsResponse> keywordProducts(@RequestParam("keyword") String keyword) {
         return new ResponseEntity<>(productService.searchTitleKeyword(keyword), HttpStatus.OK);
+    }
+
+    @GetMapping("/api/v1/products/history/sales")
+    public ResponseEntity<ProductsResponse> salesHistory(@SessionUserParam SessionUser sessionUser) {
+        return new ResponseEntity<>(productService.salesHistory(sessionUser), HttpStatus.OK);
     }
 }

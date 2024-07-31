@@ -38,13 +38,15 @@ public class UserController {
     @Authenticated
     @PostMapping("/api/v1/auth/login")
     public ResponseEntity<?> login(@RequestBody User user, HttpSession session) {
-        if(!userService.checkCredential(user)) {
+        User savedUser = userService.checkCredential(user);
+        if(savedUser == null) {
             return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
         }
         session.setAttribute(SessionConst.SESSION_USER,
                 new SessionUser.Builder()
-                .userEmail(user.getEmail())
-                .build());
+                        .withId(savedUser.getId())
+                        .withEmail(savedUser.getEmail())
+                        .build());
         return new ResponseEntity<>("Login successful", HttpStatus.OK);
     }
 

@@ -1,6 +1,10 @@
-INSERT INTO `products` (`id`, `title`, `name`, `price`, `status`)
+INSERT INTO `users` (id, email, password)
 VALUES
-    (1, '아이폰 팝니다', 'iPhone11', 200000, 'available');
+    (1, 'test01@email.com', 'password');
+
+INSERT INTO `products` (`id`, `title`, `name`, `price`, `status`, `user_id`)
+VALUES
+    (1, '아이폰 팝니다', 'iPhone11', 200000, 'available', 1);
 
 INSERT INTO `productDetails` (`id`, `product_id`, `color`, `product_condition`, `battery_condition`, `camera_condition`, `accessories`, `purchase_date`, `warranty_duration`, `trade_location`, `delivery_fee`, `video_file_path`, `thumbnail_file_path`)
 VALUES

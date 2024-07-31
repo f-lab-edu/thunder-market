@@ -25,4 +25,6 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     List<Product> filterByProductOptions(@Param("productFilterRequest") ProductFilterRequest productFilterRequest);
 
     List<Product> findByTitleContainingIgnoreCase(String keyword);
+
+    List<Product> findByUserId(Long userId);
 }

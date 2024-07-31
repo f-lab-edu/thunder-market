@@ -22,6 +22,7 @@ public class PaginatedProductFakeRepository extends ProductFakeRepository {
                     .withName("iPhone13")
                     .withPrice(300000)
                     .withStatus("For Sale")
+                    .withUserId(1L)
                     .build());
         }
     }

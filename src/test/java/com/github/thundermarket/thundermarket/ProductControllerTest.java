@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.thundermarket.thundermarket.TestDouble.TestConfig;
 import com.github.thundermarket.thundermarket.domain.User;
 import jakarta.servlet.http.Cookie;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,9 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 import org.testcontainers.containers.GenericContainer;
@@ -24,6 +23,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
 
 import static org.hamcrest.Matchers.endsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -40,8 +40,8 @@ public class ProductControllerTest {
     static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0")
             .withDatabaseName("testdb")
             .withUsername("test")
-            .withPassword("test")
-            .withInitScript("schema.sql");
+            .withPassword("test").withCommand("--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci")
+            .withInitScript("schemaWithData.sql");
 
     @DynamicPropertySource
     static void registerMySQLProperties(DynamicPropertyRegistry registry) {
@@ -74,50 +74,18 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void 상품0개_상품목록조회() throws Exception {
-        User user = createUser("test01@email.com", "password");
-        String userJson = objectMapper.writeValueAsString(user);
-
-        mockMvc.perform(post("/api/v1/auth/join")
+    public void 상품1개_상품목록조회() throws Exception {
+        String products = mockMvc.perform(get("/api/v1/products")
                         .contentType("application/json")
-                        .content(userJson))
-                .andExpect(status().isOk());
-
-        MvcResult loginResult = mockMvc.perform(post("/api/v1/auth/login")
-                        .contentType("application/json")
-                        .content(userJson))
+                        .cookie(new Cookie("SESSION", getSessionId())))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Login successful"))
-                .andReturn();
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
-        String sessionId = loginResult.getResponse().getCookie("SESSION").getValue();
-
-        mockMvc.perform(get("/api/v1/products")
-                        .contentType("application/json")
-                        .cookie(new Cookie("SESSION", sessionId)))
-                .andExpect(status().isOk())
-                .andExpect(content().string("{\"products\":[],\"cursorId\":null,\"limit\":10}"));
+        Assertions.assertThat(products).isEqualTo("{\"products\":[{\"id\":1,\"title\":\"아이폰 팝니다\",\"name\":\"iPhone11\",\"price\":200000,\"status\":\"available\",\"userId\":1}],\"cursorId\":1,\"limit\":10}");
     }
 
     @Test
     public void 상품_등록_성공() throws Exception {
-        User user = createUser("test01@email.com", "password");
-        String userJson = objectMapper.writeValueAsString(user);
-
-        mockMvc.perform(post("/api/v1/auth/join")
-                        .contentType("application/json")
-                        .content(userJson))
-                .andExpect(status().isOk());
-
-        MvcResult loginResult = mockMvc.perform(post("/api/v1/auth/login")
-                        .contentType("application/json")
-                        .content(userJson))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Login successful"))
-                .andReturn();
-
-        String sessionId = loginResult.getResponse().getCookie("SESSION").getValue();
-
         String productRequestJson = "{\n" +
                 "  \"product\": {\n" +
                 "    \"title\": \"아이폰 팝니다\",\n" +
@@ -145,7 +113,7 @@ public class ProductControllerTest {
                         .file(productRequest)
                         .file(mockMultipartFile)
                         .contentType(MediaType.MULTIPART_FORM_DATA)
-                        .cookie(new Cookie("SESSION", sessionId)))
+                        .cookie(new Cookie("SESSION", getSessionId())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.product.name").value("iPhone11"))
                 .andExpect(jsonPath("$.productDetail.color").value("white"))
@@ -153,26 +121,19 @@ public class ProductControllerTest {
     }
 
     @Test
-    @Sql("/InsertProductAndProductDetail.sql")
-    public void 상품조회_상품옵션필터링() throws Exception {
-        User user = createUser("test01@email.com", "password");
-        String userJson = objectMapper.writeValueAsString(user);
+    public void 상품조회_상품옵션필터링_검색결과없음() throws Exception {
+        String name = "iPhone18";
 
-        mockMvc.perform(post("/api/v1/auth/join")
-                        .contentType("application/json")
-                        .content(userJson))
-                .andExpect(status().isOk());
-
-        MvcResult loginResult = mockMvc.perform(post("/api/v1/auth/login")
-                        .contentType("application/json")
-                        .content(userJson))
+        mockMvc.perform(get("/api/v1/products/filter")
+                        .contentType("multipart/form-data")
+                        .param("name", name)
+                        .cookie(new Cookie("SESSION", getSessionId())))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Login successful"))
-                .andReturn();
+                .andExpect(content().string("{\"products\":[],\"cursorId\":null,\"limit\":0}"));
+    }
 
-        String sessionId = loginResult.getResponse().getCookie("SESSION").getValue();
-
-        // 사용자 입력 값: 검색 조건 설정
+    @Test
+    public void 상품조회_상품옵션필터링() throws Exception {
         String name = "iPhone11";
         String priceMin = "1000";
         String priceMax = "300000";
@@ -188,41 +149,42 @@ public class ProductControllerTest {
                         .param("color", color)
                         .param("purchaseDateMin", purchaseDateMin)
                         .param("purchaseDateMax", purchaseDateMax)
-                        .cookie(new Cookie("SESSION", sessionId)))
+                        .cookie(new Cookie("SESSION", getSessionId())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.products[0].name").value("iPhone11"))
                 .andExpect(jsonPath("$.products[0].price").value(200000));
     }
 
     @Test
-    @Sql("/InsertProductAndProductDetail.sql")
     public void 상품조회_상품제목_키워드검색() throws Exception {
-        User user = createUser("test01@email.com", "password");
-        String userJson = objectMapper.writeValueAsString(user);
-
-        mockMvc.perform(post("/api/v1/auth/join")
-                        .contentType("application/json")
-                        .content(userJson))
-                .andExpect(status().isOk());
-
-        MvcResult loginResult = mockMvc.perform(post("/api/v1/auth/login")
-                        .contentType("application/json")
-                        .content(userJson))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Login successful"))
-                .andReturn();
-
-        String sessionId = loginResult.getResponse().getCookie("SESSION").getValue();
-
-        // 사용자 입력 값: 검색 조건 설정
         String keyword = "팝니다";
         String expectedKeyword = "아이폰 팝니다";
 
         mockMvc.perform(get("/api/v1/products/keyword")
                         .contentType("multipart/form-data")
                         .param("keyword", keyword)
-                        .cookie(new Cookie("SESSION", sessionId)))
+                        .cookie(new Cookie("SESSION", getSessionId())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.products[0].title").value(expectedKeyword));
+    }
+
+    @Test
+    public void 상품_판매이력_조회() throws Exception {
+        String expectedProductName = "iPhone11";
+
+        mockMvc.perform(get("/api/v1/products/history/sales")
+                        .contentType("multipart/form-data")
+                        .cookie(new Cookie("SESSION", getSessionId())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.products[0].name").value(expectedProductName));
+    }
+
+    private String getSessionId() throws Exception {
+        return mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(createUser("test01@email.com", "password"))))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Login successful"))
+                .andReturn().getResponse().getCookie("SESSION").getValue();
     }
 }
