@@ -2,6 +2,7 @@ package com.github.thundermarket.thundermarket.TestDouble;
 
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductFilterRequest;
+import com.github.thundermarket.thundermarket.domain.ProductsResponse;
 import com.github.thundermarket.thundermarket.repository.ProductRepository;
 import org.springframework.data.domain.Pageable;
 
@@ -38,6 +39,13 @@ public class ProductFakeRepository implements ProductRepository {
                 .filter(p -> p.getName().equals(productFilterRequest.getName())
                         && p.getPrice() >= productFilterRequest.getPriceMin()
                         && p.getPrice() <= productFilterRequest.getPriceMax())
+                .toList();
+    }
+
+    @Override
+    public List<Product> findByTitleContainingIgnoreCase(String keyword) {
+        return products.stream()
+                .filter(p -> p.getTitle().toLowerCase().contains(keyword.toLowerCase()))
                 .toList();
     }
 

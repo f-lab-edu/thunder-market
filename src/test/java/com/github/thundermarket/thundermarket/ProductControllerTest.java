@@ -120,6 +120,7 @@ public class ProductControllerTest {
 
         String productRequestJson = "{\n" +
                 "  \"product\": {\n" +
+                "    \"title\": \"아이폰 팝니다\",\n" +
                 "    \"name\": \"iPhone11\",\n" +
                 "    \"price\": 200000,\n" +
                 "    \"status\": \"available\"\n" +
@@ -191,5 +192,37 @@ public class ProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.products[0].name").value("iPhone11"))
                 .andExpect(jsonPath("$.products[0].price").value(200000));
+    }
+
+    @Test
+    @Sql("/InsertProductAndProductDetail.sql")
+    public void 상품조회_상품제목_키워드검색() throws Exception {
+        User user = createUser("test01@email.com", "password");
+        String userJson = objectMapper.writeValueAsString(user);
+
+        mockMvc.perform(post("/api/v1/auth/join")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk());
+
+        MvcResult loginResult = mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType("application/json")
+                        .content(userJson))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Login successful"))
+                .andReturn();
+
+        String sessionId = loginResult.getResponse().getCookie("SESSION").getValue();
+
+        // 사용자 입력 값: 검색 조건 설정
+        String keyword = "팝니다";
+        String expectedKeyword = "아이폰 팝니다";
+
+        mockMvc.perform(get("/api/v1/products/keyword")
+                        .contentType("multipart/form-data")
+                        .param("keyword", keyword)
+                        .cookie(new Cookie("SESSION", sessionId)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.products[0].title").value(expectedKeyword));
     }
 }

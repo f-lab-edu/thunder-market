@@ -1,6 +1,6 @@
-INSERT INTO `products` (`id`, `name`, `price`, `status`)
+INSERT INTO `products` (`id`, `title`, `name`, `price`, `status`)
 VALUES
-    (1, 'iPhone11', 200000, 'available');
+    (1, '아이폰 팝니다', 'iPhone11', 200000, 'available');
 
 INSERT INTO `productDetails` (`id`, `product_id`, `color`, `product_condition`, `battery_condition`, `camera_condition`, `accessories`, `purchase_date`, `warranty_duration`, `trade_location`, `delivery_fee`, `video_file_path`, `thumbnail_file_path`)
 VALUES

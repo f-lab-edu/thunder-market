@@ -43,4 +43,9 @@ public class ProductController {
     public ResponseEntity<ProductsResponse> filteredProducts(@ModelAttribute ProductFilterRequest productFilterRequest) {
         return new ResponseEntity<>(productService.filter(productFilterRequest), HttpStatus.OK);
     }
+
+    @GetMapping("/api/v1/products/keyword")
+    public ResponseEntity<ProductsResponse> keywordProducts(@RequestParam("keyword") String keyword) {
+        return new ResponseEntity<>(productService.searchTitleKeyword(keyword), HttpStatus.OK);
+    }
 }
