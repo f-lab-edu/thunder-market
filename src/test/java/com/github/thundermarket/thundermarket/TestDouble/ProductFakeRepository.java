@@ -90,7 +90,11 @@ public class ProductFakeRepository implements ProductRepository {
 
     @Override
     public void deleteById(Long id) {
-        products.remove(id.intValue());
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getId().equals(id)) {
+                products.remove(i);
+            }
+        }
     }
 
     @Override
