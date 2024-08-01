@@ -1,8 +1,7 @@
-package com.github.thundermarket.thundermarket.TestDouble;
+package com.github.thundermarket.thundermarket.testDouble;
 
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductFilterRequest;
-import com.github.thundermarket.thundermarket.domain.ProductsResponse;
 import com.github.thundermarket.thundermarket.repository.ProductRepository;
 import org.springframework.data.domain.Pageable;
 

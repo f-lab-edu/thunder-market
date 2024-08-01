@@ -1,6 +1,6 @@
-package com.github.thundermarket.thundermarket;
+package com.github.thundermarket.thundermarket.unit;
 
-import com.github.thundermarket.thundermarket.TestDouble.*;
+import com.github.thundermarket.thundermarket.testDouble.*;
 import com.github.thundermarket.thundermarket.domain.*;
 import com.github.thundermarket.thundermarket.repository.FileStorage;
 import com.github.thundermarket.thundermarket.service.ProductService;

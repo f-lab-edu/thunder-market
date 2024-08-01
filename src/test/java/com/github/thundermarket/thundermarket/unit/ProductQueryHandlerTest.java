@@ -1,7 +1,7 @@
-package com.github.thundermarket.thundermarket;
+package com.github.thundermarket.thundermarket.unit;
 
-import com.github.thundermarket.thundermarket.TestDouble.PaginatedProductFakeRepository;
-import com.github.thundermarket.thundermarket.TestDouble.ProductFakeRepository;
+import com.github.thundermarket.thundermarket.testDouble.PaginatedProductFakeRepository;
+import com.github.thundermarket.thundermarket.testDouble.ProductFakeRepository;
 import com.github.thundermarket.thundermarket.domain.*;
 import com.github.thundermarket.thundermarket.service.ProductQueryHandler;
 import org.assertj.core.api.Assertions;

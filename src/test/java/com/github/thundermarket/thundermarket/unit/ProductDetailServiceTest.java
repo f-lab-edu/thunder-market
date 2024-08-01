@@ -1,6 +1,6 @@
-package com.github.thundermarket.thundermarket;
+package com.github.thundermarket.thundermarket.unit;
 
-import com.github.thundermarket.thundermarket.TestDouble.ProductDetailRepositoryStub;
+import com.github.thundermarket.thundermarket.testDouble.ProductDetailRepositoryStub;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.domain.ProductDetailResponse;
 import com.github.thundermarket.thundermarket.exception.ResourceNotFoundException;

@@ -1,7 +1,7 @@
 package com.github.thundermarket.thundermarket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.thundermarket.thundermarket.TestDouble.TestConfig;
+import com.github.thundermarket.thundermarket.testDouble.TestConfig;
 import com.github.thundermarket.thundermarket.domain.User;
 import jakarta.servlet.http.Cookie;
 import org.assertj.core.api.Assertions;

@@ -1,7 +1,7 @@
 package com.github.thundermarket.thundermarket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.thundermarket.thundermarket.TestDouble.TestConfig;
+import com.github.thundermarket.thundermarket.testDouble.TestConfig;
 import com.github.thundermarket.thundermarket.domain.User;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Test;
@@ -11,9 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MySQLContainer;

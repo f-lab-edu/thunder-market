@@ -1,7 +1,7 @@
-package com.github.thundermarket.thundermarket;
+package com.github.thundermarket.thundermarket.unit;
 
 import com.github.thundermarket.thundermarket.domain.User;
-import com.github.thundermarket.thundermarket.TestDouble.UserFakeRepository;
+import com.github.thundermarket.thundermarket.testDouble.UserFakeRepository;
 import com.github.thundermarket.thundermarket.service.UserService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

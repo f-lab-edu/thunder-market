@@ -1,10 +1,10 @@
-package com.github.thundermarket.thundermarket;
+package com.github.thundermarket.thundermarket.unit;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.thundermarket.thundermarket.TestDouble.FileFakeStorage;
-import com.github.thundermarket.thundermarket.TestDouble.ProductDetailFakeRepository;
-import com.github.thundermarket.thundermarket.TestDouble.ProductFakeRepository;
+import com.github.thundermarket.thundermarket.testDouble.FileFakeStorage;
+import com.github.thundermarket.thundermarket.testDouble.ProductDetailFakeRepository;
+import com.github.thundermarket.thundermarket.testDouble.ProductFakeRepository;
 import com.github.thundermarket.thundermarket.domain.*;
 import com.github.thundermarket.thundermarket.repository.FileStorage;
 import com.github.thundermarket.thundermarket.service.ProductService;
