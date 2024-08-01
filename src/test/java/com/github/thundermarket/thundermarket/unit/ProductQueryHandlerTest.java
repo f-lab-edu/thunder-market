@@ -26,7 +26,7 @@ public class ProductQueryHandlerTest {
 
     @Test
     public void 상품0개_상품목록_조회() {
-        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository);
+        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
         ProductsResponse products = productQueryHandler.products(0L, 10);
 
         Assertions.assertThat(products.getProducts().isEmpty()).isEqualTo(true);
@@ -34,7 +34,7 @@ public class ProductQueryHandlerTest {
 
     @Test
     public void 상품1개_상품목록_조회() throws IOException {
-        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository);
+        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
         Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L);
         productRepository.save(product);
 
@@ -45,7 +45,7 @@ public class ProductQueryHandlerTest {
 
     @Test
     public void 상품2개_상품목록_조회() throws IOException {
-        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository);
+        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
         Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L);
         productRepository.save(product);
 
@@ -60,7 +60,7 @@ public class ProductQueryHandlerTest {
 
     @Test
     public void 상품1개_상품목록_조회_후_상품1개추가_다시조회() throws IOException {
-        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository);
+        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
         Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L);
         productRepository.save(product);
         ProductsResponse products = productQueryHandler.products(0L, 10);
@@ -74,7 +74,7 @@ public class ProductQueryHandlerTest {
 
     @Test
     public void 상품1개_상품목록_조회_후_상품정보수정_다시조회() throws IOException {
-        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository);
+        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
         Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L);
         productRepository.save(product);
         ProductsResponse products = productQueryHandler.products(0L, 10);
@@ -89,7 +89,7 @@ public class ProductQueryHandlerTest {
 
     @Test
     public void 상품1개_상품목록_조회_후_상품삭제_다시조회() throws IOException {
-        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository);
+        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
         Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L);
         productRepository.save(product);
         ProductsResponse products = productQueryHandler.products(0L, 10);
@@ -101,7 +101,7 @@ public class ProductQueryHandlerTest {
 
     @Test
     public void 상품2개_상품목록_조회_후_상품삭제_다시조회() throws IOException {
-        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository);
+        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
         Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L);
         productRepository.save(product);
 
@@ -120,7 +120,7 @@ public class ProductQueryHandlerTest {
     @Test
     public void 페이지네이션_cursor_limit_검증() {
         // 테스트 데이터를 생성해놓은 paginatedProductFakeRepository 사용
-        ProductQueryHandler productQueryHandler = new ProductQueryHandler(new PaginatedProductFakeRepository());
+        ProductQueryHandler productQueryHandler = new ProductQueryHandler(new PaginatedProductFakeRepository(), null);
 
         // cursorId 0L, limit 1 일 때 product id가 1인 것이 반환되어야 함
         ProductsResponse products = productQueryHandler.products(0L, 1);
@@ -159,7 +159,7 @@ public class ProductQueryHandlerTest {
         String color = "white";
         String purchaseDateMin = "2023-01-01";
         String purchaseDateMax = "2024-07-17";
-        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository);
+        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
         ProductFilterRequest productFilterRequest = ProductFilterRequest.of(name, priceMin, priceMax, color, purchaseDateMin, purchaseDateMax);
 
         Product product = productQueryHandler.filter(productFilterRequest).getProducts().getFirst();
@@ -171,7 +171,7 @@ public class ProductQueryHandlerTest {
 
     @Test
     public void 상품_제목_검색() throws IOException {
-        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository);
+        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
         Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L);
         productRepository.save(product);
 
@@ -183,7 +183,7 @@ public class ProductQueryHandlerTest {
     @Test
     public void 상품_판매목록_조회() throws IOException {
         String expectedProductName = "iPhone12";
-        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository);
+        ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
         productRepository.save(createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L));
         SessionUser sessionUser = new SessionUser.Builder()
                 .withId(1L)
