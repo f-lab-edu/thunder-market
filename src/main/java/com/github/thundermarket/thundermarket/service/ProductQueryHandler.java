@@ -1,10 +1,8 @@
 package com.github.thundermarket.thundermarket.service;
 
-import com.github.thundermarket.thundermarket.domain.Product;
-import com.github.thundermarket.thundermarket.domain.ProductsResponse;
-import com.github.thundermarket.thundermarket.domain.ProductFilterRequest;
-import com.github.thundermarket.thundermarket.domain.SessionUser;
+import com.github.thundermarket.thundermarket.domain.*;
 import com.github.thundermarket.thundermarket.exception.ResourceNotFoundException;
+import com.github.thundermarket.thundermarket.repository.ProductDetailRepository;
 import com.github.thundermarket.thundermarket.repository.ProductRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,9 +21,11 @@ public class ProductQueryHandler {
     public static final int minKeywordLength = 2;
 
     private final ProductRepository productRepository;
+    private final ProductDetailRepository productDetailRepository;
 
-    public ProductQueryHandler(ProductRepository productRepository) {
+    public ProductQueryHandler(ProductRepository productRepository, ProductDetailRepository productDetailRepository) {
         this.productRepository = productRepository;
+        this.productDetailRepository = productDetailRepository;
     }
 
     public ProductsResponse products(Long cursorId, int limit) {
@@ -51,5 +51,13 @@ public class ProductQueryHandler {
 
     public ProductsResponse salesHistory(SessionUser sessionUser) {
         return ProductsResponse.of(productRepository.findByUserId(sessionUser.getId()));
+    }
+
+    public ProductDetailResponse productDetail(Long productId) {
+        ProductDetail productDetail = productDetailRepository.findByProductId(productId);
+        if (productDetail == null) {
+            throw new ResourceNotFoundException("Product detail not found with id: " + productId);
+        }
+        return ProductDetailResponse.of(productDetail);
     }
 }
