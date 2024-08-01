@@ -147,7 +147,7 @@ public class ProductServiceTest {
         ProductsResponse products = productService.products(0L, 10);
         Assertions.assertThat(products.getProducts().getFirst()).isEqualTo(product);
 
-        productService.delete(0L);
+        productService.delete(1L);
         Assertions.assertThat(products.getProducts().isEmpty()).isEqualTo(true);
     }
 
@@ -176,7 +176,7 @@ public class ProductServiceTest {
         Assertions.assertThat(products.getProducts().getFirst()).isEqualTo(product);
         Assertions.assertThat(products.getProducts().get(1)).isEqualTo(product2);
 
-        productService.delete(0L);
+        productService.delete(1L);
         Assertions.assertThat(products.getProducts().getFirst()).isEqualTo(product2);
     }
 
