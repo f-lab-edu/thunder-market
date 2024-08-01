@@ -5,7 +5,6 @@ import com.github.thundermarket.thundermarket.domain.*;
 import com.github.thundermarket.thundermarket.service.ProductCommandHandler;
 import com.github.thundermarket.thundermarket.service.ProductDetailService;
 import com.github.thundermarket.thundermarket.service.ProductQueryHandler;
-import com.github.thundermarket.thundermarket.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +23,6 @@ public class ProductController {
         this.productCommandHandler = productCommandHandler;
         this.productDetailService = productDetailService;
     }
-
     @GetMapping("/api/v1/products")
     public ResponseEntity<ProductsResponse> products(
             @RequestParam(name = "cursorId", defaultValue = "0") Long cursorId,

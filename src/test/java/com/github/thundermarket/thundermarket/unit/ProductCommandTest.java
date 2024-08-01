@@ -8,7 +8,6 @@ import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.domain.ProductResponse;
 import com.github.thundermarket.thundermarket.repository.FileStorage;
 import com.github.thundermarket.thundermarket.service.ProductCommandHandler;
-import com.github.thundermarket.thundermarket.service.ProductService;
 import com.github.thundermarket.thundermarket.testDouble.FileFakeStorage;
 import com.github.thundermarket.thundermarket.testDouble.ProductDetailFakeRepository;
 import com.github.thundermarket.thundermarket.testDouble.ProductFakeRepository;
