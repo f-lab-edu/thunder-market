@@ -50,8 +50,6 @@ public class ProductFakeRepository implements ProductRepository {
 
     @Override
     public List<Product> findByUserId(Long userId) {
-        System.out.println(products.getFirst().getUserId());
-        System.out.println(userId);
         return products.stream()
                 .filter(p -> p.getUserId().equals(userId))
                 .toList();

@@ -39,7 +39,6 @@ public class ProductDetailFakeRepository implements ProductDetailRepository {
 
     @Override
     public Iterable<ProductDetail> findAll() {
-        System.out.println("HELLO?");
         throw new UnsupportedOperationException();
     }
 
