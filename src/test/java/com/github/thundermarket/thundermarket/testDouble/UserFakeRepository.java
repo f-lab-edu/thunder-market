@@ -9,7 +9,7 @@ import java.util.*;
 @Repository
 public class UserFakeRepository implements UserRepository {
 
-    private static final Map<Long, User> inMemoryUserStore = new HashMap<>();
+    private final Map<Long, User> inMemoryUserStore = new HashMap<>();
     private static long id = 1L;
 
     @Override
