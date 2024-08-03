@@ -30,4 +30,12 @@ create table productDetails
     video_file_path    varchar(255) null,
     thumbnail_file_path    varchar(255) null,
     FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+create table keywords
+(
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    keyword VARCHAR(255) NOT NULL,
+    user_id BIGINT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
 )
