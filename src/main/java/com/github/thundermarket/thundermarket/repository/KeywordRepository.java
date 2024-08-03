@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface KeywordRepository extends CrudRepository<Keyword, Long> {
 
-    List<KeywordResponse> findAllByUserId(Long userId);
+    List<Keyword> findAllByUserId(Long userId);
 }

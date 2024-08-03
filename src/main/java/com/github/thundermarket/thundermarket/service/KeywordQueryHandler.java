@@ -16,7 +16,7 @@ public class KeywordQueryHandler {
         this.keywordRepository = keywordRepository;
     }
 
-    public List<KeywordResponse> findAllByUserId(long userId) {
-        return keywordRepository.findAllByUserId(userId);
+    public KeywordResponse findAllByUserId(long userId) {
+        return KeywordResponse.of(keywordRepository.findAllByUserId(userId));
     }
 }

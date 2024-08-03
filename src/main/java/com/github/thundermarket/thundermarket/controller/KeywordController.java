@@ -26,7 +26,7 @@ public class KeywordController {
     }
 
     @GetMapping
-    public ResponseEntity<List<KeywordResponse>> getAllKeywords(@SessionUserParam SessionUser sessionUser) {
+    public ResponseEntity<KeywordResponse> getAllKeywords(@SessionUserParam SessionUser sessionUser) {
         return new ResponseEntity<>(keywordQueryHandler.findAllByUserId(sessionUser.getId()), HttpStatus.OK);
     }
 

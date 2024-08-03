@@ -2,6 +2,7 @@ package com.github.thundermarket.thundermarket.testDouble;
 
 import com.github.thundermarket.thundermarket.domain.Keyword;
 import com.github.thundermarket.thundermarket.domain.User;
+import com.github.thundermarket.thundermarket.dto.KeywordResponse;
 import com.github.thundermarket.thundermarket.repository.KeywordRepository;
 import com.github.thundermarket.thundermarket.repository.UserRepository;
 import org.springframework.stereotype.Repository;

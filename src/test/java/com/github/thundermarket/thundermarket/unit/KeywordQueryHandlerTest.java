@@ -2,6 +2,7 @@ package com.github.thundermarket.thundermarket.unit;
 
 
 import com.github.thundermarket.thundermarket.domain.Keyword;
+import com.github.thundermarket.thundermarket.dto.KeywordResponse;
 import com.github.thundermarket.thundermarket.service.KeywordQueryHandler;
 import com.github.thundermarket.thundermarket.testDouble.KeywordFakeRepository;
 import org.assertj.core.api.Assertions;
@@ -24,9 +25,9 @@ public class KeywordQueryHandlerTest {
         keywordRepository.save(createKeyword());
 
         // when
-        List<Keyword> keywords = keywordQueryHandler.findAllByUserId(userId);
+        KeywordResponse keywords = keywordQueryHandler.findAllByUserId(userId);
 
         // then
-        Assertions.assertThat(keywords.size()).isEqualTo(1);
+        Assertions.assertThat(keywords.getKeywords().size()).isEqualTo(1);
     }
 }
