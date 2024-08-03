@@ -1,4 +1,6 @@
-package com.github.thundermarket.thundermarket.domain;
+package com.github.thundermarket.thundermarket.dto;
+
+import com.github.thundermarket.thundermarket.domain.Product;
 
 import java.util.List;
 import java.util.Objects;

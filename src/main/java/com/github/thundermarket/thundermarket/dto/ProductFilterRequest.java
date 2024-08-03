@@ -1,4 +1,4 @@
-package com.github.thundermarket.thundermarket.domain;
+package com.github.thundermarket.thundermarket.dto;
 
 import java.util.Objects;
 

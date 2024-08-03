@@ -1,4 +1,4 @@
-package com.github.thundermarket.thundermarket.domain;
+package com.github.thundermarket.thundermarket.dto;
 
 public class FileUploadResult {
     private final String videoFilePath;

@@ -2,6 +2,7 @@ package com.github.thundermarket.thundermarket.controller;
 
 import com.github.thundermarket.thundermarket.aspect.SessionUserParam;
 import com.github.thundermarket.thundermarket.domain.*;
+import com.github.thundermarket.thundermarket.dto.*;
 import com.github.thundermarket.thundermarket.service.ProductCommandHandler;
 import com.github.thundermarket.thundermarket.service.ProductQueryHandler;
 import org.springframework.http.HttpStatus;

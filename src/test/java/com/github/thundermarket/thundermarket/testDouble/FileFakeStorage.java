@@ -2,7 +2,7 @@ package com.github.thundermarket.thundermarket.testDouble;
 
 import com.github.thundermarket.thundermarket.Util.VideoUtils;
 import com.github.thundermarket.thundermarket.constant.*;
-import com.github.thundermarket.thundermarket.domain.FileUploadResult;
+import com.github.thundermarket.thundermarket.dto.FileUploadResult;
 import com.github.thundermarket.thundermarket.repository.FileStorage;
 import org.springframework.web.multipart.MultipartFile;
 

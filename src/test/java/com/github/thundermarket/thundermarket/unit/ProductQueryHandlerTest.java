@@ -1,5 +1,7 @@
 package com.github.thundermarket.thundermarket.unit;
 
+import com.github.thundermarket.thundermarket.dto.ProductFilterRequest;
+import com.github.thundermarket.thundermarket.dto.ProductsResponse;
 import com.github.thundermarket.thundermarket.testDouble.PaginatedProductFakeRepository;
 import com.github.thundermarket.thundermarket.testDouble.ProductFakeRepository;
 import com.github.thundermarket.thundermarket.domain.*;
