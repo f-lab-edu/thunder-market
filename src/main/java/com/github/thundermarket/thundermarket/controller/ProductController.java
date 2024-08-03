@@ -36,8 +36,9 @@ public class ProductController {
 
     @PostMapping("/api/v1/products")
     public ResponseEntity<ProductResponse> add(@RequestPart("productRequest") ProductRequest productRequest,
-                                               @RequestPart("video") MultipartFile video) throws IOException {
-        return new ResponseEntity<>(productCommandHandler.add(productRequest.toProduct(), productRequest.toProductDetail(), video), HttpStatus.OK);
+                                               @RequestPart("video") MultipartFile video,
+                                               @SessionUserParam SessionUser sessionUser) throws IOException {
+        return new ResponseEntity<>(productCommandHandler.add(productRequest.toProduct(), productRequest.toProductDetail(), video, sessionUser.getEmail()), HttpStatus.OK);
     }
 
     @GetMapping("/api/v1/products/filter")
