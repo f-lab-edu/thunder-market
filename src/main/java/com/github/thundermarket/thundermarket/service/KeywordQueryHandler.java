@@ -1,6 +1,7 @@
 package com.github.thundermarket.thundermarket.service;
 
 import com.github.thundermarket.thundermarket.domain.Keyword;
+import com.github.thundermarket.thundermarket.dto.KeywordResponse;
 import com.github.thundermarket.thundermarket.repository.KeywordRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public class KeywordQueryHandler {
         this.keywordRepository = keywordRepository;
     }
 
-    public List<Keyword> findAllByUserId(long userId) {
+    public List<KeywordResponse> findAllByUserId(long userId) {
         return keywordRepository.findAllByUserId(userId);
     }
 }

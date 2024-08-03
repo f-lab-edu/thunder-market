@@ -4,6 +4,7 @@ import com.github.thundermarket.thundermarket.aspect.SessionUserParam;
 import com.github.thundermarket.thundermarket.domain.Keyword;
 import com.github.thundermarket.thundermarket.domain.SessionUser;
 import com.github.thundermarket.thundermarket.dto.KeywordRequest;
+import com.github.thundermarket.thundermarket.dto.KeywordResponse;
 import com.github.thundermarket.thundermarket.service.KeywordCommandHandler;
 import com.github.thundermarket.thundermarket.service.KeywordQueryHandler;
 import org.springframework.http.HttpStatus;
@@ -25,18 +26,18 @@ public class KeywordController {
     }
 
     @GetMapping
-    public List<Keyword> getAllKeywords(@SessionUserParam SessionUser sessionUser) {
-        return keywordQueryHandler.findAllByUserId(sessionUser.getId());
+    public ResponseEntity<List<KeywordResponse>> getAllKeywords(@SessionUserParam SessionUser sessionUser) {
+        return new ResponseEntity<>(keywordQueryHandler.findAllByUserId(sessionUser.getId()), HttpStatus.OK);
     }
 
     @PostMapping
-    public Long createKeyword(@SessionUserParam SessionUser sessionUser, @RequestBody KeywordRequest keywordRequest) {
-        return keywordCommandHandler.save(keywordRequest.to(sessionUser.getId()));
+    public ResponseEntity<Long> createKeyword(@SessionUserParam SessionUser sessionUser, @RequestBody KeywordRequest keywordRequest) {
+        return new ResponseEntity<>(keywordCommandHandler.save(keywordRequest.to(sessionUser.getId())), HttpStatus.OK);
     }
 
     @DeleteMapping("/{keywordId}")
-    public ResponseEntity<?> deleteKeyword(@PathVariable Long keywordId) {
+    public ResponseEntity<String> deleteKeyword(@PathVariable Long keywordId) {
         keywordCommandHandler.delete(keywordId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Delete keyword successful", HttpStatus.OK);
     }
 }
