@@ -1,6 +1,9 @@
 package com.github.thundermarket.thundermarket.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.thundermarket.thundermarket.domain.Product;
+import com.github.thundermarket.thundermarket.domain.ProductDetail;
+import com.github.thundermarket.thundermarket.dto.ProductRequest;
 import com.github.thundermarket.thundermarket.testDouble.TestConfig;
 import com.github.thundermarket.thundermarket.domain.User;
 import jakarta.servlet.http.Cookie;
@@ -18,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -60,6 +64,14 @@ public class ProductControllerTest {
         registry.add("spring.data.redis.port", redis::getFirstMappedPort);
     }
 
+    @Container
+    static KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:6.2.1"));
+
+    @DynamicPropertySource
+    static void kafkaProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.kafka.bootstrap-servers", kafkaContainer::getBootstrapServers);
+    }
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -86,31 +98,34 @@ public class ProductControllerTest {
 
     @Test
     public void 상품_등록_성공() throws Exception {
-        String productRequestJson = "{\n" +
-                "  \"product\": {\n" +
-                "    \"title\": \"아이폰 팝니다\",\n" +
-                "    \"name\": \"iPhone11\",\n" +
-                "    \"price\": 200000,\n" +
-                "    \"status\": \"available\"\n" +
-                "  },\n" +
-                "  \"productDetail\": {\n" +
-                "    \"color\": \"white\",\n" +
-                "    \"productCondition\": \"New\",\n" +
-                "    \"batteryCondition\": \"Good\",\n" +
-                "    \"cameraCondition\": \"Good\",\n" +
-                "    \"accessories\": \"Charger, Earphones\",\n" +
-                "    \"purchaseDate\": \"2023-01-01\",\n" +
-                "    \"warrantyDuration\": \"12 months\",\n" +
-                "    \"tradeLocation\": \"Seoul\",\n" +
-                "    \"deliveryFee\": 5000\n" +
-                "  }\n" +
-                "}";
+        ProductRequest productRequest = new ProductRequest(
+                new Product.Builder()
+                        .withTitle("아이폰 팝니다")
+                        .withName("iPhone11")
+                        .withPrice(200_000)
+                        .withStatus("available")
+                        .withUserId(1L)
+                        .build(),
+                new ProductDetail.Builder()
+                        .withProductId(1L)
+                        .withColor("white")
+                        .withProductCondition("New")
+                        .withBatteryCondition("Good")
+                        .withCameraCondition("Good")
+                        .withAccessories("Charger, Earphones")
+                        .withPurchaseDate("2023-01-01")
+                        .withWarrantyDuration("12 months")
+                        .withTradeLocation("Seoul")
+                        .withDeliveryFee(5000)
+                        .build()
+        );
+        String productRequestJson = objectMapper.writeValueAsString(productRequest);
 
-        MockMultipartFile productRequest = new MockMultipartFile("productRequest", "", "application/json", productRequestJson.getBytes());
+        MockMultipartFile mockMultipartJson = new MockMultipartFile("productRequest", "", "application/json", productRequestJson.getBytes());
         MockMultipartFile mockMultipartFile = new MockMultipartFile("video", "test-video.mp4", "video/mp4", new FileInputStream(ResourceUtils.getFile("classpath:5sec.mp4")));
 
         mockMvc.perform(multipart("/api/v1/products")
-                        .file(productRequest)
+                        .file(mockMultipartJson)
                         .file(mockMultipartFile)
                         .contentType(MediaType.MULTIPART_FORM_DATA)
                         .cookie(new Cookie("SESSION", getSessionId())))
@@ -182,7 +197,7 @@ public class ProductControllerTest {
     private String getSessionId() throws Exception {
         return mockMvc.perform(post("/api/v1/auth/login")
                         .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(createUser("test01@email.com", "password"))))
+                        .content(objectMapper.writeValueAsString(createUser("jaen6563@naver.com", "password"))))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Login successful"))
                 .andReturn().getResponse().getCookie("SESSION").getValue();
