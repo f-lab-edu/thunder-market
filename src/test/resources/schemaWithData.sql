@@ -42,7 +42,7 @@ create table keywords
 
 INSERT INTO `users` (id, email, password)
 VALUES
-    (1, 'test01@email.com', 'password');
+    (1, 'jaen6563@naver.com', 'password');
 
 INSERT INTO `products` (`id`, `title`, `name`, `price`, `status`, `user_id`)
 VALUES

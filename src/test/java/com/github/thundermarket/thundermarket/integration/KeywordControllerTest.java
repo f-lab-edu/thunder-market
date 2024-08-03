@@ -74,7 +74,7 @@ public class KeywordControllerTest {
     private String getSessionId() throws Exception {
         return mockMvc.perform(post("/api/v1/auth/login")
                         .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(createUser("test01@email.com", "password"))))
+                        .content(objectMapper.writeValueAsString(createUser("jaen6563@naver.com", "password"))))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Login successful"))
                 .andReturn().getResponse().getCookie("SESSION").getValue();
@@ -88,7 +88,7 @@ public class KeywordControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
-        Assertions.assertThat(products).isEqualTo("[{\"id\":1,\"keyword\":\"아이폰15\",\"userId\":1}]");
+        Assertions.assertThat(products).isEqualTo("{\"keywords\":[{\"id\":1,\"keyword\":\"아이폰15\",\"userId\":1}]}");
     }
 
     @Test
