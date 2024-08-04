@@ -35,7 +35,7 @@ class KeywordMatchingServiceTest {
         keywordRepository.save(createKeyword(1L, "아이폰14", 1L));
         keywordRepository.save(createKeyword(2L, "아이폰12", 1L));
 
-        List<String> emails = keywordMatchingService.findEmailByUserIdIn("아이폰");
+        List<String> emails = keywordMatchingService.findEmailsByKeywordsInTitle("아이폰");
 
         Assertions.assertThat(emails.size()).isEqualTo(2);
     }

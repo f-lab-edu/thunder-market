@@ -27,7 +27,9 @@ public class ProductEventConsumer {
             String emailBody = String.format("새 상품이 등록되었습니다.\n제목: %s\n상품명: %s\n가격: %d",
                     event.getTitle(), event.getName(), event.getPrice());
 
-            emailService.sendMail(event.getEmail(), subject, emailBody);
+            for (String email : event.getEmails()) {
+                emailService.sendMail(email, subject, emailBody);
+            }
         } catch (Exception e) {
             log.error("Error processing product created event", e);
         }
