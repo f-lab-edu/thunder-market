@@ -17,8 +17,8 @@ public class KeywordMatchingService {
         this.userQueryHandler = userQueryHandler;
     }
 
-    public List<String> findEmailByUserIdIn(String keyword) {
-        List<Long> userIds = keywordQueryHandler.findUserIdsWithMatchingKeyword(keyword);
+    public List<String> findEmailsByKeywordsInTitle(String title) {
+        List<Long> userIds = keywordQueryHandler.findUserIdsWithMatchingKeyword(title);
         return userQueryHandler.findEmailByUserIdIn(userIds);
     }
 }
