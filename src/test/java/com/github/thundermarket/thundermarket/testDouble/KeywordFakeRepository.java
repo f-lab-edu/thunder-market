@@ -8,17 +8,17 @@ import com.github.thundermarket.thundermarket.repository.UserRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class KeywordFakeRepository implements KeywordRepository {
 
-    private final Map<Long, Keyword> inMemoryStore = new HashMap<>();
-    private static long id = 1L;
+    private final List<Keyword> inMemoryStore = new ArrayList<>();
 
 
     @Override
     public <S extends Keyword> S save(S entity) {
-        inMemoryStore.put(id, entity);
+        inMemoryStore.add(entity);
         return entity;
     }
 
@@ -29,9 +29,9 @@ public class KeywordFakeRepository implements KeywordRepository {
 
     @Override
     public Optional<Keyword> findById(Long aLong) {
-        for (Long l : inMemoryStore.keySet()) {
-            if (Objects.equals(l, aLong)) {
-                return Optional.of(inMemoryStore.get(l));
+        for (Keyword keyword : inMemoryStore) {
+            if (aLong.equals(keyword.getId())) {
+                return Optional.of(keyword);
             }
         }
         return Optional.empty();
@@ -43,7 +43,7 @@ public class KeywordFakeRepository implements KeywordRepository {
     }
 
     public List<Keyword> findAll() {
-        return new ArrayList<>(inMemoryStore.values());
+        return inMemoryStore;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class KeywordFakeRepository implements KeywordRepository {
 
     @Override
     public void deleteById(Long aLong) {
-        inMemoryStore.remove(aLong);
+        inMemoryStore.removeIf(keyword -> keyword.getId().equals(aLong));
     }
 
     @Override
@@ -82,6 +82,23 @@ public class KeywordFakeRepository implements KeywordRepository {
 
     @Override
     public List<Keyword> findAllByUserId(Long userId) {
-        return new ArrayList<>(inMemoryStore.values());
+        List<Keyword> keywords = new ArrayList<>();
+        for (Keyword keyword : inMemoryStore) {
+            if (userId.equals(keyword.getId())) {
+                keywords.add(keyword);
+            }
+        }
+        return keywords;
+    }
+
+    @Override
+    public List<Long> findUserIdsWithMatchingKeyword(String text) {
+        List<Long> userIds = new ArrayList<>();
+        for (Keyword keyword : inMemoryStore) {
+            if (keyword.getKeyword().contains(text)) {
+                userIds.add(keyword.getUserId());
+            }
+        }
+        return userIds;
     }
 }
