@@ -3,6 +3,7 @@ package com.github.thundermarket.thundermarket.testDouble;
 import com.github.thundermarket.thundermarket.repository.FileStorage;
 import com.github.thundermarket.thundermarket.repository.ProductDetailRepository;
 import com.github.thundermarket.thundermarket.repository.ProductRepository;
+import com.github.thundermarket.thundermarket.service.EmailService;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
@@ -15,5 +16,10 @@ public class TestConfig {
     @Bean
     public FileStorage fileStorage() {
         return new FileFakeStorage();
+    }
+
+    @Bean
+    public EmailService emailService() {
+        return new FakeEmailService();
     }
 }
