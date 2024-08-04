@@ -19,4 +19,8 @@ public class KeywordQueryHandler {
     public KeywordResponse findAllByUserId(long userId) {
         return KeywordResponse.of(keywordRepository.findAllByUserId(userId));
     }
+
+    public List<Long> findUserIdsWithMatchingKeyword(String keyword) {
+        return keywordRepository.findUserIdsWithMatchingKeyword(keyword);
+    }
 }

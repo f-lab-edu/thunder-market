@@ -24,4 +24,8 @@ public class UserQueryHandler {
     public User checkCredential(User user) {
         return userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
     }
+
+    public List<String> findEmailByUserIdIn(List<Long> userIds) {
+        return userRepository.findEmailByIdIn(userIds);
+    }
 }
