@@ -8,10 +8,7 @@ import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.dto.ProductResponse;
 import com.github.thundermarket.thundermarket.repository.FileStorage;
 import com.github.thundermarket.thundermarket.service.ProductCommandHandler;
-import com.github.thundermarket.thundermarket.testDouble.DummyProductEventPublisher;
-import com.github.thundermarket.thundermarket.testDouble.FileFakeStorage;
-import com.github.thundermarket.thundermarket.testDouble.ProductDetailFakeRepository;
-import com.github.thundermarket.thundermarket.testDouble.ProductFakeRepository;
+import com.github.thundermarket.thundermarket.testDouble.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
@@ -45,7 +42,7 @@ public class ProductCommandTest {
 
     @Test
     public void 상품_추가_성공() throws IOException {
-        ProductCommandHandler productCommandHandler = new ProductCommandHandler(new ProductFakeRepository(), new ProductDetailFakeRepository(), new FileFakeStorage(), new DummyProductEventPublisher());
+        ProductCommandHandler productCommandHandler = new ProductCommandHandler(new ProductFakeRepository(), new ProductDetailFakeRepository(), new FileFakeStorage(), new DummyProductEventPublisher(), new FakeKeywordMatchingService());
         MockMultipartFile emptyMockMultipartFile = new MockMultipartFile("video", "test-video.mp4", "video/mp4", new FileInputStream(ResourceUtils.getFile("classpath:5sec.mp4")));
         ObjectMapper objectMapper = new ObjectMapper();
         String expectedProductName = "iPhone12";
@@ -74,7 +71,7 @@ public class ProductCommandTest {
     @Test
     public void 동영상_파일_및_썸네일_저장() throws IOException {
         MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "test-video.mp4", "video/mp4", new FileInputStream(ResourceUtils.getFile("classpath:5sec.mp4")));
-        ProductCommandHandler productCommandHandler = new ProductCommandHandler(new ProductFakeRepository(), new ProductDetailFakeRepository(), new FileFakeStorage(), new DummyProductEventPublisher());
+        ProductCommandHandler productCommandHandler = new ProductCommandHandler(new ProductFakeRepository(), new ProductDetailFakeRepository(), new FileFakeStorage(), new DummyProductEventPublisher(), new FakeKeywordMatchingService());
         ProductResponse productResponse = productCommandHandler.add(createProduct(), createProductDetail(), mockMultipartFile, "");
 
         String videoFilePath = productResponse.getProductDetail().getVideoFilePath();
