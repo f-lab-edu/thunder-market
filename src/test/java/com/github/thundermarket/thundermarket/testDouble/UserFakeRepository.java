@@ -33,16 +33,16 @@ public class UserFakeRepository implements UserRepository {
     }
 
     @Override
-    public List<String> findEmailByIdIn(List<Long> userIds) {
-        List<String> emails = new ArrayList<>();
+    public List<User> findEmailByIdIn(List<Long> userIds) {
+        List<User> users = new ArrayList<>();
         for (User user : inMemoryUserStore) {
             for (Long userId : userIds) {
                 if (user.getId().equals(userId)) {
-                    emails.add(user.getEmail());
+                    users.add(user);
                 }
             }
         }
-        return emails;
+        return users;
     }
 
     public void deleteAll() {
