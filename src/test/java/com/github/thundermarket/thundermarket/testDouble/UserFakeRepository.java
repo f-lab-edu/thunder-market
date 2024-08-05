@@ -1,4 +1,4 @@
-package com.github.thundermarket.thundermarket.TestDouble;
+package com.github.thundermarket.thundermarket.testDouble;
 
 import com.github.thundermarket.thundermarket.domain.User;
 import com.github.thundermarket.thundermarket.repository.UserRepository;
@@ -9,7 +9,7 @@ import java.util.*;
 @Repository
 public class UserFakeRepository implements UserRepository {
 
-    private static final Map<Long, User> inMemoryUserStore = new HashMap<>();
+    private final Map<Long, User> inMemoryUserStore = new HashMap<>();
     private static long id = 1L;
 
     @Override

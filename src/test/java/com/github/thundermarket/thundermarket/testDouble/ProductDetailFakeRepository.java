@@ -1,4 +1,4 @@
-package com.github.thundermarket.thundermarket.TestDouble;
+package com.github.thundermarket.thundermarket.testDouble;
 
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.repository.ProductDetailRepository;
@@ -39,7 +39,6 @@ public class ProductDetailFakeRepository implements ProductDetailRepository {
 
     @Override
     public Iterable<ProductDetail> findAll() {
-        System.out.println("HELLO?");
         throw new UnsupportedOperationException();
     }
 

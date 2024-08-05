@@ -1,10 +1,10 @@
-package com.github.thundermarket.thundermarket;
+package com.github.thundermarket.thundermarket.unit;
 
-import com.github.thundermarket.thundermarket.TestDouble.ProductDetailRepositoryStub;
+import com.github.thundermarket.thundermarket.service.ProductQueryHandler;
+import com.github.thundermarket.thundermarket.testDouble.ProductDetailRepositoryStub;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.domain.ProductDetailResponse;
 import com.github.thundermarket.thundermarket.exception.ResourceNotFoundException;
-import com.github.thundermarket.thundermarket.service.ProductDetailService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -13,14 +13,14 @@ public class ProductDetailServiceTest {
     @Test
     public void 상품0개_상세정보_조회() {
         Long productId = 0L;
-        ProductDetailService productDetailService = new ProductDetailService(new ProductDetailRepositoryStub());
+        ProductQueryHandler productDetailService = new ProductQueryHandler(null, new ProductDetailRepositoryStub());
 
         Assertions.assertThatThrownBy(() -> productDetailService.productDetail(productId)).isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
     public void 상품1개_상세정보_조회() {
-        ProductDetailService productDetailService = new ProductDetailService(new ProductDetailRepositoryStub());
+        ProductQueryHandler productDetailService = new ProductQueryHandler(null, new ProductDetailRepositoryStub());
         ProductDetail productDetail = new ProductDetail.Builder()
                 .withProductId(1L)
                 .withColor("white")

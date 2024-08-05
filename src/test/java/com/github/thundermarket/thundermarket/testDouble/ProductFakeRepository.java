@@ -1,8 +1,7 @@
-package com.github.thundermarket.thundermarket.TestDouble;
+package com.github.thundermarket.thundermarket.testDouble;
 
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductFilterRequest;
-import com.github.thundermarket.thundermarket.domain.ProductsResponse;
 import com.github.thundermarket.thundermarket.repository.ProductRepository;
 import org.springframework.data.domain.Pageable;
 
@@ -51,8 +50,6 @@ public class ProductFakeRepository implements ProductRepository {
 
     @Override
     public List<Product> findByUserId(Long userId) {
-        System.out.println(products.getFirst().getUserId());
-        System.out.println(userId);
         return products.stream()
                 .filter(p -> p.getUserId().equals(userId))
                 .toList();
@@ -90,7 +87,11 @@ public class ProductFakeRepository implements ProductRepository {
 
     @Override
     public void deleteById(Long id) {
-        products.remove(id.intValue());
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getId().equals(id)) {
+                products.remove(i);
+            }
+        }
     }
 
     @Override

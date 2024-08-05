@@ -9,36 +9,24 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 
 @Service
-public class ProductService {
-
-    public static final int minPaginationLimit = 1;
-    public static final int maxPaginationLimit = 100;
-    public static final int minKeywordLength = 2;
+@Transactional
+public class ProductCommandHandler {
 
     private final ProductRepository productRepository;
     private final ProductDetailRepository productDetailRepository;
     private final FileStorage fileStorage;
 
-    public ProductService(ProductRepository productRepository, ProductDetailRepository productDetailRepository, FileStorage fileStorage) {
+    public ProductCommandHandler(ProductRepository productRepository, ProductDetailRepository productDetailRepository, FileStorage fileStorage) {
         this.productRepository = productRepository;
         this.productDetailRepository = productDetailRepository;
         this.fileStorage = fileStorage;
-    }
-
-    public ProductsResponse products(Long cursorId, int limit) {
-        long effectiveCursorId = (cursorId == null) ? 0 : cursorId;
-        int effectiveLimit = Math.min(maxPaginationLimit, Math.max(minPaginationLimit, limit));
-
-        Pageable pageable = PageRequest.of(0, effectiveLimit, Sort.by(Sort.Direction.DESC, "id"));
-        List<Product> products = productRepository.findByIdGreaterThanOrderByIdDesc(effectiveCursorId, pageable);
-        Long newCursorId = products.isEmpty() ? null : products.getFirst().getId();
-        return ProductsResponse.of(products, newCursorId, limit);
     }
 
     public ProductResponse add(Product product, ProductDetail productDetail, MultipartFile video) throws IOException {
@@ -54,20 +42,5 @@ public class ProductService {
 
     public void delete(Long id) {
         productRepository.deleteById(id);
-    }
-
-    public ProductsResponse filter(ProductFilterRequest productFilterRequest) {
-        return ProductsResponse.of(productRepository.filterByProductOptions(productFilterRequest));
-    }
-
-    public ProductsResponse searchTitleKeyword(String keyword) {
-        if (keyword.length() < minKeywordLength) {
-            throw new ResourceNotFoundException("Search term requires at least two words");
-        }
-        return ProductsResponse.of(productRepository.findByTitleContainingIgnoreCase(keyword));
-    }
-
-    public ProductsResponse salesHistory(SessionUser sessionUser) {
-        return ProductsResponse.of(productRepository.findByUserId(sessionUser.getId()));
     }
 }

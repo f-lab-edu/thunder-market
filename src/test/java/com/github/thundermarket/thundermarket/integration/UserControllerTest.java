@@ -1,4 +1,4 @@
-package com.github.thundermarket.thundermarket;
+package com.github.thundermarket.thundermarket.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.thundermarket.thundermarket.domain.User;

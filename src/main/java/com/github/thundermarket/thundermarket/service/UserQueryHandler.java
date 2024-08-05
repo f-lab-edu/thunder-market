@@ -3,20 +3,18 @@ package com.github.thundermarket.thundermarket.service;
 import com.github.thundermarket.thundermarket.domain.User;
 import com.github.thundermarket.thundermarket.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-public class UserService {
+@Transactional(readOnly = true)
+public class UserQueryHandler {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserQueryHandler(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    public User join(User user) {
-        return userRepository.save(user);
     }
 
     public List<User> findAllUsers() {

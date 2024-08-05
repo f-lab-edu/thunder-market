@@ -1,21 +1,25 @@
-package com.github.thundermarket.thundermarket;
+package com.github.thundermarket.thundermarket.unit;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.thundermarket.thundermarket.TestDouble.FileFakeStorage;
-import com.github.thundermarket.thundermarket.TestDouble.ProductDetailFakeRepository;
-import com.github.thundermarket.thundermarket.TestDouble.ProductFakeRepository;
-import com.github.thundermarket.thundermarket.domain.*;
+import com.github.thundermarket.thundermarket.domain.FileUploadResult;
+import com.github.thundermarket.thundermarket.domain.Product;
+import com.github.thundermarket.thundermarket.domain.ProductDetail;
+import com.github.thundermarket.thundermarket.domain.ProductResponse;
 import com.github.thundermarket.thundermarket.repository.FileStorage;
-import com.github.thundermarket.thundermarket.service.ProductService;
+import com.github.thundermarket.thundermarket.service.ProductCommandHandler;
+import com.github.thundermarket.thundermarket.testDouble.FileFakeStorage;
+import com.github.thundermarket.thundermarket.testDouble.ProductDetailFakeRepository;
+import com.github.thundermarket.thundermarket.testDouble.ProductFakeRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.util.ResourceUtils;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class ProductServiceAddTest {
+public class ProductCommandTest {
 
     public Product createProduct() {
         return new Product.Builder()
@@ -40,13 +44,13 @@ public class ProductServiceAddTest {
 
     @Test
     public void 상품_추가_성공() throws IOException {
-        ProductService productService = new ProductService(new ProductFakeRepository(), new ProductDetailFakeRepository(), new FileFakeStorage());
+        ProductCommandHandler productCommandHandler = new ProductCommandHandler(new ProductFakeRepository(), new ProductDetailFakeRepository(), new FileFakeStorage());
         MockMultipartFile emptyMockMultipartFile = new MockMultipartFile("video", "test-video.mp4", "video/mp4", new FileInputStream(ResourceUtils.getFile("classpath:5sec.mp4")));
         ObjectMapper objectMapper = new ObjectMapper();
         String expectedProductName = "iPhone12";
         String expectedProductDetailColor = "white";
 
-        ProductResponse productResponse = productService.add(createProduct(), createProductDetail(), emptyMockMultipartFile);
+        ProductResponse productResponse = productCommandHandler.add(createProduct(), createProductDetail(), emptyMockMultipartFile);
 
         String productResponseJson = objectMapper.writeValueAsString(productResponse);
         JsonNode jsonNode = objectMapper.readTree(productResponseJson);
@@ -69,8 +73,8 @@ public class ProductServiceAddTest {
     @Test
     public void 동영상_파일_및_썸네일_저장() throws IOException {
         MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "test-video.mp4", "video/mp4", new FileInputStream(ResourceUtils.getFile("classpath:5sec.mp4")));
-        ProductService productService = new ProductService(new ProductFakeRepository(), new ProductDetailFakeRepository(), new FileFakeStorage());
-        ProductResponse productResponse = productService.add(createProduct(), createProductDetail(), mockMultipartFile);
+        ProductCommandHandler productCommandHandler = new ProductCommandHandler(new ProductFakeRepository(), new ProductDetailFakeRepository(), new FileFakeStorage());
+        ProductResponse productResponse = productCommandHandler.add(createProduct(), createProductDetail(), mockMultipartFile);
 
         String videoFilePath = productResponse.getProductDetail().getVideoFilePath();
         String thumbnailFilePath = productResponse.getProductDetail().getThumbnailFilePath();
