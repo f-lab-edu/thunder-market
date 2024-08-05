@@ -92,10 +92,10 @@ public class KeywordFakeRepository implements KeywordRepository {
     }
 
     @Override
-    public List<Long> findUserIdsWithMatchingKeyword(String text) {
+    public List<Long> findUserIdsWithMatchingKeyword(String title) {
         List<Long> userIds = new ArrayList<>();
         for (Keyword keyword : inMemoryStore) {
-            if (keyword.getKeyword().contains(text)) {
+            if (keyword.getKeyword().contains(title)) {
                 userIds.add(keyword.getUserId());
             }
         }

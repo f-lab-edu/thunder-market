@@ -14,6 +14,6 @@ public interface KeywordRepository extends CrudRepository<Keyword, Long> {
 
     List<Keyword> findAllByUserId(Long userId);
 
-    @Query("SELECT user_id FROM keywords WHERE keyword LIKE CONCAT('%', :keyword, '%')")
-    List<Long> findUserIdsWithMatchingKeyword(@Param("keyword") String keyword);
+    @Query("SELECT user_id FROM keywords WHERE :title LIKE CONCAT('%', keyword, '%')")
+    List<Long> findUserIdsWithMatchingKeyword(@Param("title") String title);
 }
