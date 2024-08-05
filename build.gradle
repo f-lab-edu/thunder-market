@@ -24,12 +24,22 @@ dependencies {
 	implementation 'org.bytedeco:javacv-platform:1.5.9'
 	implementation platform('software.amazon.awssdk:bom:2.20.56')
 	implementation 'software.amazon.awssdk:s3'
+	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	runtimeOnly 'com.h2database:h2'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 	testImplementation 'org.testcontainers:testcontainers:1.17.6'
 	testImplementation 'org.testcontainers:junit-jupiter:1.17.6'
 	testImplementation 'org.testcontainers:mysql:1.17.6'
+	testImplementation 'org.testcontainers:kafka:1.17.6'
+
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 

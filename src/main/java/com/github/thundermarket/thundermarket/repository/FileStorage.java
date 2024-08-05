@@ -1,6 +1,6 @@
 package com.github.thundermarket.thundermarket.repository;
 
-import com.github.thundermarket.thundermarket.domain.FileUploadResult;
+import com.github.thundermarket.thundermarket.dto.FileUploadResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

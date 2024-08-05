@@ -9,30 +9,40 @@ import java.util.*;
 @Repository
 public class UserFakeRepository implements UserRepository {
 
-    private final Map<Long, User> inMemoryUserStore = new HashMap<>();
-    private static long id = 1L;
+    private final List<User> inMemoryUserStore = new ArrayList<>();
 
     @Override
     public User save(User user) {
-        user.setId(id++);
-
-        inMemoryUserStore.put(user.getId(), user);
+        inMemoryUserStore.add(user);
         return user;
     }
 
     @Override
     public List<User> findAll() {
-        return new ArrayList<>(inMemoryUserStore.values());
+        return inMemoryUserStore;
     }
 
     @Override
     public User findByEmailAndPassword(String email, String password) {
-        for (User user : inMemoryUserStore.values()) {
+        for (User user : inMemoryUserStore) {
             if(user.getEmail().equals(email) && user.getPassword().equals(password)) {
                 return user;
             }
         }
         return null;
+    }
+
+    @Override
+    public List<User> findEmailByIdIn(List<Long> userIds) {
+        List<User> users = new ArrayList<>();
+        for (User user : inMemoryUserStore) {
+            for (Long userId : userIds) {
+                if (user.getId().equals(userId)) {
+                    users.add(user);
+                }
+            }
+        }
+        return users;
     }
 
     public void deleteAll() {

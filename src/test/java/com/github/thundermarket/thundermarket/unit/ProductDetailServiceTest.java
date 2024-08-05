@@ -3,7 +3,7 @@ package com.github.thundermarket.thundermarket.unit;
 import com.github.thundermarket.thundermarket.service.ProductQueryHandler;
 import com.github.thundermarket.thundermarket.testDouble.ProductDetailRepositoryStub;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
-import com.github.thundermarket.thundermarket.domain.ProductDetailResponse;
+import com.github.thundermarket.thundermarket.dto.ProductDetailResponse;
 import com.github.thundermarket.thundermarket.exception.ResourceNotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -23,5 +24,12 @@ public class UserQueryHandler {
 
     public User checkCredential(User user) {
         return userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
+    }
+
+    public List<String> findEmailByUserIdIn(List<Long> userIds) {
+        List<User> userEmails = userRepository.findEmailByIdIn(userIds);
+        return userEmails.stream()
+                .map(User::getEmail)
+                .collect(Collectors.toList());
     }
 }

@@ -1,4 +1,7 @@
-package com.github.thundermarket.thundermarket.domain;
+package com.github.thundermarket.thundermarket.dto;
+
+import com.github.thundermarket.thundermarket.domain.Product;
+import com.github.thundermarket.thundermarket.domain.ProductDetail;
 
 import java.util.Objects;
 
@@ -6,6 +9,11 @@ public class ProductRequest {
 
     private Product product;
     private ProductDetail productDetail;
+
+    public ProductRequest(Product product, ProductDetail productDetail) {
+        this.product = product;
+        this.productDetail = productDetail;
+    }
 
     public Product getProduct() {
         return product;

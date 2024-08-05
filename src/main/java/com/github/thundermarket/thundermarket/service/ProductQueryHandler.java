@@ -1,6 +1,9 @@
 package com.github.thundermarket.thundermarket.service;
 
 import com.github.thundermarket.thundermarket.domain.*;
+import com.github.thundermarket.thundermarket.dto.ProductDetailResponse;
+import com.github.thundermarket.thundermarket.dto.ProductFilterRequest;
+import com.github.thundermarket.thundermarket.dto.ProductsResponse;
 import com.github.thundermarket.thundermarket.exception.ResourceNotFoundException;
 import com.github.thundermarket.thundermarket.repository.ProductDetailRepository;
 import com.github.thundermarket.thundermarket.repository.ProductRepository;

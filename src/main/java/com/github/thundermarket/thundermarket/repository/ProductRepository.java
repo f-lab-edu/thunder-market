@@ -1,7 +1,7 @@
 package com.github.thundermarket.thundermarket.repository;
 
 import com.github.thundermarket.thundermarket.domain.Product;
-import com.github.thundermarket.thundermarket.domain.ProductFilterRequest;
+import com.github.thundermarket.thundermarket.dto.ProductFilterRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
