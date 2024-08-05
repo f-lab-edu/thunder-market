@@ -54,4 +54,4 @@ VALUES
 
 INSERT INTO `keywords` (`id`, `keyword`, `user_id`)
 VALUES
-    (1, '아이폰15', 1);
+    (1, '아이폰', 1);

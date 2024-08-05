@@ -88,7 +88,7 @@ public class KeywordControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
-        Assertions.assertThat(products).isEqualTo("{\"keywords\":[{\"id\":1,\"keyword\":\"아이폰15\",\"userId\":1}]}");
+        Assertions.assertThat(products).isEqualTo("{\"keywords\":[{\"id\":1,\"keyword\":\"아이폰\",\"userId\":1}]}");
     }
 
     @Test
