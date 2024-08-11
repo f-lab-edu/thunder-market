@@ -1,9 +1,7 @@
-package com.github.thundermarket.thundermarket.testDouble;
+package com.github.thundermarket.thundermarket.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.thundermarket.thundermarket.dto.ProductCreatedEvent;
 import com.github.thundermarket.thundermarket.service.ProductEventPublisher;
-import org.springframework.kafka.core.KafkaTemplate;
 
 public class DummyProductEventPublisher extends ProductEventPublisher {
 

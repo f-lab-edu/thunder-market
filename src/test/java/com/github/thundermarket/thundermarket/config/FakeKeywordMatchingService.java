@@ -1,4 +1,4 @@
-package com.github.thundermarket.thundermarket.testDouble;
+package com.github.thundermarket.thundermarket.config;
 
 import com.github.thundermarket.thundermarket.service.KeywordMatchingService;
 

@@ -1,14 +1,10 @@
-package com.github.thundermarket.thundermarket.testDouble;
+package com.github.thundermarket.thundermarket.config;
 
 import com.github.thundermarket.thundermarket.domain.Keyword;
-import com.github.thundermarket.thundermarket.domain.User;
-import com.github.thundermarket.thundermarket.dto.KeywordResponse;
 import com.github.thundermarket.thundermarket.repository.KeywordRepository;
-import com.github.thundermarket.thundermarket.repository.UserRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Repository
 public class KeywordFakeRepository implements KeywordRepository {

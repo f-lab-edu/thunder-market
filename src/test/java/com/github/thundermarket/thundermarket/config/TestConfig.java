@@ -1,8 +1,6 @@
-package com.github.thundermarket.thundermarket.testDouble;
+package com.github.thundermarket.thundermarket.config;
 
 import com.github.thundermarket.thundermarket.repository.FileStorage;
-import com.github.thundermarket.thundermarket.repository.ProductDetailRepository;
-import com.github.thundermarket.thundermarket.repository.ProductRepository;
 import com.github.thundermarket.thundermarket.service.EmailService;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
