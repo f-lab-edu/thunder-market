@@ -1,30 +1,22 @@
 package com.github.thundermarket.thundermarket.unit;
 
+import com.github.thundermarket.thundermarket.config.TestUtils;
 import com.github.thundermarket.thundermarket.dto.ProductFilterRequest;
 import com.github.thundermarket.thundermarket.dto.ProductsResponse;
-import com.github.thundermarket.thundermarket.testDouble.PaginatedProductFakeRepository;
-import com.github.thundermarket.thundermarket.testDouble.ProductFakeRepository;
+import com.github.thundermarket.thundermarket.config.PaginatedProductFakeRepository;
+import com.github.thundermarket.thundermarket.config.ProductFakeRepository;
 import com.github.thundermarket.thundermarket.domain.*;
 import com.github.thundermarket.thundermarket.service.ProductQueryHandler;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
+import static com.github.thundermarket.thundermarket.config.TestUtils.createProduct;
+
 
 public class ProductQueryHandlerTest {
 
     private final ProductFakeRepository productRepository = new ProductFakeRepository();
-
-    public Product createProduct(Long id, String title, String name, int price, String status, Long userId) {
-        return new Product.Builder()
-                .withId(id)
-                .withTitle(title)
-                .withName(name)
-                .withPrice(price)
-                .withStatus(status)
-                .withUserId(userId)
-                .build();
-    }
 
     @Test
     public void 상품0개_상품목록_조회() {
@@ -187,9 +179,9 @@ public class ProductQueryHandlerTest {
         String expectedProductName = "iPhone12";
         ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
         productRepository.save(createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L));
-        SessionUser sessionUser = new SessionUser.Builder()
-                .withId(1L)
-                .withEmail("test01@email.com")
+        SessionUser sessionUser = SessionUser.builder()
+                .id(1L)
+                .email("test01@email.com")
                 .build();
 
         ProductsResponse salesHistory = productQueryHandler.salesHistory(sessionUser);

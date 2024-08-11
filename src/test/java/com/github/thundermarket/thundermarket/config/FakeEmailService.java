@@ -1,4 +1,4 @@
-package com.github.thundermarket.thundermarket.testDouble;
+package com.github.thundermarket.thundermarket.config;
 
 import com.github.thundermarket.thundermarket.service.EmailService;
 import jakarta.mail.internet.MimeMessage;

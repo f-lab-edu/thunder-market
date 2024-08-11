@@ -1,4 +1,4 @@
-package com.github.thundermarket.thundermarket.testDouble;
+package com.github.thundermarket.thundermarket.config;
 
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.repository.ProductDetailRepository;
@@ -16,19 +16,19 @@ public class ProductDetailRepositoryStub implements ProductDetailRepository {
         if (productId == 0) {
             return null;
         }
-        return new ProductDetail.Builder()
-                .withProductId(1L)
-                .withColor("white")
-                .withProductCondition("")
-                .withBatteryCondition("")
-                .withCameraCondition("")
-                .withAccessories("")
-                .withPurchaseDate("")
-                .withWarrantyDuration("")
-                .withTradeLocation("")
-                .withDeliveryFee(0)
-                .withVideo("")
-                .withThumbnailFilePath("")
+        return ProductDetail.builder()
+                .productId(1L)
+                .color("white")
+                .productCondition("")
+                .batteryCondition("")
+                .cameraCondition("")
+                .accessories("")
+                .purchaseDate("")
+                .warrantyDuration("")
+                .tradeLocation("")
+                .deliveryFee(0)
+                .videoFilePath("")
+                .thumbnailFilePath("")
                 .build();
     }
 

@@ -4,11 +4,9 @@ package com.github.thundermarket.thundermarket.unit;
 import com.github.thundermarket.thundermarket.domain.Keyword;
 import com.github.thundermarket.thundermarket.dto.KeywordResponse;
 import com.github.thundermarket.thundermarket.service.KeywordQueryHandler;
-import com.github.thundermarket.thundermarket.testDouble.KeywordFakeRepository;
+import com.github.thundermarket.thundermarket.config.KeywordFakeRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 public class KeywordQueryHandlerTest {
 

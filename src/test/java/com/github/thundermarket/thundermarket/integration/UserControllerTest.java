@@ -18,8 +18,10 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
+import static com.github.thundermarket.thundermarket.config.TestContainersUtils.*;
+import static com.github.thundermarket.thundermarket.config.TestContainersUtils.registerRedisProperties;
+import static com.github.thundermarket.thundermarket.config.TestUtils.createUser;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -31,27 +33,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTest {
 
     @Container
-    static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0")
-            .withDatabaseName("testdb")
-            .withUsername("test")
-            .withPassword("test")
-            .withInitScript("schema.sql");
-
-    @DynamicPropertySource
-    static void registerMySQLProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", mySQLContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", mySQLContainer::getUsername);
-        registry.add("spring.datasource.password", mySQLContainer::getPassword);
-    }
+    static MySQLContainer<?> mysqlContainer = getMysqlContainer();
 
     @Container
-    public static GenericContainer redis = new GenericContainer(DockerImageName.parse("redis:6.2-alpine"))
-            .withExposedPorts(6379);
+    static GenericContainer<?> redisContainer = getRedisContainer();
 
     @DynamicPropertySource
-    static void redisProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.redis.host", redis::getHost);
-        registry.add("spring.data.redis.port", redis::getFirstMappedPort);
+    static void registerProperties(DynamicPropertyRegistry registry) {
+        registerMySQLProperties(registry);
+        registerRedisProperties(registry);
     }
 
     @Autowired
@@ -60,16 +50,9 @@ public class UserControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private User createUser(String email, String password) {
-        return new User.Builder()
-                .withEmail(email)
-                .withPassword(password)
-                .build();
-    }
-
     @Test
     public void 회원가입_성공() throws Exception {
-        User user = createUser("test01@email.com", "password");
+        User user = createUser(null, "test01@email.com", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
@@ -81,7 +64,7 @@ public class UserControllerTest {
 
     @Test
     public void 회원가입_이메일형식_실패() throws Exception {
-        User user = createUser("test01", "password");
+        User user = createUser(null, "test01", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
@@ -93,7 +76,7 @@ public class UserControllerTest {
 
     @Test
     public void 전체_회원_조회() throws Exception {
-        User user = createUser("test01@email.com", "password");
+        User user = createUser(null, "test01@email.com", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
@@ -119,7 +102,7 @@ public class UserControllerTest {
 
     @Test
     public void 로그인_성공() throws Exception {
-        User user = createUser("test01@email.com", "password");
+        User user = createUser(null, "test01@email.com", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
@@ -137,7 +120,7 @@ public class UserControllerTest {
 
     @Test
     public void 로그인_실패() throws Exception {
-        User user = createUser("test01@email.com", "password");
+        User user = createUser(null, "test01@email.com", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
@@ -147,7 +130,7 @@ public class UserControllerTest {
                 .andExpect(status().isOk());
 
 
-        User wrongUser = createUser("test01@email.com", "wrong");
+        User wrongUser = createUser(null, "test01@email.com", "wrong");
         String wrongUserJson = objectMapper.writeValueAsString(wrongUser);
 
         mockMvc.perform(post("/api/v1/auth/login")
@@ -159,7 +142,7 @@ public class UserControllerTest {
 
     @Test
     public void 마이페이지_조회() throws Exception {
-        User user = createUser("test01@email.com", "password");
+        User user = createUser(null, "test01@email.com", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 

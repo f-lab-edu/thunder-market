@@ -7,6 +7,7 @@ import com.github.thundermarket.thundermarket.dto.ProductsResponse;
 import com.github.thundermarket.thundermarket.exception.ResourceNotFoundException;
 import com.github.thundermarket.thundermarket.repository.ProductDetailRepository;
 import com.github.thundermarket.thundermarket.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ProductQueryHandler {
 
@@ -25,11 +27,6 @@ public class ProductQueryHandler {
 
     private final ProductRepository productRepository;
     private final ProductDetailRepository productDetailRepository;
-
-    public ProductQueryHandler(ProductRepository productRepository, ProductDetailRepository productDetailRepository) {
-        this.productRepository = productRepository;
-        this.productDetailRepository = productDetailRepository;
-    }
 
     public ProductsResponse products(Long cursorId, int limit) {
         long effectiveCursorId = (cursorId == null) ? 0 : cursorId;

@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
+@RequestMapping("/api/v1/products")
 public class ProductController {
 
     private final ProductQueryHandler productQueryHandler;
@@ -21,7 +22,7 @@ public class ProductController {
         this.productQueryHandler = productQueryHandler;
         this.productCommandHandler = productCommandHandler;
     }
-    @GetMapping("/api/v1/products")
+    @GetMapping
     public ResponseEntity<ProductsResponse> products(
             @RequestParam(name = "cursorId", defaultValue = "0") Long cursorId,
             @RequestParam(name = "limit", defaultValue = "10") int limit
@@ -29,29 +30,29 @@ public class ProductController {
         return new ResponseEntity<>(productQueryHandler.products(cursorId, limit), HttpStatus.OK);
     }
 
-    @GetMapping("/api/v1/products/{id}")
-    public ResponseEntity<ProductDetailResponse> productDetail(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(productQueryHandler.productDetail(id), HttpStatus.OK);
-    }
-
-    @PostMapping("/api/v1/products")
+    @PostMapping
     public ResponseEntity<ProductResponse> add(@RequestPart("productRequest") ProductRequest productRequest,
                                                @RequestPart("video") MultipartFile video,
                                                @SessionUserParam SessionUser sessionUser) throws IOException {
         return new ResponseEntity<>(productCommandHandler.add(productRequest.toProduct(), productRequest.toProductDetail(), video, sessionUser.getEmail()), HttpStatus.OK);
     }
 
-    @GetMapping("/api/v1/products/filter")
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDetailResponse> productDetail(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(productQueryHandler.productDetail(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/filter")
     public ResponseEntity<ProductsResponse> filteredProducts(@ModelAttribute ProductFilterRequest productFilterRequest) {
         return new ResponseEntity<>(productQueryHandler.filter(productFilterRequest), HttpStatus.OK);
     }
 
-    @GetMapping("/api/v1/products/keyword")
+    @GetMapping("/keyword")
     public ResponseEntity<ProductsResponse> keywordProducts(@RequestParam("keyword") String keyword) {
         return new ResponseEntity<>(productQueryHandler.searchTitleKeyword(keyword), HttpStatus.OK);
     }
 
-    @GetMapping("/api/v1/products/history/sales")
+    @GetMapping("/history/sales")
     public ResponseEntity<ProductsResponse> salesHistory(@SessionUserParam SessionUser sessionUser) {
         return new ResponseEntity<>(productQueryHandler.salesHistory(sessionUser), HttpStatus.OK);
     }
