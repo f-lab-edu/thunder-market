@@ -20,23 +20,23 @@ import java.io.IOException;
 public class ProductCommandTest {
 
     public Product createProduct() {
-        return new Product.Builder()
-                .withId(1L)
-                .withTitle("아이폰 팝니다")
-                .withName("iPhone12")
-                .withPrice(200_000)
-                .withStatus("판매중")
-                .withUserId(1L)
+        return Product.builder()
+                .id(1L)
+                .title("아이폰 팝니다")
+                .name("iPhone12")
+                .price(200_000)
+                .status("판매중")
+                .userId(1L)
                 .build();
     }
 
     public ProductDetail createProductDetail() {
-        return new ProductDetail.Builder()
-                .withId(1L)
-                .withColor("white")
-                .withBatteryCondition("80%")
-                .withCameraCondition("good")
-                .withDeliveryFee(3000)
+        return ProductDetail.builder()
+                .id(1L)
+                .color("white")
+                .batteryCondition("80%")
+                .cameraCondition("good")
+                .deliveryFee(3000)
                 .build();
     }
 

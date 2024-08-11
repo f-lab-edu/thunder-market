@@ -2,21 +2,18 @@ package com.github.thundermarket.thundermarket.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.thundermarket.thundermarket.dto.ProductCreatedEvent;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ProductEventConsumer {
 
     private final ObjectMapper objectMapper;
     private final EmailService emailService;
-
-    public ProductEventConsumer(ObjectMapper objectMapper, EmailService emailService) {
-        this.objectMapper = objectMapper;
-        this.emailService = emailService;
-    }
 
     @KafkaListener(topics = "product-events", groupId = "thundermarket-product-group")
     public void consumeProductCreatedEvent(String message) {

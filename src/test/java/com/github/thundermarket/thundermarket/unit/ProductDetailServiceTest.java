@@ -21,19 +21,19 @@ public class ProductDetailServiceTest {
     @Test
     public void 상품1개_상세정보_조회() {
         ProductQueryHandler productDetailService = new ProductQueryHandler(null, new ProductDetailRepositoryStub());
-        ProductDetail productDetail = new ProductDetail.Builder()
-                .withProductId(1L)
-                .withColor("white")
-                .withProductCondition("")
-                .withBatteryCondition("")
-                .withCameraCondition("")
-                .withAccessories("")
-                .withPurchaseDate("")
-                .withWarrantyDuration("")
-                .withTradeLocation("")
-                .withDeliveryFee(0)
-                .withVideo("")
-                .withThumbnailFilePath("")
+        ProductDetail productDetail = ProductDetail.builder()
+                .productId(1L)
+                .color("white")
+                .productCondition("")
+                .batteryCondition("")
+                .cameraCondition("")
+                .accessories("")
+                .purchaseDate("")
+                .warrantyDuration("")
+                .tradeLocation("")
+                .deliveryFee(0)
+                .videoFilePath("")
+                .thumbnailFilePath("")
                 .build();
         ProductDetailResponse expectedProductDetail = ProductDetailResponse.of(productDetail);
         Long productId = 1L;

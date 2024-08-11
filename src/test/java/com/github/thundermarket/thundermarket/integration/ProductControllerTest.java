@@ -79,9 +79,9 @@ public class ProductControllerTest {
     private ObjectMapper objectMapper;
 
     private User createUser(String email, String password) {
-        return new User.Builder()
-                .withEmail(email)
-                .withPassword(password)
+        return User.builder()
+                .email(email)
+                .password(password)
                 .build();
     }
 
@@ -99,24 +99,24 @@ public class ProductControllerTest {
     @Test
     public void 상품_등록_성공() throws Exception {
         ProductRequest productRequest = new ProductRequest(
-                new Product.Builder()
-                        .withTitle("아이폰 팝니다")
-                        .withName("iPhone11")
-                        .withPrice(200_000)
-                        .withStatus("available")
-                        .withUserId(1L)
+                Product.builder()
+                        .title("아이폰 팝니다")
+                        .name("iPhone11")
+                        .price(200_000)
+                        .status("available")
+                        .userId(1L)
                         .build(),
-                new ProductDetail.Builder()
-                        .withProductId(1L)
-                        .withColor("white")
-                        .withProductCondition("New")
-                        .withBatteryCondition("Good")
-                        .withCameraCondition("Good")
-                        .withAccessories("Charger, Earphones")
-                        .withPurchaseDate("2023-01-01")
-                        .withWarrantyDuration("12 months")
-                        .withTradeLocation("Seoul")
-                        .withDeliveryFee(5000)
+                ProductDetail.builder()
+                        .productId(1L)
+                        .color("white")
+                        .productCondition("New")
+                        .batteryCondition("Good")
+                        .cameraCondition("Good")
+                        .accessories("Charger, Earphones")
+                        .purchaseDate("2023-01-01")
+                        .warrantyDuration("12 months")
+                        .tradeLocation("Seoul")
+                        .deliveryFee(5000)
                         .build()
         );
         String productRequestJson = objectMapper.writeValueAsString(productRequest);

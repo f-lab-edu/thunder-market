@@ -15,10 +15,10 @@ import java.util.List;
 class KeywordMatchingServiceTest {
 
     private User createUser(Long id, String email, String password) {
-        return new User.Builder()
-                .withId(id)
-                .withEmail(email)
-                .withPassword(password)
+        return User.builder()
+                .id(id)
+                .email(email)
+                .password(password)
                 .build();
     }
 

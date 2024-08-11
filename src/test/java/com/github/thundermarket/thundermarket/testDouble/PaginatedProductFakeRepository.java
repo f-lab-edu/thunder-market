@@ -17,12 +17,12 @@ public class PaginatedProductFakeRepository extends ProductFakeRepository {
     private void initTestData() {
         // 테스트용 데이터 300개 추가
         for (int i = 0; i < 300; i++) {
-            products.add(new Product.Builder()
-                    .withId((long) i)
-                    .withName("iPhone13")
-                    .withPrice(300000)
-                    .withStatus("For Sale")
-                    .withUserId(1L)
+            products.add(Product.builder()
+                    .id((long) i)
+                    .name("iPhone13")
+                    .price(300000)
+                    .status("For Sale")
+                    .userId(1L)
                     .build());
         }
     }

@@ -47,9 +47,9 @@ public class UserController {
             return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
         }
         session.setAttribute(SessionConst.SESSION_USER,
-                new SessionUser.Builder()
-                        .withId(savedUser.getId())
-                        .withEmail(savedUser.getEmail())
+                SessionUser.builder()
+                        .id(savedUser.getId())
+                        .email(savedUser.getEmail())
                         .build());
         return new ResponseEntity<>("Login successful", HttpStatus.OK);
     }

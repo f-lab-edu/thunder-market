@@ -65,9 +65,9 @@ public class KeywordControllerTest {
     private ObjectMapper objectMapper;
 
     private User createUser(String email, String password) {
-        return new User.Builder()
-                .withEmail(email)
-                .withPassword(password)
+        return User.builder()
+                .email(email)
+                .password(password)
                 .build();
     }
 

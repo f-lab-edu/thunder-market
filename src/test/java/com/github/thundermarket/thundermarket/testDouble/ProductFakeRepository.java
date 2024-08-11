@@ -32,7 +32,12 @@ public class ProductFakeRepository implements ProductRepository {
 
     @Override
     public List<Product> filterByProductOptions(ProductFilterRequest productFilterRequest) {
-        save(new Product.Builder().withName("iPhone11").withPrice(290000).withStatus("판매중").withUserId(1L).build());
+        save(Product.builder()
+                .name("iPhone11")
+                .price(290000)
+                .status("판매중")
+                .userId(1L)
+                .build());
 
         return products.stream()
                 .filter(p -> p.getName().equals(productFilterRequest.getName())
