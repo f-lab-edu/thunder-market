@@ -16,10 +16,10 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
 import java.nio.charset.StandardCharsets;
 
+import static com.github.thundermarket.thundermarket.config.TestContainersUtils.*;
 import static com.github.thundermarket.thundermarket.config.TestUtils.getSessionId;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,27 +31,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class KeywordControllerTest {
 
     @Container
-    static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0")
-            .withDatabaseName("testdb")
-            .withUsername("test")
-            .withPassword("test")
-            .withInitScript("schemaWithData.sql");
-
-    @DynamicPropertySource
-    static void registerMySQLProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", mySQLContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", mySQLContainer::getUsername);
-        registry.add("spring.datasource.password", mySQLContainer::getPassword);
-    }
+    static MySQLContainer<?> mySQLContainer = getMysqlContainer();
 
     @Container
-    public static GenericContainer redis = new GenericContainer(DockerImageName.parse("redis:6.2-alpine"))
-            .withExposedPorts(6379);
+    static GenericContainer<?> redisContainer = getRedisContainer();
 
     @DynamicPropertySource
-    static void redisProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.redis.host", redis::getHost);
-        registry.add("spring.data.redis.port", redis::getFirstMappedPort);
+    static void registerProperties(DynamicPropertyRegistry registry) {
+        registerMySQLProperties(registry);
+        registerRedisProperties(registry);
     }
 
     @Autowired
