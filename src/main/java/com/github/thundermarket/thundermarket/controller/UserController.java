@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/v1")
 public class UserController {
 
     private final UserQueryHandler userQueryHandler;
@@ -24,13 +25,13 @@ public class UserController {
         this.userCommandHandler = userCommandHandler;
     }
 
-    @GetMapping("/api/v1/users")
+    @GetMapping("/users")
     public ResponseEntity<?> findAllUsers() {
         return new ResponseEntity<>(userQueryHandler.findAllUsers(), HttpStatus.OK);
     }
 
     @Authenticated
-    @PostMapping("/api/v1/auth/join")
+    @PostMapping("/auth/join")
     public ResponseEntity<?> join(@RequestBody User user) {
         if(!user.isEmailValid()) {
             return new ResponseEntity<>(Email.NOT_VALID_EMAIL_MESSAGE, HttpStatus.BAD_REQUEST);
@@ -39,7 +40,7 @@ public class UserController {
     }
 
     @Authenticated
-    @PostMapping("/api/v1/auth/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody User user, HttpSession session) {
         User savedUser = userQueryHandler.checkCredential(user);
         if(savedUser == null) {
@@ -53,7 +54,7 @@ public class UserController {
         return new ResponseEntity<>("Login successful", HttpStatus.OK);
     }
 
-    @GetMapping("/api/v1/mypage")
+    @GetMapping("/mypage")
     public ResponseEntity<SessionUser> mypage(@SessionUserParam SessionUser sessionUser) {
         return new ResponseEntity<>(sessionUser, HttpStatus.OK);
     }
