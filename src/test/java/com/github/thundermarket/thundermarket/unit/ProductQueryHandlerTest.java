@@ -1,30 +1,22 @@
 package com.github.thundermarket.thundermarket.unit;
 
+import com.github.thundermarket.thundermarket.config.TestUtils;
 import com.github.thundermarket.thundermarket.dto.ProductFilterRequest;
 import com.github.thundermarket.thundermarket.dto.ProductsResponse;
-import com.github.thundermarket.thundermarket.testDouble.PaginatedProductFakeRepository;
-import com.github.thundermarket.thundermarket.testDouble.ProductFakeRepository;
+import com.github.thundermarket.thundermarket.config.PaginatedProductFakeRepository;
+import com.github.thundermarket.thundermarket.config.ProductFakeRepository;
 import com.github.thundermarket.thundermarket.domain.*;
 import com.github.thundermarket.thundermarket.service.ProductQueryHandler;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
+import static com.github.thundermarket.thundermarket.config.TestUtils.createProduct;
+
 
 public class ProductQueryHandlerTest {
 
     private final ProductFakeRepository productRepository = new ProductFakeRepository();
-
-    public Product createProduct(Long id, String title, String name, int price, String status, Long userId) {
-        return Product.builder()
-                .id(id)
-                .title(title)
-                .name(name)
-                .price(price)
-                .status(status)
-                .userId(userId)
-                .build();
-    }
 
     @Test
     public void 상품0개_상품목록_조회() {

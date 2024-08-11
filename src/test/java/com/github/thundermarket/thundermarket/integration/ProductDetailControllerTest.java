@@ -1,7 +1,7 @@
 package com.github.thundermarket.thundermarket.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.thundermarket.thundermarket.testDouble.TestConfig;
+import com.github.thundermarket.thundermarket.config.TestConfig;
 import com.github.thundermarket.thundermarket.domain.User;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Test;
@@ -19,6 +19,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+import static com.github.thundermarket.thundermarket.config.TestUtils.createUser;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -60,13 +61,6 @@ public class ProductDetailControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private User createUser(String email, String password) {
-        return User.builder()
-                .email(email)
-                .password(password)
-                .build();
-    }
-
     @Test
     public void 상품상세정보_존재하지않으면_404응답() throws Exception {
         mockMvc.perform(get("/api/v1/products/0")
@@ -88,7 +82,7 @@ public class ProductDetailControllerTest {
     private String getSessionId() throws Exception {
         return mockMvc.perform(post("/api/v1/auth/login")
                         .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(createUser("jaen6563@naver.com", "password"))))
+                        .content(objectMapper.writeValueAsString(createUser(1L, "jaen6563@naver.com", "password"))))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Login successful"))
                 .andReturn().getResponse().getCookie("SESSION").getValue();

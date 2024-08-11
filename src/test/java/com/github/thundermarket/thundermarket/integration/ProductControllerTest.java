@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.dto.ProductRequest;
-import com.github.thundermarket.thundermarket.testDouble.TestConfig;
+import com.github.thundermarket.thundermarket.config.TestConfig;
 import com.github.thundermarket.thundermarket.domain.User;
 import jakarta.servlet.http.Cookie;
 import org.assertj.core.api.Assertions;
@@ -29,6 +29,7 @@ import org.testcontainers.utility.DockerImageName;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 
+import static com.github.thundermarket.thundermarket.config.TestUtils.*;
 import static org.hamcrest.Matchers.endsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -77,13 +78,6 @@ public class ProductControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    private User createUser(String email, String password) {
-        return User.builder()
-                .email(email)
-                .password(password)
-                .build();
-    }
 
     @Test
     public void 상품1개_상품목록조회() throws Exception {
@@ -197,7 +191,7 @@ public class ProductControllerTest {
     private String getSessionId() throws Exception {
         return mockMvc.perform(post("/api/v1/auth/login")
                         .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(createUser("jaen6563@naver.com", "password"))))
+                        .content(objectMapper.writeValueAsString(createUser(1L, "jaen6563@naver.com", "password"))))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Login successful"))
                 .andReturn().getResponse().getCookie("SESSION").getValue();

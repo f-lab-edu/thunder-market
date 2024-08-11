@@ -1,16 +1,13 @@
 package com.github.thundermarket.thundermarket.unit;
 
-import com.github.thundermarket.thundermarket.domain.Keyword;
 import com.github.thundermarket.thundermarket.service.KeywordCommandHandler;
-import com.github.thundermarket.thundermarket.testDouble.KeywordFakeRepository;
+import com.github.thundermarket.thundermarket.config.KeywordFakeRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class KeywordCommandHandlerTest {
+import static com.github.thundermarket.thundermarket.config.TestUtils.createKeyword;
 
-    private Keyword createKeyword() {
-        return new Keyword(1L, "아이폰14", 1L);
-    }
+public class KeywordCommandHandlerTest {
 
     @Test
     public void 키워드_등록() throws Exception {
@@ -20,7 +17,7 @@ public class KeywordCommandHandlerTest {
         KeywordCommandHandler keywordCommandHandler = new KeywordCommandHandler(keywordRepository);
 
         // when
-        keywordCommandHandler.save(createKeyword());
+        keywordCommandHandler.save(createKeyword(1L, "아이폰14", 1L));
 
         // then
         Assertions.assertThat(keywordRepository.findById(keywordId).get().getId()).isEqualTo(keywordId);
@@ -32,7 +29,7 @@ public class KeywordCommandHandlerTest {
         long keywordId = 1L;
         KeywordFakeRepository keywordRepository = new KeywordFakeRepository();
         KeywordCommandHandler keywordCommandHandler = new KeywordCommandHandler(keywordRepository);
-        keywordRepository.save(createKeyword());
+        keywordRepository.save(createKeyword(1L, "아이폰14", 1L));
 
         // when
         keywordCommandHandler.delete(keywordId);

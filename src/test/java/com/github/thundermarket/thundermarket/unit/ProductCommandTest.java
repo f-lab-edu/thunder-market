@@ -8,7 +8,7 @@ import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.dto.ProductResponse;
 import com.github.thundermarket.thundermarket.repository.FileStorage;
 import com.github.thundermarket.thundermarket.service.ProductCommandHandler;
-import com.github.thundermarket.thundermarket.testDouble.*;
+import com.github.thundermarket.thundermarket.config.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
@@ -17,28 +17,10 @@ import org.springframework.util.ResourceUtils;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import static com.github.thundermarket.thundermarket.config.TestUtils.createProduct;
+import static com.github.thundermarket.thundermarket.config.TestUtils.createProductDetail;
+
 public class ProductCommandTest {
-
-    public Product createProduct() {
-        return Product.builder()
-                .id(1L)
-                .title("아이폰 팝니다")
-                .name("iPhone12")
-                .price(200_000)
-                .status("판매중")
-                .userId(1L)
-                .build();
-    }
-
-    public ProductDetail createProductDetail() {
-        return ProductDetail.builder()
-                .id(1L)
-                .color("white")
-                .batteryCondition("80%")
-                .cameraCondition("good")
-                .deliveryFee(3000)
-                .build();
-    }
 
     @Test
     public void 상품_추가_성공() throws IOException {
@@ -48,7 +30,11 @@ public class ProductCommandTest {
         String expectedProductName = "iPhone12";
         String expectedProductDetailColor = "white";
 
-        ProductResponse productResponse = productCommandHandler.add(createProduct(), createProductDetail(), emptyMockMultipartFile, "");
+        ProductResponse productResponse = productCommandHandler.add(
+                createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L),
+                createProductDetail(1L, "white", "80%", "good", 3000),
+                emptyMockMultipartFile,
+                "");
 
         String productResponseJson = objectMapper.writeValueAsString(productResponse);
         JsonNode jsonNode = objectMapper.readTree(productResponseJson);
@@ -72,7 +58,11 @@ public class ProductCommandTest {
     public void 동영상_파일_및_썸네일_저장() throws IOException {
         MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "test-video.mp4", "video/mp4", new FileInputStream(ResourceUtils.getFile("classpath:5sec.mp4")));
         ProductCommandHandler productCommandHandler = new ProductCommandHandler(new ProductFakeRepository(), new ProductDetailFakeRepository(), new FileFakeStorage(), new DummyProductEventPublisher(), new FakeKeywordMatchingService());
-        ProductResponse productResponse = productCommandHandler.add(createProduct(), createProductDetail(), mockMultipartFile, "");
+        ProductResponse productResponse = productCommandHandler.add(
+                createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L),
+                createProductDetail(1L, "white", "80%", "good", 3000),
+                mockMultipartFile,
+                "");
 
         String videoFilePath = productResponse.getProductDetail().getVideoFilePath();
         String thumbnailFilePath = productResponse.getProductDetail().getThumbnailFilePath();

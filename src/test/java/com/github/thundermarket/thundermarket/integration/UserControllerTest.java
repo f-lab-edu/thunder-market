@@ -20,6 +20,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+import static com.github.thundermarket.thundermarket.config.TestUtils.createUser;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -60,16 +61,9 @@ public class UserControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private User createUser(String email, String password) {
-        return User.builder()
-                .email(email)
-                .password(password)
-                .build();
-    }
-
     @Test
     public void 회원가입_성공() throws Exception {
-        User user = createUser("test01@email.com", "password");
+        User user = createUser(null, "test01@email.com", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
@@ -81,7 +75,7 @@ public class UserControllerTest {
 
     @Test
     public void 회원가입_이메일형식_실패() throws Exception {
-        User user = createUser("test01", "password");
+        User user = createUser(null, "test01", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
@@ -93,7 +87,7 @@ public class UserControllerTest {
 
     @Test
     public void 전체_회원_조회() throws Exception {
-        User user = createUser("test01@email.com", "password");
+        User user = createUser(null, "test01@email.com", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
@@ -119,7 +113,7 @@ public class UserControllerTest {
 
     @Test
     public void 로그인_성공() throws Exception {
-        User user = createUser("test01@email.com", "password");
+        User user = createUser(null, "test01@email.com", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
@@ -137,7 +131,7 @@ public class UserControllerTest {
 
     @Test
     public void 로그인_실패() throws Exception {
-        User user = createUser("test01@email.com", "password");
+        User user = createUser(null, "test01@email.com", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
@@ -147,7 +141,7 @@ public class UserControllerTest {
                 .andExpect(status().isOk());
 
 
-        User wrongUser = createUser("test01@email.com", "wrong");
+        User wrongUser = createUser(null, "test01@email.com", "wrong");
         String wrongUserJson = objectMapper.writeValueAsString(wrongUser);
 
         mockMvc.perform(post("/api/v1/auth/login")
@@ -159,7 +153,7 @@ public class UserControllerTest {
 
     @Test
     public void 마이페이지_조회() throws Exception {
-        User user = createUser("test01@email.com", "password");
+        User user = createUser(null, "test01@email.com", "password");
 
         String userJson = objectMapper.writeValueAsString(user);
 
