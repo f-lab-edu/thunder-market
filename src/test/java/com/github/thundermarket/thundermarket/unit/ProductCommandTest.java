@@ -34,8 +34,7 @@ public class ProductCommandTest {
         ProductResponse productResponse = productCommandHandler.add(
                 createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, ProductStatus.AVAILABLE, 1L),
                 createProductDetail(1L, "white", "80%", "good", 3000),
-                emptyMockMultipartFile,
-                "");
+                emptyMockMultipartFile);
 
         String productResponseJson = objectMapper.writeValueAsString(productResponse);
         JsonNode jsonNode = objectMapper.readTree(productResponseJson);
@@ -62,8 +61,7 @@ public class ProductCommandTest {
         ProductResponse productResponse = productCommandHandler.add(
                 createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, ProductStatus.AVAILABLE, 1L),
                 createProductDetail(1L, "white", "80%", "good", 3000),
-                mockMultipartFile,
-                "");
+                mockMultipartFile);
 
         String videoFilePath = productResponse.getProductDetail().getVideoFilePath();
         String thumbnailFilePath = productResponse.getProductDetail().getThumbnailFilePath();

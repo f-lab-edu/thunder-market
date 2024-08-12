@@ -1,9 +1,11 @@
 package com.github.thundermarket.thundermarket.service;
 
+import com.github.thundermarket.thundermarket.constant.ProductStatus;
 import com.github.thundermarket.thundermarket.domain.*;
 import com.github.thundermarket.thundermarket.dto.FileUploadResult;
 import com.github.thundermarket.thundermarket.dto.ProductCreatedEvent;
 import com.github.thundermarket.thundermarket.dto.ProductResponse;
+import com.github.thundermarket.thundermarket.exception.ResourceNotFoundException;
 import com.github.thundermarket.thundermarket.repository.FileStorage;
 import com.github.thundermarket.thundermarket.repository.ProductDetailRepository;
 import com.github.thundermarket.thundermarket.repository.ProductRepository;
@@ -28,7 +30,7 @@ public class ProductCommandHandler {
     private final ProductEventPublisher productEventPublisher;
     private final KeywordMatchingService keywordMatchingService;
 
-    public ProductResponse add(Product product, ProductDetail productDetail, MultipartFile video, String email) throws IOException {
+    public ProductResponse add(Product product, ProductDetail productDetail, MultipartFile video) throws IOException {
         Product savedProduct = productRepository.save(product);
         FileUploadResult fileUploadResult = fileStorage.save(video);
         ProductDetail productDetailWithVideoAndThumbnail = productDetail.toBuilder()
