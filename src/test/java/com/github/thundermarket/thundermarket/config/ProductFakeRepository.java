@@ -1,5 +1,6 @@
 package com.github.thundermarket.thundermarket.config;
 
+import com.github.thundermarket.thundermarket.constant.ProductStatus;
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.dto.ProductFilterRequest;
 import com.github.thundermarket.thundermarket.repository.ProductRepository;
@@ -8,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.github.thundermarket.thundermarket.config.TestUtils.createProduct;
 
 public class ProductFakeRepository implements ProductRepository {
 
@@ -32,12 +35,7 @@ public class ProductFakeRepository implements ProductRepository {
 
     @Override
     public List<Product> filterByProductOptions(ProductFilterRequest productFilterRequest) {
-        save(Product.builder()
-                .name("iPhone11")
-                .price(290000)
-                .status("판매중")
-                .userId(1L)
-                .build());
+        save(createProduct(null, "아이폰 팝니다", "iPhone11", 290_000, ProductStatus.AVAILABLE, 1L));
 
         return products.stream()
                 .filter(p -> p.getName().equals(productFilterRequest.getName())

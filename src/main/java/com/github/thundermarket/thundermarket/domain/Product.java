@@ -1,5 +1,6 @@
 package com.github.thundermarket.thundermarket.domain;
 
+import com.github.thundermarket.thundermarket.constant.ProductStatus;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
@@ -18,6 +19,6 @@ public class Product {
     private String title;
     private String name;
     private int price;
-    private String status;
+    private ProductStatus status;
     private Long userId;
 }

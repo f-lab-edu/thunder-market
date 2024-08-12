@@ -1,6 +1,7 @@
 package com.github.thundermarket.thundermarket.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.thundermarket.thundermarket.constant.ProductStatus;
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.dto.ProductRequest;
@@ -70,7 +71,7 @@ public class ProductControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
-        Assertions.assertThat(products).isEqualTo("{\"products\":[{\"id\":1,\"title\":\"아이폰 팝니다\",\"name\":\"iPhone11\",\"price\":200000,\"status\":\"available\",\"userId\":1}],\"cursorId\":1,\"limit\":10}");
+        Assertions.assertThat(products).isEqualTo("{\"products\":[{\"id\":1,\"title\":\"아이폰 팝니다\",\"name\":\"iPhone11\",\"price\":200000,\"status\":\"AVAILABLE\",\"userId\":1}],\"cursorId\":1,\"limit\":10}");
     }
 
     @Test
@@ -80,7 +81,7 @@ public class ProductControllerTest {
                         .title("아이폰 팝니다")
                         .name("iPhone11")
                         .price(200_000)
-                        .status("available")
+                        .status(ProductStatus.AVAILABLE)
                         .userId(1L)
                         .build(),
                 ProductDetail.builder()

@@ -2,6 +2,7 @@ package com.github.thundermarket.thundermarket.unit;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.thundermarket.thundermarket.constant.ProductStatus;
 import com.github.thundermarket.thundermarket.dto.FileUploadResult;
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
@@ -31,7 +32,7 @@ public class ProductCommandTest {
         String expectedProductDetailColor = "white";
 
         ProductResponse productResponse = productCommandHandler.add(
-                createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L),
+                createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, ProductStatus.AVAILABLE, 1L),
                 createProductDetail(1L, "white", "80%", "good", 3000),
                 emptyMockMultipartFile,
                 "");
@@ -59,7 +60,7 @@ public class ProductCommandTest {
         MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "test-video.mp4", "video/mp4", new FileInputStream(ResourceUtils.getFile("classpath:5sec.mp4")));
         ProductCommandHandler productCommandHandler = new ProductCommandHandler(new ProductFakeRepository(), new ProductDetailFakeRepository(), new FileFakeStorage(), new DummyProductEventPublisher(), new FakeKeywordMatchingService());
         ProductResponse productResponse = productCommandHandler.add(
-                createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L),
+                createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, ProductStatus.AVAILABLE, 1L),
                 createProductDetail(1L, "white", "80%", "good", 3000),
                 mockMultipartFile,
                 "");
