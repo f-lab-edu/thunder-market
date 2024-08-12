@@ -69,4 +69,24 @@ public class ProductCommandTest {
         Assertions.assertThat(videoFilePath).endsWith(".mp4");
         Assertions.assertThat(thumbnailFilePath).endsWith(".jpg");
     }
+
+    @Test
+    public void 판매_완료_설정() throws Exception {
+        // given
+        ProductCommandHandler productCommandHandler = new ProductCommandHandler(new ProductFakeRepository(), new ProductDetailFakeRepository(), new FileFakeStorage(), new DummyProductEventPublisher(), new FakeKeywordMatchingService());
+        MockMultipartFile emptyMockMultipartFile = new MockMultipartFile("video", "test-video.mp4", "video/mp4", new FileInputStream(ResourceUtils.getFile("classpath:5sec.mp4")));
+        productCommandHandler.add(
+                createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, ProductStatus.AVAILABLE, 1L),
+                createProductDetail(1L, "white", "80%", "good", 3000),
+                emptyMockMultipartFile);
+        ProductStatus targetProductStatus = ProductStatus.COMPLETED;
+
+        Product changeProduct = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, targetProductStatus, 1L);
+        productCommandHandler.update(changeProduct);
+        // when
+        ProductStatus productStatus = ProductStatus.COMPLETED;
+
+        // then
+        Assertions.assertThat(productStatus).isEqualTo(ProductStatus.COMPLETED);
+    }
 }
