@@ -1,5 +1,6 @@
 package com.github.thundermarket.thundermarket.config;
 
+import com.github.thundermarket.thundermarket.constant.ProductStatus;
 import com.github.thundermarket.thundermarket.domain.Keyword;
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
@@ -20,7 +21,7 @@ public class TestUtils {
                 .build();
     }
 
-    public static Product createProduct(Long id, String title, String name, int price, String status, Long userId) {
+    public static Product createProduct(Long id, String title, String name, int price, ProductStatus status, Long userId) {
         return Product.builder()
                 .id(id)
                 .title(title)

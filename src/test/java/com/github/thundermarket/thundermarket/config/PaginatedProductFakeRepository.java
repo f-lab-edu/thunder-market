@@ -1,5 +1,6 @@
 package com.github.thundermarket.thundermarket.config;
 
+import com.github.thundermarket.thundermarket.constant.ProductStatus;
 import com.github.thundermarket.thundermarket.domain.Product;
 import org.springframework.data.domain.Pageable;
 
@@ -21,7 +22,7 @@ public class PaginatedProductFakeRepository extends ProductFakeRepository {
                     .id((long) i)
                     .name("iPhone13")
                     .price(300000)
-                    .status("For Sale")
+                    .status(ProductStatus.AVAILABLE)
                     .userId(1L)
                     .build());
         }

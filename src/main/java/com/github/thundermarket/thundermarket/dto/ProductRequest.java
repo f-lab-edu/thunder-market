@@ -20,6 +20,7 @@ public class ProductRequest {
 
     public Product toProduct() {
         return Product.builder()
+                .id(product.getId())
                 .title(product.getTitle())
                 .name(product.getName())
                 .price(product.getPrice())
@@ -30,6 +31,7 @@ public class ProductRequest {
 
     public ProductDetail toProductDetail() {
         return ProductDetail.builder()
+                .id(productDetail.getId())
                 .color(productDetail.getColor())
                 .productCondition(productDetail.getProductCondition())
                 .batteryCondition(productDetail.getBatteryCondition())

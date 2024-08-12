@@ -32,9 +32,13 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductResponse> add(@RequestPart("productRequest") ProductRequest productRequest,
-                                               @RequestPart("video") MultipartFile video,
-                                               @SessionUserParam SessionUser sessionUser) throws IOException {
-        return new ResponseEntity<>(productCommandHandler.add(productRequest.toProduct(), productRequest.toProductDetail(), video, sessionUser.getEmail()), HttpStatus.OK);
+                                               @RequestPart("video") MultipartFile video) throws IOException {
+        return new ResponseEntity<>(productCommandHandler.add(productRequest.toProduct(), productRequest.toProductDetail(), video), HttpStatus.OK);
+    }
+
+    @PatchMapping
+    public ResponseEntity<ProductResponse> update(@RequestBody ProductRequest productRequest) {
+        return new ResponseEntity<>(productCommandHandler.update(productRequest.toProduct()), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

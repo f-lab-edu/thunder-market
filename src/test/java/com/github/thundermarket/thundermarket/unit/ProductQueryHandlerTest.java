@@ -1,6 +1,7 @@
 package com.github.thundermarket.thundermarket.unit;
 
 import com.github.thundermarket.thundermarket.config.TestUtils;
+import com.github.thundermarket.thundermarket.constant.ProductStatus;
 import com.github.thundermarket.thundermarket.dto.ProductFilterRequest;
 import com.github.thundermarket.thundermarket.dto.ProductsResponse;
 import com.github.thundermarket.thundermarket.config.PaginatedProductFakeRepository;
@@ -29,7 +30,7 @@ public class ProductQueryHandlerTest {
     @Test
     public void 상품1개_상품목록_조회() throws IOException {
         ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
-        Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L);
+        Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, ProductStatus.AVAILABLE, 1L);
         productRepository.save(product);
 
         ProductsResponse products = productQueryHandler.products(0L, 10);
@@ -40,10 +41,10 @@ public class ProductQueryHandlerTest {
     @Test
     public void 상품2개_상품목록_조회() throws IOException {
         ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
-        Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L);
+        Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, ProductStatus.AVAILABLE, 1L);
         productRepository.save(product);
 
-        Product product2 = createProduct(2L, "아이폰 팝니다", "iPhone13", 300_000, "판매중", 2L);
+        Product product2 = createProduct(2L, "아이폰 팝니다", "iPhone13", 300_000, ProductStatus.AVAILABLE, 2L);
         productRepository.save(product2);
 
         ProductsResponse products = productQueryHandler.products(0L, 10);
@@ -55,12 +56,12 @@ public class ProductQueryHandlerTest {
     @Test
     public void 상품1개_상품목록_조회_후_상품1개추가_다시조회() throws IOException {
         ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
-        Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L);
+        Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, ProductStatus.AVAILABLE, 1L);
         productRepository.save(product);
         ProductsResponse products = productQueryHandler.products(0L, 10);
         Assertions.assertThat(products.getProducts().getFirst()).isEqualTo(product);
 
-        Product product2 = createProduct(2L, "아이폰 팝니다", "iPhone13", 300_000, "판매중", 2L);
+        Product product2 = createProduct(2L, "아이폰 팝니다", "iPhone13", 300_000, ProductStatus.AVAILABLE, 2L);
         productRepository.save(product2);
         ProductsResponse products2 = productQueryHandler.products(0L, 10);
         Assertions.assertThat(products2.getProducts().get(1)).isEqualTo(product2);
@@ -69,13 +70,13 @@ public class ProductQueryHandlerTest {
     @Test
     public void 상품1개_상품목록_조회_후_상품정보수정_다시조회() throws IOException {
         ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
-        Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L);
+        Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, ProductStatus.AVAILABLE, 1L);
         productRepository.save(product);
         ProductsResponse products = productQueryHandler.products(0L, 10);
         Assertions.assertThat(products.getProducts().getFirst()).isEqualTo(product);
 
         Long originalId = 1L;
-        Product product2 = createProduct(originalId, "아이폰 팝니다", "iPhone13", 300_000, "판매중", 2L);
+        Product product2 = createProduct(originalId, "아이폰 팝니다", "iPhone13", 300_000, ProductStatus.AVAILABLE, 2L);
         productRepository.save(product2);
         ProductsResponse products2 = productQueryHandler.products(0L, 10);
         Assertions.assertThat(products2.getProducts().getFirst()).isEqualTo(product2);
@@ -84,7 +85,7 @@ public class ProductQueryHandlerTest {
     @Test
     public void 상품1개_상품목록_조회_후_상품삭제_다시조회() throws IOException {
         ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
-        Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L);
+        Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, ProductStatus.AVAILABLE, 1L);
         productRepository.save(product);
         ProductsResponse products = productQueryHandler.products(0L, 10);
         Assertions.assertThat(products.getProducts().getFirst()).isEqualTo(product);
@@ -96,10 +97,10 @@ public class ProductQueryHandlerTest {
     @Test
     public void 상품2개_상품목록_조회_후_상품삭제_다시조회() throws IOException {
         ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
-        Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L);
+        Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, ProductStatus.AVAILABLE, 1L);
         productRepository.save(product);
 
-        Product product2 = createProduct(2L, "아이폰 팝니다", "iPhone13", 300_000, "판매중", 2L);
+        Product product2 = createProduct(2L, "아이폰 팝니다", "iPhone13", 300_000, ProductStatus.AVAILABLE, 2L);
         productRepository.save(product2);
 
         ProductsResponse products = productQueryHandler.products(0L, 10);
@@ -166,7 +167,7 @@ public class ProductQueryHandlerTest {
     @Test
     public void 상품_제목_검색() throws IOException {
         ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
-        Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L);
+        Product product = createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, ProductStatus.AVAILABLE, 1L);
         productRepository.save(product);
 
         ProductsResponse productsResponse = productQueryHandler.searchTitleKeyword("팝니다");
@@ -178,7 +179,7 @@ public class ProductQueryHandlerTest {
     public void 상품_판매목록_조회() throws IOException {
         String expectedProductName = "iPhone12";
         ProductQueryHandler productQueryHandler = new ProductQueryHandler(productRepository, null);
-        productRepository.save(createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, "판매중", 1L));
+        productRepository.save(createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, ProductStatus.AVAILABLE, 1L));
         SessionUser sessionUser = SessionUser.builder()
                 .id(1L)
                 .email("test01@email.com")
