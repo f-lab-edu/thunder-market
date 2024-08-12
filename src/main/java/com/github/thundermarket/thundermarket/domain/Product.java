@@ -5,6 +5,8 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.util.Objects;
+
 @Table("products")
 @Getter
 @NoArgsConstructor // RestController에서 JSON 역직렬화 과정 중 ObjectMapper가 리플랙션을 사용하여 객체를 생성하기 위해 기본 생성자가 필요함
@@ -22,10 +24,20 @@ public class Product {
     private ProductStatus status;
     private Long userId;
 
-    public Product changeStatus(ProductStatus status) {
-        if (this.status == status) {
-            throw new IllegalStateException("Same product status cannot be changed");
+    public Product update(Product product) {
+        if (!Objects.equals(this.id, product.getId())) {
+            throw new IllegalStateException("Cannot update product with id");
         }
-        return this.toBuilder().status(status).build();
+
+        if (!Objects.equals(this.userId, product.getUserId())) {
+            throw new IllegalStateException("Cannot update product with userId");
+        }
+
+        return this.toBuilder()
+                .title(product.getTitle())
+                .name(product.getName())
+                .price(product.getPrice())
+                .status(product.getStatus())
+                .build();
     }
 }
