@@ -6,6 +6,7 @@ import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.dto.ProductRequest;
 import com.github.thundermarket.thundermarket.config.TestConfig;
+import com.github.thundermarket.thundermarket.service.ProductCommandHandler;
 import jakarta.servlet.http.Cookie;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.github.thundermarket.thundermarket.config.TestContainersUtils.*;
 import static com.github.thundermarket.thundermarket.config.TestUtils.*;
@@ -49,6 +52,8 @@ public class ProductControllerTest {
 
     @Container
     static KafkaContainer kafkaContainer = getKafkaContainer();
+    @Autowired
+    private ProductCommandHandler productCommandHandler;
 
     @DynamicPropertySource
     static void registerProperties(DynamicPropertyRegistry registry) {
@@ -67,7 +72,7 @@ public class ProductControllerTest {
     public void 상품1개_상품목록조회() throws Exception {
         String products = mockMvc.perform(get("/api/v1/products")
                         .contentType("application/json")
-                        .cookie(new Cookie("SESSION", getSessionId())))
+                        .cookie(new Cookie("SESSION", getSessionId(mockMvc, objectMapper))))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
@@ -106,7 +111,7 @@ public class ProductControllerTest {
                         .file(mockMultipartJson)
                         .file(mockMultipartFile)
                         .contentType(MediaType.MULTIPART_FORM_DATA)
-                        .cookie(new Cookie("SESSION", getSessionId())))
+                        .cookie(new Cookie("SESSION", getSessionId(mockMvc, objectMapper))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.product.name").value("iPhone11"))
                 .andExpect(jsonPath("$.productDetail.color").value("white"))
@@ -120,7 +125,7 @@ public class ProductControllerTest {
         mockMvc.perform(get("/api/v1/products/filter")
                         .contentType("multipart/form-data")
                         .param("name", name)
-                        .cookie(new Cookie("SESSION", getSessionId())))
+                        .cookie(new Cookie("SESSION", getSessionId(mockMvc, objectMapper))))
                 .andExpect(status().isOk())
                 .andExpect(content().string("{\"products\":[],\"cursorId\":null,\"limit\":0}"));
     }
@@ -142,7 +147,7 @@ public class ProductControllerTest {
                         .param("color", color)
                         .param("purchaseDateMin", purchaseDateMin)
                         .param("purchaseDateMax", purchaseDateMax)
-                        .cookie(new Cookie("SESSION", getSessionId())))
+                        .cookie(new Cookie("SESSION", getSessionId(mockMvc, objectMapper))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.products[0].name").value("iPhone11"))
                 .andExpect(jsonPath("$.products[0].price").value(200000));
@@ -156,7 +161,7 @@ public class ProductControllerTest {
         mockMvc.perform(get("/api/v1/products/keyword")
                         .contentType("multipart/form-data")
                         .param("keyword", keyword)
-                        .cookie(new Cookie("SESSION", getSessionId())))
+                        .cookie(new Cookie("SESSION", getSessionId(mockMvc, objectMapper))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.products[0].title").value(expectedKeyword));
     }
@@ -167,17 +172,48 @@ public class ProductControllerTest {
 
         mockMvc.perform(get("/api/v1/products/history/sales")
                         .contentType("multipart/form-data")
-                        .cookie(new Cookie("SESSION", getSessionId())))
+                        .cookie(new Cookie("SESSION", getSessionId(mockMvc, objectMapper))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.products[0].name").value(expectedProductName));
     }
 
-    private String getSessionId() throws Exception {
-        return mockMvc.perform(post("/api/v1/auth/login")
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(createUser(1L, "jaen6563@naver.com", "password"))))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Login successful"))
-                .andReturn().getResponse().getCookie("SESSION").getValue();
+    @Test
+    public void 상품_판매상태_판매중에서_판매완료_변경() throws Exception {
+        // given
+        Long productId = 1L;
+        ProductStatus status = ProductStatus.COMPLETED;
+        ProductRequest productRequest = new ProductRequest(
+                createProduct(productId, "아이폰 팝니다", "iPhone11", 200_000, status, 1L),
+                createProductDetail(1L, "white", "80%", "good", 3000)
+        );
+        String content = objectMapper.writeValueAsString(productRequest);
+        // when
+
+        // then
+        mockMvc.perform(patch("/api/v1/products")
+                .contentType("application/json")
+                .content(content)
+                .cookie(new Cookie("SESSION", getSessionId(mockMvc, objectMapper))
+                )).andExpect(status().isOk());
+    }
+
+    @Test
+    public void 상품_제목_변경() throws Exception {
+        // given
+        Long productId = 1L;
+        String title = "아이폰15 팝니다";
+        ProductRequest productRequest = new ProductRequest(
+                createProduct(productId, title, "iPhone11", 200_000, ProductStatus.AVAILABLE, 1L),
+                createProductDetail(1L, "white", "80%", "good", 3000)
+        );
+        String content = objectMapper.writeValueAsString(productRequest);
+        // when
+
+        // then
+        mockMvc.perform(patch("/api/v1/products")
+                .contentType("application/json")
+                .content(content)
+                .cookie(new Cookie("SESSION", getSessionId(mockMvc, objectMapper))
+                )).andExpect(status().isOk());
     }
 }
