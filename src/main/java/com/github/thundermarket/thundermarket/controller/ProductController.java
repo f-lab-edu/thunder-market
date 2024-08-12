@@ -36,6 +36,11 @@ public class ProductController {
         return new ResponseEntity<>(productCommandHandler.add(productRequest.toProduct(), productRequest.toProductDetail(), video), HttpStatus.OK);
     }
 
+    @PatchMapping
+    public ResponseEntity<ProductResponse> update(@RequestBody ProductRequest productRequest) {
+        return new ResponseEntity<>(productCommandHandler.update(productRequest.toProduct()), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ProductDetailResponse> productDetail(@PathVariable("id") Long id) {
         return new ResponseEntity<>(productQueryHandler.productDetail(id), HttpStatus.OK);
