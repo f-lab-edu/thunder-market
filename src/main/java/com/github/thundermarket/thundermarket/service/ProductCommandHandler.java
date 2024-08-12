@@ -1,6 +1,5 @@
 package com.github.thundermarket.thundermarket.service;
 
-import com.github.thundermarket.thundermarket.constant.ProductStatus;
 import com.github.thundermarket.thundermarket.domain.*;
 import com.github.thundermarket.thundermarket.dto.FileUploadResult;
 import com.github.thundermarket.thundermarket.dto.ProductCreatedEvent;
@@ -50,8 +49,12 @@ public class ProductCommandHandler {
         return ProductResponse.of(savedProduct, productDetailRepository.save(productDetailWithVideoAndThumbnail));
     }
 
-    public Product update(Product product) {
-        return productRepository.save(product);
+    public ProductResponse update(Product product) {
+        Product savedProduct = productRepository.findById(product.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with " + product.getId()));
+
+        Product changedProduct = savedProduct.update(product);
+        return ProductResponse.of(productRepository.save(changedProduct), null);
     }
 
     public void delete(Long id) {
