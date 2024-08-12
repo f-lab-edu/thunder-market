@@ -65,7 +65,7 @@ public class ProductFakeRepository implements ProductRepository {
 
     @Override
     public Optional<Product> findById(Long aLong) {
-        throw new UnsupportedOperationException();
+        return products.stream().filter(p -> p.getId().equals(aLong)).findFirst();
     }
 
     @Override
