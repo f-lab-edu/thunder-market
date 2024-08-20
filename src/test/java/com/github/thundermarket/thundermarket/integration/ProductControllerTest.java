@@ -6,7 +6,6 @@ import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.dto.ProductRequest;
 import com.github.thundermarket.thundermarket.config.TestConfig;
-import com.github.thundermarket.thundermarket.service.ProductCommandHandler;
 import jakarta.servlet.http.Cookie;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,12 +25,10 @@ import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
 
-import static com.github.thundermarket.thundermarket.config.TestContainersUtils.*;
 import static com.github.thundermarket.thundermarket.config.TestUtils.*;
 import static org.hamcrest.Matchers.endsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -45,21 +42,35 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ProductControllerTest {
 
     @Container
-    static MySQLContainer<?> mysqlContainer = getMysqlContainer();
-
-    @Container
-    static GenericContainer<?> redisContainer = getRedisContainer();
-
-    @Container
-    static KafkaContainer kafkaContainer = getKafkaContainer();
-    @Autowired
-    private ProductCommandHandler productCommandHandler;
+    static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0")
+            .withDatabaseName("testdb")
+            .withUsername("test")
+            .withPassword("test").withCommand("--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci")
+            .withInitScript("schemaWithData.sql");
 
     @DynamicPropertySource
-    static void registerProperties(DynamicPropertyRegistry registry) {
-        registerMySQLProperties(registry);
-        registerRedisProperties(registry);
-        registerKafkaProperties(registry);
+    static void registerMySQLProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", mySQLContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", mySQLContainer::getUsername);
+        registry.add("spring.datasource.password", mySQLContainer::getPassword);
+    }
+
+    @Container
+    public static GenericContainer redis = new GenericContainer(DockerImageName.parse("redis:6.2-alpine"))
+            .withExposedPorts(6379);
+
+    @DynamicPropertySource
+    static void redisProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.data.redis.host", redis::getHost);
+        registry.add("spring.data.redis.port", redis::getFirstMappedPort);
+    }
+
+    @Container
+    static KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:6.2.1"));
+
+    @DynamicPropertySource
+    static void kafkaProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.kafka.bootstrap-servers", kafkaContainer::getBootstrapServers);
     }
 
     @Autowired
