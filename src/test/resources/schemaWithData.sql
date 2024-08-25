@@ -40,6 +40,16 @@ create table keywords
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+create table comments
+(
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    text VARCHAR(255) NOT NULL,
+    user_id BIGINT,
+    product_id BIGINT,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
 INSERT INTO `users` (id, email, password)
 VALUES
     (1, 'jaen6563@naver.com', 'password');
