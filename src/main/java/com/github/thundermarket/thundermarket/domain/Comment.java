@@ -4,7 +4,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table("comment")
+@Table("comments")
 @Getter
 @AllArgsConstructor
 @Builder(toBuilder = true)
