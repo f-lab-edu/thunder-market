@@ -2,6 +2,7 @@ package com.github.thundermarket.thundermarket.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.thundermarket.thundermarket.constant.ProductStatus;
+import com.github.thundermarket.thundermarket.dto.CommentRequest;
 import com.github.thundermarket.thundermarket.domain.Product;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.dto.ProductRequest;
@@ -222,6 +223,21 @@ public class ProductControllerTest {
 
         // then
         mockMvc.perform(patch("/api/v1/products")
+                .contentType("application/json")
+                .content(content)
+                .cookie(new Cookie("SESSION", getSessionId(mockMvc, objectMapper))
+                )).andExpect(status().isOk());
+    }
+
+    @Test
+    public void 상품_댓글_등록() throws Exception {
+        // given
+        CommentRequest request = CommentRequest.builder().text("1번 상품의 댓글").build();
+        String content = objectMapper.writeValueAsString(request);
+
+        // when
+        // then
+        mockMvc.perform(post("/api/v1/products/1/comments")
                 .contentType("application/json")
                 .content(content)
                 .cookie(new Cookie("SESSION", getSessionId(mockMvc, objectMapper))
