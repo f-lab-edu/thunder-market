@@ -243,4 +243,19 @@ public class ProductControllerTest {
                 .cookie(new Cookie("SESSION", getSessionId(mockMvc, objectMapper))
                 )).andExpect(status().isOk());
     }
+
+    @Test
+    public void 상품_댓글_수정() throws Exception {
+        // given
+        CommentRequest request = CommentRequest.builder().text("1번 상품의 댓글 수정됨").build();
+        String content = objectMapper.writeValueAsString(request);
+
+        // when
+        // then
+        mockMvc.perform(put("/api/v1/products/1/comments/1")
+                .contentType("application/json")
+                .content(content)
+                .cookie(new Cookie("SESSION", getSessionId(mockMvc, objectMapper))
+                )).andExpect(status().isOk());
+    }
 }
