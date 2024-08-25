@@ -67,4 +67,11 @@ public class ProductController {
                                            @RequestBody CommentRequest commentRequest) {
         return new ResponseEntity<>(commentCommandHandler.save(commentRequest, sessionUser.getId(), productId), HttpStatus.OK);
     }
+
+    @PutMapping("/{product_id}/comments/{comment_id}")
+    public ResponseEntity<Long> updateComment(@PathVariable("comment_id") Long commentId,
+                                           @SessionUserParam SessionUser sessionUser,
+                                           @RequestBody CommentRequest commentRequest) {
+        return new ResponseEntity<>(commentCommandHandler.update(commentId, commentRequest, sessionUser.getId()), HttpStatus.OK);
+    }
 }
