@@ -10,6 +10,7 @@ import java.util.Optional;
 public class FakeCommentRepository implements CommentRepository {
 
     private List<Comment> comments = new ArrayList<>();
+    private long index = 1;
 
     @Override
     public List<Comment> findCommentsByProductId(Long productId) {
@@ -18,9 +19,11 @@ public class FakeCommentRepository implements CommentRepository {
                 .toList();
     }
 
+
     @Override
     public <S extends Comment> S save(S entity) {
-        comments.add(entity);
+        comments.add(entity.toBuilder().id(index).build());
+        index++;
         return entity;
     }
 
@@ -31,7 +34,7 @@ public class FakeCommentRepository implements CommentRepository {
 
     @Override
     public Optional<Comment> findById(Long aLong) {
-        return Optional.empty();
+        return comments.stream().filter(p -> p.getId().equals(aLong)).findFirst();
     }
 
     @Override

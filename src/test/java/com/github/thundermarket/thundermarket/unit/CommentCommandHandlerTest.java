@@ -22,4 +22,18 @@ public class CommentCommandHandlerTest {
         // then
         Assertions.assertThat(commentRepository.count()).isEqualTo(2);
     }
+
+    @Test
+    public void 상품_댓글_수정() throws Exception {
+        // given
+        CommentRepository commentRepository = new FakeCommentRepository();
+        CommentCommandHandler commentCommandHandler = new CommentCommandHandler(commentRepository);
+        commentCommandHandler.save(CommentRequest.builder().text("1번 상품 삽니다").build(), 1L, 1L);
+
+        // when
+        commentCommandHandler.update(1L, CommentRequest.builder().text("수정됨").build(), 1L);
+
+        // then
+        Assertions.assertThat(commentRepository.count()).isEqualTo(2);
+    }
 }
