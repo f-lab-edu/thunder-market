@@ -51,7 +51,7 @@ public class FakeCommentRepository implements CommentRepository {
 
     @Override
     public long count() {
-        return 0;
+        return comments.size();
     }
 
     @Override

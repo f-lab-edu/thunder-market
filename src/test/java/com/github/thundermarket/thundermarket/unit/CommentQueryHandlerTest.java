@@ -24,4 +24,20 @@ public class CommentQueryHandlerTest {
         // then
         Assertions.assertThat(comments.size()).isEqualTo(1);
     }
+
+    @Test
+    public void 상품_댓글_2개_조회() throws Exception {
+        // given
+        Long productId = 1L;
+        FakeCommentRepository commentRepository = new FakeCommentRepository();
+        CommentQueryHandler commentQueryHandler = new CommentQueryHandler(commentRepository);
+        commentRepository.save(Comment.builder().id(1L).text("1번 상품 삽니다").userId(1L).productId(1L).build());
+        commentRepository.save(Comment.builder().id(2L).text("1번 상품 삽니다").userId(2L).productId(1L).build());
+
+        // when
+        List<Comment> comments = commentQueryHandler.findCommentsByProductId(productId);
+
+        // then
+        Assertions.assertThat(comments.size()).isEqualTo(2);
+    }
 }
