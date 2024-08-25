@@ -65,3 +65,7 @@ VALUES
 INSERT INTO `keywords` (`id`, `keyword`, `user_id`)
 VALUES
     (1, '아이폰', 1);
+
+INSERT INTO `comments` (`id`, `text`, `user_id`, `product_id`)
+VALUES
+    (1, '1번 상품에 대한 댓글', 1, 1);
