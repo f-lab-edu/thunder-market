@@ -42,14 +42,14 @@ public class UserController {
     @Authenticated
     @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody User user, HttpSession session) {
-        User savedUser = userQueryHandler.checkCredential(user);
-        if(savedUser == null) {
+        User authenticatedUser = userQueryHandler.getAuthenticatedUser(user);
+        if(authenticatedUser == null) {
             return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
         }
         session.setAttribute(SessionConst.SESSION_USER,
                 SessionUser.builder()
-                        .id(savedUser.getId())
-                        .email(savedUser.getEmail())
+                        .id(authenticatedUser.getId())
+                        .email(authenticatedUser.getEmail())
                         .build());
         return new ResponseEntity<>("Login successful", HttpStatus.OK);
     }
