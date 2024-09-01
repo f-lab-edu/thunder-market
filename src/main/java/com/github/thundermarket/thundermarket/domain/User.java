@@ -4,12 +4,13 @@ import com.github.thundermarket.thundermarket.Util.Email;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Table("users")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @EqualsAndHashCode
 @ToString
 public class User {

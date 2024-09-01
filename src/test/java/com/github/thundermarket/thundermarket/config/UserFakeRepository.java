@@ -23,9 +23,9 @@ public class UserFakeRepository implements UserRepository {
     }
 
     @Override
-    public User findByEmailAndPassword(String email, String password) {
+    public User findByEmail(String email) {
         for (User user : inMemoryUserStore) {
-            if(user.getEmail().equals(email) && user.getPassword().equals(password)) {
+            if(user.getEmail().equals(email)) {
                 return user;
             }
         }
