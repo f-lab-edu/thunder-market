@@ -1,5 +1,6 @@
 package com.github.thundermarket.thundermarket.unit;
 
+import com.github.thundermarket.thundermarket.config.PasswordEncoderStub;
 import com.github.thundermarket.thundermarket.config.TestUtils;
 import com.github.thundermarket.thundermarket.domain.User;
 import com.github.thundermarket.thundermarket.service.UserCommandHandler;
@@ -16,7 +17,8 @@ class UserCommandHandlerTest {
     @Test
     void 회원가입_성공() {
         UserFakeRepository userFakeRepository = new UserFakeRepository();
-        UserCommandHandler userService = new UserCommandHandler(userFakeRepository);
+        PasswordEncoderStub passwordEncoderStub = new PasswordEncoderStub();
+        UserCommandHandler userService = new UserCommandHandler(userFakeRepository, passwordEncoderStub);
         User user = createUser(1L, "test01@email.com", "password");
 
         User savedUser = userService.join(user);

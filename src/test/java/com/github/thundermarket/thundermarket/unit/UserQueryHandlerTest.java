@@ -1,5 +1,6 @@
 package com.github.thundermarket.thundermarket.unit;
 
+import com.github.thundermarket.thundermarket.config.PasswordEncoderStub;
 import com.github.thundermarket.thundermarket.domain.User;
 import com.github.thundermarket.thundermarket.service.UserQueryHandler;
 import com.github.thundermarket.thundermarket.config.UserFakeRepository;
@@ -18,7 +19,8 @@ class UserQueryHandlerTest {
     public void 전체_회원_조회() {
         int expectedAllUsers = 2;
         UserFakeRepository userFakeRepository = new UserFakeRepository();
-        UserQueryHandler userService = new UserQueryHandler(userFakeRepository);
+        PasswordEncoderStub passwordEncoderStub = new PasswordEncoderStub();
+        UserQueryHandler userService = new UserQueryHandler(userFakeRepository, passwordEncoderStub);
         userFakeRepository.save(createUser(1L, "test01@email.com", "password"));
         userFakeRepository.save(createUser(2L, "test02@email.com", "password2"));
 

@@ -1,5 +1,6 @@
 package com.github.thundermarket.thundermarket.unit;
 
+import com.github.thundermarket.thundermarket.config.PasswordEncoderStub;
 import com.github.thundermarket.thundermarket.domain.Keyword;
 import com.github.thundermarket.thundermarket.service.KeywordMatchingService;
 import com.github.thundermarket.thundermarket.service.KeywordQueryHandler;
@@ -23,7 +24,8 @@ class KeywordMatchingServiceTest {
     void findUserIdsWithMatchingKeyword() {
         KeywordFakeRepository keywordRepository = new KeywordFakeRepository();
         UserFakeRepository userFakeRepository = new UserFakeRepository();
-        KeywordMatchingService keywordMatchingService = new KeywordMatchingService(new KeywordQueryHandler(keywordRepository), new UserQueryHandler(userFakeRepository));
+        PasswordEncoderStub passwordEncoderStub = new PasswordEncoderStub();
+        KeywordMatchingService keywordMatchingService = new KeywordMatchingService(new KeywordQueryHandler(keywordRepository), new UserQueryHandler(userFakeRepository, passwordEncoderStub));
         userFakeRepository.save(createUser(1L, "test@test.com", "password"));
         keywordRepository.save(createKeyword(1L, "아이폰14", 1L));
         keywordRepository.save(createKeyword(2L, "아이폰12", 1L));
