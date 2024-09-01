@@ -52,7 +52,7 @@ create table comments
 
 INSERT INTO `users` (id, email, password)
 VALUES
-    (1, 'jaen6563@naver.com', 'password');
+    (1, 'jaen6563@naver.com', '$2a$10$pv6VSUmGY8t.ow8mQE/D0eIb9WSqLo8E/ramnJ4meizagHn4x1ory');
 
 INSERT INTO `products` (`id`, `title`, `name`, `price`, `status`, `user_id`)
 VALUES

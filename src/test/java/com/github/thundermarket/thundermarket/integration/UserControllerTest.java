@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,6 +22,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import static com.github.thundermarket.thundermarket.config.TestUtils.createUser;
+import static com.github.thundermarket.thundermarket.config.TestUtils.getSessionId;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -61,16 +63,22 @@ public class UserControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Test
     public void 회원가입_성공() throws Exception {
-        User user = createUser(null, "test01@email.com", "password");
+        String rawPassword = "password";
+        User user = createUser(null, "test01@email.com", rawPassword);
 
         String userJson = objectMapper.writeValueAsString(user);
 
-        mockMvc.perform(post("/api/v1/auth/join")
+        String response = mockMvc.perform(post("/api/v1/auth/join")
                         .contentType("application/json")
                         .content(userJson))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        String password = new JSONObject(response).getString("password");
+        Assertions.assertThat(passwordEncoder.matches(rawPassword, password)).isTrue();
     }
 
     @Test
