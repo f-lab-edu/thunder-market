@@ -14,7 +14,7 @@ CREATE TABLE products (
    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-create table productDetails
+create table product_details
 (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     product_id BIGINT,
