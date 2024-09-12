@@ -127,3 +127,14 @@ Product(상품) 도메인 request, response 흐름 예시
 - Spring Boot, Spring JPA, MySQL, Redis, Jenkins, Docker
 </br>
 </br>
+
+## Swagger
+http://localhost:8080/swagger-ui/index.html </br>
+http://110.165.16.199:8080/swagger-ui/index.html (NCP 인스턴스는 비용 문제로 필요시에만 구동됩니다.) </br>
+![image](https://github.com/user-attachments/assets/7e7a93ff-f407-4c21-8abc-b10728fcbbb2)
+
+
+
+</br>
+</br>
+
