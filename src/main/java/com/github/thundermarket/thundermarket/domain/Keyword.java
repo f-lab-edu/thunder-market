@@ -1,18 +1,20 @@
 package com.github.thundermarket.thundermarket.domain;
 
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.relational.core.mapping.Table;
 
-@Table("keywords")
+@Entity
 @Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
 @ToString
+@Table(name = "keywords")
 public class Keyword {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String keyword;
     private Long userId;

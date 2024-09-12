@@ -1,18 +1,20 @@
 package com.github.thundermarket.thundermarket.domain;
 
+import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
 
-@Table("comments")
+@Entity
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(toBuilder = true)
 @EqualsAndHashCode
 @ToString
+@Table(name = "comments")
 public class Comment {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String text;
     private Long userId;
