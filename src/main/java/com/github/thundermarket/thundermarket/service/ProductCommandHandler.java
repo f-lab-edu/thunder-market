@@ -33,7 +33,7 @@ public class ProductCommandHandler {
         Product savedProduct = productRepository.save(product);
         FileUploadResult fileUploadResult = fileStorage.save(video);
         ProductDetail productDetailWithVideoAndThumbnail = productDetail.toBuilder()
-                .productId(savedProduct.getId())
+                .product(savedProduct)
                 .videoFilePath(fileUploadResult.getVideoFilePath())
                 .thumbnailFilePath(fileUploadResult.getThumbnailFilePath())
                 .build();

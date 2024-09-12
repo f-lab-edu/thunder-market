@@ -93,16 +93,17 @@ public class ProductControllerTest {
 
     @Test
     public void 상품_등록_성공() throws Exception {
+        Product product = Product.builder()
+                .title("아이폰 팝니다")
+                .name("iPhone11")
+                .price(200_000)
+                .status(ProductStatus.AVAILABLE)
+                .userId(1L)
+                .build();
         ProductRequest productRequest = new ProductRequest(
-                Product.builder()
-                        .title("아이폰 팝니다")
-                        .name("iPhone11")
-                        .price(200_000)
-                        .status(ProductStatus.AVAILABLE)
-                        .userId(1L)
-                        .build(),
+                product,
                 ProductDetail.builder()
-                        .productId(1L)
+                        .product(product)
                         .color("white")
                         .productCondition("New")
                         .batteryCondition("Good")

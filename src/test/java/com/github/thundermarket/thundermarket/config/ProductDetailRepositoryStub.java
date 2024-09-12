@@ -1,8 +1,11 @@
 package com.github.thundermarket.thundermarket.config;
 
+import com.github.thundermarket.thundermarket.constant.ProductStatus;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
 import com.github.thundermarket.thundermarket.repository.ProductDetailRepository;
 import java.util.Optional;
+
+import static com.github.thundermarket.thundermarket.config.TestUtils.createProduct;
 
 public class ProductDetailRepositoryStub implements ProductDetailRepository {
 
@@ -17,7 +20,7 @@ public class ProductDetailRepositoryStub implements ProductDetailRepository {
             return null;
         }
         return ProductDetail.builder()
-                .productId(1L)
+                .product(createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, ProductStatus.AVAILABLE, 1L))
                 .color("white")
                 .productCondition("")
                 .batteryCondition("")
