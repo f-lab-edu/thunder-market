@@ -1,23 +1,22 @@
 package com.github.thundermarket.thundermarket.domain;
 
+import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.Objects;
-
-@Table("productDetails")
+@Entity
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(toBuilder = true)
 @EqualsAndHashCode
 @ToString
+@Table(name = "productDetails")
 public class ProductDetail {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long productId;
+//    private Long productId;
     private String color;
     private String productCondition;
     private String batteryCondition;
@@ -29,4 +28,8 @@ public class ProductDetail {
     private int deliveryFee;
     private String videoFilePath;
     private String thumbnailFilePath;
+
+    @OneToOne
+    @JoinColumn(name = "product_id", nullable = false) // 외래 키 설정
+    private Product product;
 }

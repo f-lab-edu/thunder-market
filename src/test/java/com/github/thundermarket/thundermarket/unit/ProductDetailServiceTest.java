@@ -1,5 +1,6 @@
 package com.github.thundermarket.thundermarket.unit;
 
+import com.github.thundermarket.thundermarket.constant.ProductStatus;
 import com.github.thundermarket.thundermarket.service.ProductQueryHandler;
 import com.github.thundermarket.thundermarket.config.ProductDetailRepositoryStub;
 import com.github.thundermarket.thundermarket.domain.ProductDetail;
@@ -7,6 +8,8 @@ import com.github.thundermarket.thundermarket.dto.ProductDetailResponse;
 import com.github.thundermarket.thundermarket.exception.ResourceNotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static com.github.thundermarket.thundermarket.config.TestUtils.createProduct;
 
 public class ProductDetailServiceTest {
 
@@ -22,7 +25,7 @@ public class ProductDetailServiceTest {
     public void 상품1개_상세정보_조회() {
         ProductQueryHandler productDetailService = new ProductQueryHandler(null, new ProductDetailRepositoryStub());
         ProductDetail productDetail = ProductDetail.builder()
-                .productId(1L)
+                .product(createProduct(1L, "아이폰 팝니다", "iPhone12", 200_000, ProductStatus.AVAILABLE, 1L))
                 .color("white")
                 .productCondition("")
                 .batteryCondition("")
